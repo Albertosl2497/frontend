@@ -84,7 +84,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       try {
         setBtnLoading(true);
         const response = await fetch(
-          `https://github.com/Albertosl2497/backend/api/tickets/sell-tickets/${lotteryNo}`,
+          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
           {
             method: "PATCH",
             headers: {
