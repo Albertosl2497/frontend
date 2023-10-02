@@ -22,7 +22,7 @@ function App() {
     const getTickets = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/tickets/unsold-tickets"
+          "https://github.com/Albertosl2497/backend/api/tickets/unsold-tickets"
         );
         const data = await response.json();
         setTickets(data.availableTickets);
@@ -95,4 +95,4 @@ function App() {
 
 export default App;
 
-// http://localhost:5000
+// https://github.com/Albertosl2497/backend
