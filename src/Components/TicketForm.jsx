@@ -114,15 +114,14 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
           sendWhatsAppMessage(
-            "526442340445",
-            `Hello,
-            I would like to reserve the following lottery tickets: ${selectedTickets.join(
+            "526441382876",
+            `Hola, me gustaria reservar los boletos de la rifa: ${selectedTickets.join(
               ", "
-            )} for lottery number ${lotteryNo}.
-            The name is: ${fullName}.
-            I am located in: ${city}, ${state} and my phone number is: ${mobNumber}.
-            My email address is: ${email}.
-            Thank you.`
+            )} para el sorteo No. ${lotteryNo}.
+            Mi Nombre es: ${fullName}.
+            Estoy ubicado en: ${city}, ${state} y mi numero de telefono es: ${mobNumber}.
+            Mi correo electronico es: ${email}.
+            Gracias.`
           );
         }
 
@@ -131,7 +130,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         setFullName("");
         setState("");
         setCity("");
-        setEmail("");
+        setEmail("rifascampotreinta@gmail.com");
         setSelectedTickets([]);
 
         // clear the errors
