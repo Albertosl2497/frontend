@@ -10,7 +10,7 @@ function LoginPage({ setIsLoggedIn }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch("http://localhost:5000/api/users/login", {
+    fetch("https://github.com/Albertosl2497/backend/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
