@@ -271,50 +271,46 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       />
     </div>
 
-    {/* 2 half fields */}
-    <div className="col-half">
-      <div className="row-half">
-        <label>Estado</label>
-        <div className="form-row">
-          <input
-            type="text"
-            name="state"
-            placeholder="Estado"
-            value={state}
-            onChange={(e) => {
-              const value = e.target.value;
-              setState(value);
-              // Remove error if user has fixed it
-              if (errors.hasOwnProperty("state")) {
-                const newErrors = { ...errors };
-                delete newErrors["state"];
-                setErrors(newErrors);
-              }
-            }}
-          />
-        </div>
-      </div>
-      <div className="row-half">
-        <label>Ciudad</label>
-        <div className="form-row">
-          <input
-            type="text"
-            name="city"
-            placeholder="Municipalidad"
-            value={city}
-            onChange={(e) => {
-              const value = e.target.value;
-              setCity(value);
-              // Remove error if user has fixed it
-              if (errors.hasOwnProperty("city")) {
-                const newErrors = { ...errors };
-                delete newErrors["city"];
-                setErrors(newErrors);
-              }
-            }}
-          />
-        </div>
-      </div>
+    {/* Estado */}
+    <label>Estado</label>
+    <div className="form-row">
+      <input
+        type="text"
+        name="state"
+        placeholder="Estado"
+        value={state}
+        onChange={(e) => {
+          const value = e.target.value;
+          setState(value);
+          // Remove error if user has fixed it
+          if (errors.hasOwnProperty("state")) {
+            const newErrors = { ...errors };
+            delete newErrors["state"];
+            setErrors(newErrors);
+          }
+        }}
+      />
+    </div>
+
+    {/* Ciudad */}
+    <label>Ciudad</label>
+    <div className="form-row">
+      <input
+        type="text"
+        name="city"
+        placeholder="Municipalidad"
+        value={city}
+        onChange={(e) => {
+          const value = e.target.value;
+          setCity(value);
+          // Remove error if user has fixed it
+          if (errors.hasOwnProperty("city")) {
+            const newErrors = { ...errors };
+            delete newErrors["city"];
+            setErrors(newErrors);
+          }
+        }}
+      />
     </div>
 
     {/* Full email field */}
