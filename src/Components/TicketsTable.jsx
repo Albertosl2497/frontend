@@ -22,7 +22,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       if (params.colDef.field === "sold") {
         let value = ticketToUpdate.sold;
         fetch(
-          `https://github.com/Albertosl2497/backend/api/tickets/sold-ticket/${lotteryNo}/${
+          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${
             ticketToUpdate.ticketNumber
           }/${!value}`,
           requestOptions
@@ -62,7 +62,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       } else {
         const value = ticketToUpdate.availability;
         fetch(
-          `https://github.com/Albertosl2497/backend/api/tickets/claim-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${value}`,
+          `https://rifasefectivocampotreinta.onrender.com/api/tickets/claim-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${value}`,
           requestOptions
         )
           .then((response) => response.json())
