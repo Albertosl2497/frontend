@@ -22,7 +22,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/tickets/tickets")
+    fetch("https://github.com/Albertosl2497/backend/api/tickets/tickets")
       .then((response) => response.json())
       .then((data) => {
         setStats(data);
@@ -40,7 +40,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
 
   function createLottery() {
     setLoading(true);
-    fetch("http://localhost:5000/api/tickets/create-lottery", {
+    fetch("https://github.com/Albertosl2497/backend/api/tickets/create-lottery", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
