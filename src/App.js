@@ -22,7 +22,7 @@ function App() {
     const getTickets = async () => {
       try {
         const response = await fetch(
-          "https://github.com/Albertosl2497/backend/api/tickets/unsold-tickets"
+          "https://rifasefectivocampotreinta.onrender.com/api/tickets/unsold-tickets"
         );
         const data = await response.json();
         setTickets(data.availableTickets);
