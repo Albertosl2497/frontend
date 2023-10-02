@@ -28,7 +28,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("rifascampotreinta@gmail.com");
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
@@ -300,7 +300,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 <input
                   type="text"
                   name="city"
-                  placeholder="Municipalidad"
+                  placeholder="Ciudad o Municipio"
                   value={city}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -323,7 +323,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             <input
               type="text"
               name="email"
-              placeholder="Emailisto"
+              placeholder="Ingresa Correo Electronico (Si no cuentas con uno deja este)"
               value={email}
               onChange={(e) => {
                 const value = e.target.value;
