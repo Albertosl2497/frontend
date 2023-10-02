@@ -11,14 +11,14 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
 
       <div className="post-nav-stuff">
         {/* Main */}
-        <div className="col">
-          <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 12</p>
-          <p className="bold" style={{ fontSize: '24px' }}>ESTE MARTES 31 DE OCTUBRE</p>
-          <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS EN EFECTIVO</p>
-          <p style={{ fontSize: '20px' }}>Costo por Boleto $35.00 MXN</p>
-          <p style={{ fontSize: '20px' }}>Selecciona todos los boletos que desees</p>
-
+        <div className="col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 12</p>
+            <p className="bold" style={{ fontSize: '24px' }}>ESTE MARTES 31 DE OCTUBRE</p>
+            <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS EN EFECTIVO</p>
+            <p style={{ fontSize: '20px' }}>Costo por Boleto $35.00 MXN</p>
+            <p style={{ fontSize: '20px' }}>Selecciona todos los boletos que desees</p>
         </div>
+
 
         {/* Form */}
         <TicketForm
