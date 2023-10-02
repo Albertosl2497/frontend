@@ -78,7 +78,7 @@ function UsersTable() {
 
   useEffect(() => {
     const getUsers = async () => {
-      fetch("https://github.com/Albertosl2497/backend/api/users/latest-lottery")
+      fetch("https://rifasefectivocampotreinta.onrender.com/api/users/latest-lottery")
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
