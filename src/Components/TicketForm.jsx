@@ -318,12 +318,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Full email field */}
-          <label>Emailiso</label>
+          <label>Correo Electronico (Si no cuentas con uno deja este:)</label>
           <div className="form-row">
             <input
               type="text"
               name="email"
-              placeholder="Ingresa Correo Electronico (Si no cuentas con uno deja este)"
+              placeholder="Ingresa Correo Electronico"
               value={email}
               onChange={(e) => {
                 const value = e.target.value;
