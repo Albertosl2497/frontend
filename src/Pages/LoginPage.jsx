@@ -10,7 +10,7 @@ function LoginPage({ setIsLoggedIn }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch("https://github.com/Albertosl2497/backend/api/users/login", {
+    fetch("https://rifasefectivocampotreinta.onrender.com/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
