@@ -12,9 +12,9 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
       <div className="post-nav-stuff">
         {/* Main */}
         <div className="col">
-          <p className="bold">GRAN EDICIÓN # {lotteryNo}</p>
+          <p className="bold">GRAN EDICIÓN # 12</p>
           <p>Selecciona todos lo boletos que desees</p>
-           <p className="bold">$ 35.00 MXN</p> 
+           <p className="bold"> Costo por Boleto $35.00 MXN</p> 
         </div>
 
         {/* Form */}
