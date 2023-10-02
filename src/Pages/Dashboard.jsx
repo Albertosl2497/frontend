@@ -22,7 +22,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
   };
 
   useEffect(() => {
-    fetch("https://github.com/Albertosl2497/backend/api/tickets/tickets")
+    fetch("https://rifasefectivocampotreinta.onrender.com/api/tickets/tickets")
       .then((response) => response.json())
       .then((data) => {
         setStats(data);
@@ -40,7 +40,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
 
   function createLottery() {
     setLoading(true);
-    fetch("https://github.com/Albertosl2497/backend/api/tickets/create-lottery", {
+    fetch("https://rifasefectivocampotreinta.onrender.com/api/tickets/create-lottery", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
