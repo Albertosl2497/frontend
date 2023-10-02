@@ -223,126 +223,127 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="col flex-start">
-          {/* Country code and number */}
-          <label>Numero de telefono</label>
-          <div className="form-row">
-            <ReactFlagsSelect
-              selected={phoneNumberCountryCode}
-              onSelect={(code) => setPhoneNumberCountryCode(code)}
-              countries={["MX", "US"]}
-            ></ReactFlagsSelect>
-            <input
-              type="number"
-              name="phoneNumber"
-              placeholder="Numero de telefono"
-              value={phoneNumber}
-              onChange={(e) => {
-                const value = e.target.value;
-                setPhoneNumber(value);
-                // Remove error if user has fixed it
-                if (errors.hasOwnProperty("phoneNumber")) {
-                  const newErrors = { ...errors };
-                  delete newErrors["phoneNumber"];
-                  setErrors(newErrors);
-                }
-              }}
-            />
-          </div>
+  <div className="col flex-start">
+    {/* Country code and number */}
+    <label>Numero de telefono</label>
+    <div className="form-row">
+      <ReactFlagsSelect
+        selected={phoneNumberCountryCode}
+        onSelect={(code) => setPhoneNumberCountryCode(code)}
+        countries={["MX", "US"]}
+      ></ReactFlagsSelect>
+      <input
+        type="number"
+        name="phoneNumber"
+        placeholder="Numero de telefono"
+        value={phoneNumber}
+        onChange={(e) => {
+          const value = e.target.value;
+          setPhoneNumber(value);
+          // Remove error if user has fixed it
+          if (errors.hasOwnProperty("phoneNumber")) {
+            const newErrors = { ...errors };
+            delete newErrors["phoneNumber"];
+            setErrors(newErrors);
+          }
+        }}
+      />
+    </div>
 
-          {/* Full field */}
-          <label>Nombre y apellidos</label>
-          <div className="form-row">
-            <input
-              type="text"
-              name="fullName"
-              placeholder="Ingrese su nombre completo"
-              value={fullName}
-              onChange={(e) => {
-                const value = e.target.value;
-                setFullName(value);
-                // Remove error if user has fixed it
-                if (errors.hasOwnProperty("fullName")) {
-                  const newErrors = { ...errors };
-                  delete newErrors["fullName"];
-                  setErrors(newErrors);
-                }
-              }}
-            />
-          </div>
+    {/* Full field */}
+    <label>Nombre y apellidos</label>
+    <div className="form-row">
+      <input
+        type="text"
+        name="fullName"
+        placeholder="Ingrese su nombre completo"
+        value={fullName}
+        onChange={(e) => {
+          const value = e.target.value;
+          setFullName(value);
+          // Remove error if user has fixed it
+          if (errors.hasOwnProperty("fullName")) {
+            const newErrors = { ...errors };
+            delete newErrors["fullName"];
+            setErrors(newErrors);
+          }
+        }}
+      />
+    </div>
 
-          {/* 2 half fields */}
-          <div className="col-half">
-            <div className="row-half">
-              <label>Estado</label>
-              <div className="form-row">
-                <input
-                  type="text"
-                  name="state"
-                  placeholder="Estado"
-                  value={state}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setState(value);
-                    // Remove error if user has fixed it
-                    if (errors.hasOwnProperty("state")) {
-                      const newErrors = { ...errors };
-                      delete newErrors["state"];
-                      setErrors(newErrors);
-                    }
-                  }}
-                />
-              </div>
-            </div>
-            <div className="row-half">
-              <label>Ciudad</label>
-              <div className="form-row">
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="Ciudad o Municipio"
-                  value={city}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setCity(value);
-                    // Remove error if user has fixed it
-                    if (errors.hasOwnProperty("city")) {
-                      const newErrors = { ...errors };
-                      delete newErrors["city"];
-                      setErrors(newErrors);
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Full email field */}
-          <label>Correo Electronico (Si no cuentas con uno deja este)</label>
-          <div className="form-row">
-            <input
-              type="text"
-              name="email"
-              placeholder="Ingresa Correo Electronico"
-              value={email}
-              onChange={(e) => {
-                const value = e.target.value;
-                setEmail(value);
-                // Remove error if user has fixed it
-                if (errors.hasOwnProperty("email")) {
-                  const newErrors = { ...errors };
-                  delete newErrors["email"];
-                  setErrors(newErrors);
-                }
-              }}
-            />
-          </div>
-
-          <button className="select-ticket" type="submit">
-            {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
-          </button>
+    {/* 2 half fields */}
+    <div className="col-half">
+      <div className="row-half">
+        <label>Estado</label>
+        <div className="form-row">
+          <input
+            type="text"
+            name="state"
+            placeholder="Estado"
+            value={state}
+            onChange={(e) => {
+              const value = e.target.value;
+              setState(value);
+              // Remove error if user has fixed it
+              if (errors.hasOwnProperty("state")) {
+                const newErrors = { ...errors };
+                delete newErrors["state"];
+                setErrors(newErrors);
+              }
+            }}
+          />
         </div>
-      </form>
+      </div>
+      <div className="row-half">
+        <label>Ciudad</label>
+        <div className="form-row">
+          <input
+            type="text"
+            name="city"
+            placeholder="Municipalidad"
+            value={city}
+            onChange={(e) => {
+              const value = e.target.value;
+              setCity(value);
+              // Remove error if user has fixed it
+              if (errors.hasOwnProperty("city")) {
+                const newErrors = { ...errors };
+                delete newErrors["city"];
+                setErrors(newErrors);
+              }
+            }}
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* Full email field */}
+    <label>Emailiso</label>
+    <div className="form-row">
+      <input
+        type="text"
+        name="email"
+        placeholder="Emailisto"
+        value={email}
+        onChange={(e) => {
+          const value = e.target.value;
+          setEmail(value);
+          // Remove error if user has fixed it
+          if (errors.hasOwnProperty("email")) {
+            const newErrors = { ...errors };
+            delete newErrors["email"];
+            setErrors(newErrors);
+          }
+        }}
+      />
+    </div>
+
+    <button className="select-ticket" type="submit">
+      {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
+    </button>
+  </div>
+</form>
+
 
       <div className="search-bar selected-container">
         {selectedTickets.length > 0 &&
