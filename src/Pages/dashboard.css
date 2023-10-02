@@ -1,0 +1,44 @@
+.content {
+  flex: 1;
+}
+
+.gradient-line {
+  height: 2px;
+  background-image: linear-gradient(to right, #ff8a00, #e52e71, #4f77ff);
+}
+
+.content {
+  margin-left: 40px;
+  transition: margin-left 0.3s ease-in-out;
+  padding: 5px 10px;
+}
+
+.content.open {
+  margin-left: 310px;
+}
+
+.heading {
+  font-size: 2rem;
+  padding: 20px 0px;
+  margin-left: 20px;
+}
+
+.card {
+  margin-top: 20px;
+
+  flex: 1;
+  min-width: 200px;
+  height: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.25rem;
+  background-color: #252525;
+}
+
+.card h1 {
+  font-size: 2rem;
+}
+.card p {
+  color: #ffffff85;
+}

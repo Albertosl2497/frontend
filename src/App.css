@@ -1,0 +1,353 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-weight: 100;
+}
+
+body {
+  background-color: #303030;
+  overflow: auto;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+h1 {
+  font-size: 1.5rem;
+  background: linear-gradient(to right, #ff8a00, #e52e71, #4f77ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+nav {
+  background-color: #252525;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 0px;
+}
+
+.row {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.row img {
+  width: 60px;
+  height: 60px;
+}
+
+.row .col {
+  padding: 5px 0px;
+  margin: 0;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.flex-start {
+  align-items: flex-start;
+}
+
+p {
+  color: white;
+  line-height: 25px;
+  font-weight: 100;
+  margin-top: 10px;
+}
+
+.bold {
+  font-weight: 600;
+  margin-top: 0px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+input {
+  width: 100%;
+  padding: 0px 20px;
+  height: 50px;
+}
+input::placeholder {
+  color: gray;
+  font-size: 17px;
+}
+
+.form-row {
+  display: flex;
+  width: 100%;
+  gap: 5px;
+}
+
+form label {
+  color: white;
+  margin: 5px 0px;
+  font-weight: 100;
+  margin-top: 20px;
+}
+
+/* Flag select */
+.ReactFlagsSelect-module_selectBtn__19wW7 {
+  background-color: #f0f0f0 !important; /* replace with desired color */
+  border-radius: 0px !important;
+  padding: 7px 15px !important;
+  height: 50px;
+}
+
+/* Hidding the name of country */
+.ReactFlagsSelect-module_label__27pw9 {
+  display: none !important;
+}
+
+/* Centering the flag */
+.ReactFlagsSelect-module_selectOptionValue__vS99- {
+  align-items: center !important;
+}
+
+/* Flag size */
+.ReactFlagsSelect-module_selectFlag__2q5gC {
+  font-size: 2.5rem !important;
+}
+
+.ReactFlagsSelect-module_flagsSelect__2pfa2 {
+  padding-bottom: 0px !important;
+}
+
+.post-nav-stuff {
+  padding: 0px 5% !important;
+  margin-top: 3%;
+}
+
+.col-half {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.row-half {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 500px;
+}
+
+.select-ticket {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 30px;
+  height: 50px;
+  background-color: green;
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.search-bar {
+  margin: 0 auto;
+  margin-top: 20px;
+  gap: 50px;
+  max-width: 1100px;
+}
+
+.search-bar button {
+  background-color: red;
+  color: white;
+  border-radius: 50px;
+  border: none;
+  height: 50px;
+  min-width: 200px;
+  width: 300px;
+  font-size: 1.15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.display-tickets {
+  max-width: 1100px;
+  margin: 10px auto 50px auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 7px;
+  margin-top: 30px;
+  color: white;
+  max-height: 422px;
+  overflow-y: scroll;
+  padding: 7px 0px;
+}
+
+.display-tickets .ticket {
+  width: 80px;
+  background: #00000090;
+  text-align: center;
+  padding: 4px 9px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* Scrollbar styling */
+/* width and height for the scrollbar track */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* styles for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: red;
+  border-radius: 5px;
+}
+
+/* styles for the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: black;
+  border-radius: 5px;
+}
+
+.pagination li {
+  color: white;
+}
+
+#container {
+  margin: 1rem;
+}
+
+.items {
+  margin-bottom: 1rem;
+}
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.pagination ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0;
+}
+
+.pagination .page-link {
+  padding: 10px 20px;
+  color: red;
+  background-color: black;
+  border: 1px solid black;
+}
+
+.pagination .page-link:hover {
+  color: red;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: red;
+  border-color: red;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #ffffff90;
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: black;
+  border-color: black;
+}
+
+footer {
+  margin-top: 50px;
+  background-color: #252525;
+  padding: 30px 0;
+}
+
+.footer-container {
+  margin: 0 auto;
+  padding: 1% 2%;
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.col-md-4 {
+  flex: 1 1 300px;
+  margin: 10px;
+}
+
+.col-md-6 {
+  flex: 4;
+}
+
+.end {
+  text-align: end;
+  justify-content: end;
+}
+
+.col-md-4 h3 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: orangered;
+  margin: 5px 0px;
+  font-weight: 200;
+}
+.col-md-4 .white {
+  color: white;
+}
+
+.center {
+  text-align: center;
+}
+
+.col-md-4 p {
+  font-size: 1rem;
+  line-height: 0.8rem;
+  font-weight: 100;
+}
+
+.col-md-4 h5 {
+  color: white;
+}
+
+.col-md-4 h4 {
+  color: orangered;
+  margin-top: 20px;
+}
+
+li {
+  cursor: pointer;
+}
