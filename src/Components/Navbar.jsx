@@ -7,8 +7,8 @@ function Navbar() {
       <div className="row">
         <img src={Logo} alt="Logo" />
         <div className="col">
-          <h1>RIFAS EFECTIVO </h1>
-          <h1>CAMPO TREINTA</h1>
+          <h1 className="bold" >RIFAS EFECTIVO </h1>
+          <h1 className="bold" >CAMPO TREINTA</h1>
         </div>
       </div>
     </nav>
