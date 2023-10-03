@@ -17,7 +17,10 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
   <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS</p>
   <p style={{ fontSize: '20px' }}>Costo por Boleto $35.00 MXN</p>
   <br />
-  <p className="bold" style={{ fontSize: '20px' }}>Realiza los siguientes pasos:</p>
+  
+</div>
+<div className="col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <p className="bold" style={{ fontSize: '20px' }}>Realiza los siguientes pasos:</p>
   <p className="bold" style={{ fontSize: '18px' }}>1.- Llena el formulario con tus datos:</p>
   <p style={{ fontSize: '16px' }}>
         - Teléfono. <br />
@@ -29,7 +32,6 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
   <p className="bold" style={{ fontSize: '18px' }}>2.- Selecciona tus Boletos.</p>
   <p className="bold" style={{ fontSize: '18px' }}>3.- Presiona el Botón Verde (Apartar Boletos).</p>
 </div>
-
 
 
         {/* Form */}
