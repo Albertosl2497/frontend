@@ -9,9 +9,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function sendWhatsAppMessage(phoneNumber, message) {
-  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-    message
-  )}`;
+  const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+
   window.open(url, "_blank");
 }
 
@@ -175,7 +174,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       setErrors(newErrors);
     }
   };
-  let itemsPerPage = 100;
+  let itemsPerPage = 500;
 
   useEffect(() => {
     if (Array.isArray(tickets)) {
