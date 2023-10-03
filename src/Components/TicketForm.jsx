@@ -175,7 +175,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       setErrors(newErrors);
     }
   };
-  let itemsPerPage = 5000;
+  let itemsPerPage = 100;
 
   useEffect(() => {
     if (Array.isArray(tickets)) {
@@ -405,24 +405,25 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             ))}
           </div>
 
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="next >"
-            onPageChange={handlePageClick}
-            pageCount={pageCount}
-            previousLabel="< previous"
-            renderOnZeroPageCount={null}
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            containerClassName="pagination"
-            activeClassName="active"
-          />
+          {pageCount > 1 && (
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+      />
         </>
       )}
     </>
