@@ -33,6 +33,11 @@ function StepsToFollow() {
         PASO 2: Selecciona tus Boletos.               </p>
       <p className="bold" style={{ fontSize: '18px' }}>
         PASO 3: Presiona el Botón Verde (Apartar Boletos).     </p>
+      <p  style={{ fontSize: '16px' }}>
+        NOTA: Al realizar esta serie de pasos y presionar en (Apartar Boletos) seras redireccionado a Whatsapp,
+        Si no fuiste redireccionado a Whatsapp no te preocupes tus boletos ya estan apartados con tus datos.
+        Toda tu informacion sera enviada a nuestro correo electronico, nosotros te contactaremos.    </p>
+      
     </div>
   );
 }
