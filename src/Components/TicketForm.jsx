@@ -385,6 +385,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         </div>
       ) : (
         <>
+          <div className="ticket-list-container">
           <div className="display-tickets">
             {currentItems.map((ticket, index) => (
               <div
@@ -404,6 +405,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               </div>
             ))}
           </div>
+            </div>
 
           <ReactPaginate
             breakLabel="..."
