@@ -114,11 +114,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           toast.success("Tickets Vendidos Exitosamente!");
           sendWhatsAppMessage(
             "526441382876",
-            `Hola, me gustaria reservar los boletos de la rifa: ${selectedTickets.join(
-              ", "
-            )} para el sorteo No. ${lotteryNo}.
+            `Hola, me gustaria reservar los boletos de la rifa: ${selectedTickets.join(", ")}
+            Para el sorteo de los $20,000 en efectivo.
+            El dia 31 de Octubre 2023.
             Mi Nombre es: ${fullName}.
-            Estoy ubicado en: ${city}, ${state} y mi numero de telefono es: ${mobNumber}.
+            Estoy ubicado en: ${city}, ${state}
+            Mi numero de telefono es: ${mobNumber}.
             Mi correo electronico es: ${email}.
             Gracias.`
           );
