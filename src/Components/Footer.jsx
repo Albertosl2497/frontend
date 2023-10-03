@@ -6,7 +6,7 @@ function Footer() {
       <div className="footer-container">
         <div className="row">
           <div className="col-md-4 col-md-6 center">
-            <h2 className="white bold">METODOS DE PAGO:</h2>
+            <h1 className="white bold">METODOS DE PAGO:</h1>
             <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
               <div className="col">
                 <h2 className="white bold">TRANSFERENCIAS 1:</h2>
