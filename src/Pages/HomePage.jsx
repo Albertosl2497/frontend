@@ -19,9 +19,9 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
   <br />
   
 </div>
-<div className="col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+<div className="col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <p className="bold" style={{ fontSize: '20px' }}>Realiza los siguientes pasos:</p>
-  <p className="bold" style={{ fontSize: '18px' }}>1.- Llena el formulario con tus datos:</p>
+  <p className="bold" style={{ fontSize: '18px' }}>PASO 1: Llena el formulario con tus datos:</p>
   <p style={{ fontSize: '16px' }}>
         - Teléfono. <br />
         - Nombre y apellidos. <br />
@@ -29,8 +29,8 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
         - Ciudad. <br />
         - Correo Electrónico (Si no cuentas con uno, deja el que te aparece).
   </p>
-  <p className="bold" style={{ fontSize: '18px' }}>2.- Selecciona tus Boletos.</p>
-  <p className="bold" style={{ fontSize: '18px' }}>3.- Presiona el Botón Verde (Apartar Boletos).</p>
+  <p className="bold" style={{ fontSize: '18px' }}>PASO 2: Selecciona tus Boletos.</p>
+  <p className="bold" style={{ fontSize: '18px' }}>PASO 3: Presiona el Botón Verde (Apartar Boletos).</p>
 </div>
 
 
