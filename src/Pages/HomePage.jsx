@@ -18,7 +18,7 @@ function MainPageContent() {
 
 function StepsToFollow() {
   return (
-    <div className="col">
+    <div>
       <p className="bold" style={{ fontSize: '22px' }}>Realiza los siguientes pasos:</p>
       <p className="bold" style={{ fontSize: '18px' }}>
         PASO 1: Llena el formulario con tus datos:</p>
