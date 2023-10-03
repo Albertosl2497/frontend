@@ -47,3 +47,17 @@
 .selected {
   background-color: green !important;
 }
+
+/* Establece un alto máximo para la lista de boletos */
+.display-tickets {
+  max-height: 80vh; /* Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) */
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
+}
+
+/* Establece el ancho de cada boleto para evitar el scroll horizontal */
+.ticket {
+  width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+/* Agrega estilos adicionales según sea necesario para los boletos */
+
