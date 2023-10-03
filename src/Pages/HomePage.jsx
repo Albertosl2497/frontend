@@ -18,7 +18,6 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
             <p style={{ fontSize: '20px' }}>Costo por Boleto $35.00 MXN</p>
             <p className="bold" style={{ fontSize: '20px' }}>Realiza los siguientes pasos:</p>
             <p className="bold" style={{ fontSize: '18px' }}>1.- Llena el formulario con tus datos:</p>
-            <p className="bold" style={{ fontSize: '20px' }}>  - Telefono. <br>  - Nombre y apellidos. <br>  - Estado. <br>  - Ciudad. <br>  - Correo Electronico (Si no cuentas con uno, deja el que te aparece).</p>
             <p className="bold" style={{ fontSize: '18px' }}>2.- Selecciona tus Boletos.</p>
             <p className="bold" style={{ fontSize: '18px' }}>3.- Presiona el Boton Verde (Apartar Boletos).</p>
             
