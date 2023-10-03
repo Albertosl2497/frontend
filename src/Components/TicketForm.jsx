@@ -424,7 +424,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         containerClassName="pagination"
         activeClassName="active"
       />
-        </>
+        
       )}
     </>
   );
