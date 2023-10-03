@@ -16,9 +16,10 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
   <p className="bold" style={{ fontSize: '24px' }}>ESTE 31 DE OCTUBRE</p>
   <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS</p>
   <p style={{ fontSize: '20px' }}>Costo por Boleto $35.00 MXN</p>
+  <br />
   <p className="bold" style={{ fontSize: '20px' }}>Realiza los siguientes pasos:</p>
   <p className="bold" style={{ fontSize: '18px' }}>1.- Llena el formulario con tus datos:</p>
-  <p className="bold" style={{ fontSize: '20px' }}>
+  <p style={{ fontSize: '16px' }}>
     - Teléfono. <br />
     - Nombre y apellidos. <br />
     - Estado. <br />
