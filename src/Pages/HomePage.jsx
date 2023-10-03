@@ -5,7 +5,7 @@ import Footer from "../Components/Footer";
 
 function MainPageContent() {
   return (
-    <div className="col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
       <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 12</p>
       <p className="bold" style={{ fontSize: '24px' }}>ESTE 31 DE OCTUBRE</p>
       <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS</p>
@@ -14,6 +14,7 @@ function MainPageContent() {
     </div>
   );
 }
+
 
 function StepsToFollow() {
   return (
