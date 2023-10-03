@@ -175,7 +175,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       setErrors(newErrors);
     }
   };
-  let itemsPerPage = 500;
+  let itemsPerPage = 1000;
 
   useEffect(() => {
     if (Array.isArray(tickets)) {
