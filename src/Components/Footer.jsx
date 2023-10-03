@@ -21,7 +21,7 @@ function Footer() {
                 <p className="col bold" style={{ fontSize: '20px' }}>NOMBRE: MARTIN SANCHEZ LEYVA</p>
               </div>
               <div className="col">
-                <h2 className="col white bold">DEPOSITOS EN OXXO 2:</h2>
+                <h2 className="col white bold">DEPOSITOS EN OXXO 1:</h2>
                 <p className="col bold" style={{ fontSize: '20px' }}>CUENTA: 2242-1707-6018-2351</p>
                 
               </div>
