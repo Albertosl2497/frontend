@@ -11,7 +11,7 @@ function HomePage({ tickets, loading, lotteryNo, setTickets }) {
 
       <div className="post-nav-stuff">
         {/* Main */}
-        <div className="col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
   <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 12</p>
   <p className="bold" style={{ fontSize: '24px' }}>ESTE 31 DE OCTUBRE</p>
   <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS</p>
