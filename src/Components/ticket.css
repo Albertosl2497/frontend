@@ -61,3 +61,13 @@
 
 /* Agrega estilos adicionales según sea necesario para los boletos */
 
+/* Estilos para el contenedor de la lista de tickets */
+.ticket-list-container {
+  background-color: #f9f9f9; /* Color de fondo del contenedor */
+  border-radius: 10px; /* Borde redondeado para dar profundidad */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+  padding: 20px; /* Espacio interior para crear separación */
+  margin-top: 20px; /* Márgenes superiores para separación desde arriba */
+  margin-bottom: 20px; /* Márgenes inferiores para separación desde abajo */
+}
+
