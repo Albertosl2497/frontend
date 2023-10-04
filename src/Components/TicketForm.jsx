@@ -127,6 +127,8 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               Mi número de teléfono es: ${mobNumber}.
               Mi correo electrónico es: ${email}.
               El precio total es: $${totalPrice} pesos.
+              Clic en el enlace de abajo para ver lo metodos de pago:
+              https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
               Gracias.`
             );
         }
