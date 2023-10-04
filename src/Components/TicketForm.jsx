@@ -26,6 +26,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
+  const [email, setEmail] = useState("rifascampotreinta@gmail.com");
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
@@ -56,6 +57,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       errors.city = "Por favor ingrese su ciudad";
     }
 
+    if (!email) {
+      errors.email = "Por favor ingrese su correo electrónico";
+    } else if (!/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(email)) {
+      errors.email = "Por favor ingrese un correo electrónico válido";
+    }
+
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
     } else {
@@ -65,6 +72,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         fullName,
         state,
         city,
+        email,
       });
 
       let mobNumber =
@@ -84,6 +92,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               ticketNumbers: selectedTickets,
               userInformation: {
                 fullName: fullName,
+                email: email,
                 state: state,
                 city: city,
                 phoneNumber: mobNumber,
@@ -110,7 +119,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             Mi Nombre es: ${fullName}.
             Estoy ubicado en: ${city}, ${state}
             Mi numero de telefono es: ${mobNumber}.
-            
+            Mi correo electronico es: ${email}.
             Gracias.`
           );
         }
@@ -120,7 +129,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         setFullName("");
         setState("");
         setCity("");
-       
+        setEmail("rifascampotreinta@gmail.com");
         setSelectedTickets([]);
 
         // clear the errors
@@ -151,7 +160,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       case "city":
         setCity(value);
         break;
-     
+      case "email":
+        setEmail(value);
+        break;
       default:
         break;
     }
@@ -302,7 +313,26 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             />
           </div>
 
-          
+          {/* Full email field */}
+          <label>Correo electronico (si no cuenta con uno mantenga este)</label>
+          <div className="form-row">
+            <input
+              type="text"
+              name="email"
+              placeholder="Emailisto"
+              value={email}
+              onChange={(e) => {
+                const value = e.target.value;
+                setEmail(value);
+                // Remove error if user has fixed it
+                if (errors.hasOwnProperty("email")) {
+                  const newErrors = { ...errors };
+                  delete newErrors["email"];
+                  setErrors(newErrors);
+                }
+              }}
+            />
+          </div>
 
           <button className="select-ticket" type="submit">
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
