@@ -53,7 +53,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
       .then((data) => {
         console.log(data.message); // Successfully created lottery 1
         setLoading(false);
-        toast.success("New Lottery created");
+        toast.success("Nuevo sorteo creado");
         window.location.reload();
       })
       .catch((error) => {
@@ -111,15 +111,15 @@ function Dashboard({ handleLogout, lotteryNo }) {
             }}
             onClick={() => generateTickets()}
           >
-            <h1>Generate new tickets</h1>
+            <h1>Generar Nuevo Sorteo</h1>
           </button>
 
           <button className="card">
-            <p>Total Tickets Sold</p>
+            <p>Total de Boletos Pagados</p>
             <h1>{stats?.soldCount}</h1>
           </button>
           <button className="card">
-            <p>Total Booked Tickets</p>
+            <p>Total de Boletos Apartados</p>
             <h1>{stats?.bookedCount}</h1>
           </button>
         </div>
@@ -144,8 +144,8 @@ function Dashboard({ handleLogout, lotteryNo }) {
         show={showModal}
         onClose={cancelLottery}
         onConfirm={createLottery}
-        title={"Create Lottery"}
-        message={"Are you sure you want to create a new lottery?"}
+        title={"Crear Sorteo"}
+        message={"¿Estás seguro de que quieres crear un nuevo sorteo?"}
         loading={loading}
       />
     </>
