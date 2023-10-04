@@ -53,11 +53,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               updatedData[rowIndex] = updatedTicket;
               setRowData(updatedData);
             }
-            toast.success("Ticket status updated successfully");
+            toast.success("Estado del boleto actualizado exitosamente");
           })
           .catch((error) => {
             console.error(error);
-            toast.error("Error updating ticket status");
+            toast.error("Error al actualizar el estado del boleto");
           });
       } else {
         const value = ticketToUpdate.availability;
