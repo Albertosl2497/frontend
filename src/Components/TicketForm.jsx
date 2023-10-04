@@ -30,6 +30,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
+  const selectedTicketCount = selectedTickets.length;
+  const ticketPrice = 35; // Precio de cada boleto en pesos
+  const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
+  const selectedTicketNumbers = selectedTickets.join(", ");
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -112,16 +118,17 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
           sendWhatsAppMessage(
-            "526441382876",
-            `Hola, me gustaria reservar los boletos de la rifa: ${selectedTickets.join(", ")}
-            Para el sorteo de los $20,000 en efectivo.
-            El dia 31 de Octubre 2023.
-            Mi Nombre es: ${fullName}.
-            Estoy ubicado en: ${city}, ${state}
-            Mi numero de telefono es: ${mobNumber}.
-            Mi correo electronico es: ${email}.
-            Gracias.`
-          );
+              "526441382876",
+              `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
+              Para el sorteo de los $20,000 en efectivo.
+              El día 31 de Octubre 2023.
+              Mi Nombre es: ${fullName}.
+              Estoy ubicado en: ${city}, ${state}
+              Mi número de teléfono es: ${mobNumber}.
+              Mi correo electrónico es: ${email}.
+              El precio total es: $${totalPrice} pesos.
+              Gracias.`
+            );
         }
 
         // clear the form data
