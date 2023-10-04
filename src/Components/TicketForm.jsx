@@ -57,11 +57,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       errors.city = "Por favor ingrese su ciudad";
     }
 
-    if (!email) {
-      errors.email = "Por favor ingrese su correo electrónico";
-    } else if (!/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(email)) {
-      errors.email = "Por favor ingrese un correo electrónico válido";
-    }
+    
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
