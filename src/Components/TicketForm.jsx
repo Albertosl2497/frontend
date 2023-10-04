@@ -5,12 +5,11 @@ import { BsSearch } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import "./ticket.css";
 import { PropagateLoader, ClipLoader } from "react-spinners";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function sendWhatsAppMessage(phoneNumber, message) {
   const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-
   window.open(url, "_blank");
 }
 
@@ -175,6 +174,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       setErrors(newErrors);
     }
   };
+
   let itemsPerPage = 1000;
 
   useEffect(() => {
@@ -223,123 +223,122 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       )}
 
       <form onSubmit={handleSubmit}>
-  <div className="col flex-start">
-    {/* Country code and number */}
-    <label>Numero de telefono</label>
-    <div className="form-row">
-      <ReactFlagsSelect
-        selected={phoneNumberCountryCode}
-        onSelect={(code) => setPhoneNumberCountryCode(code)}
-        countries={["MX", "US"]}
-      ></ReactFlagsSelect>
-      <input
-        type="number"
-        name="phoneNumber"
-        placeholder="Numero de telefono"
-        value={phoneNumber}
-        onChange={(e) => {
-          const value = e.target.value;
-          setPhoneNumber(value);
-          // Remove error if user has fixed it
-          if (errors.hasOwnProperty("phoneNumber")) {
-            const newErrors = { ...errors };
-            delete newErrors["phoneNumber"];
-            setErrors(newErrors);
-          }
-        }}
-      />
-    </div>
+        <div className="col flex-start">
+          {/* Country code and number */}
+          <label>Numero de telefono</label>
+          <div className="form-row">
+            <ReactFlagsSelect
+              selected={phoneNumberCountryCode}
+              onSelect={(code) => setPhoneNumberCountryCode(code)}
+              countries={["MX", "US"]}
+            ></ReactFlagsSelect>
+            <input
+              type="number"
+              name="phoneNumber"
+              placeholder="Numero de telefono"
+              value={phoneNumber}
+              onChange={(e) => {
+                const value = e.target.value;
+                setPhoneNumber(value);
+                // Remove error if user has fixed it
+                if (errors.hasOwnProperty("phoneNumber")) {
+                  const newErrors = { ...errors };
+                  delete newErrors["phoneNumber"];
+                  setErrors(newErrors);
+                }
+              }}
+            />
+          </div>
 
-    {/* Full field */}
-    <label>Nombre y apellidos</label>
-    <div className="form-row">
-      <input
-        type="text"
-        name="fullName"
-        placeholder="Ingrese su nombre completo"
-        value={fullName}
-        onChange={(e) => {
-          const value = e.target.value;
-          setFullName(value);
-          // Remove error if user has fixed it
-          if (errors.hasOwnProperty("fullName")) {
-            const newErrors = { ...errors };
-            delete newErrors["fullName"];
-            setErrors(newErrors);
-          }
-        }}
-      />
-    </div>
+          {/* Full field */}
+          <label>Nombre y apellidos</label>
+          <div className="form-row">
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Ingrese su nombre completo"
+              value={fullName}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFullName(value);
+                // Remove error if user has fixed it
+                if (errors.hasOwnProperty("fullName")) {
+                  const newErrors = { ...errors };
+                  delete newErrors["fullName"];
+                  setErrors(newErrors);
+                }
+              }}
+            />
+          </div>
 
-    {/* Estado */}
-    <label>Estado</label>
-    <div className="form-row">
-      <input
-        type="text"
-        name="state"
-        placeholder="Estado"
-        value={state}
-        onChange={(e) => {
-          const value = e.target.value;
-          setState(value);
-          // Remove error if user has fixed it
-          if (errors.hasOwnProperty("state")) {
-            const newErrors = { ...errors };
-            delete newErrors["state"];
-            setErrors(newErrors);
-          }
-        }}
-      />
-    </div>
+          {/* Estado */}
+          <label>Estado</label>
+          <div className="form-row">
+            <input
+              type="text"
+              name="state"
+              placeholder="Estado"
+              value={state}
+              onChange={(e) => {
+                const value = e.target.value;
+                setState(value);
+                // Remove error if user has fixed it
+                if (errors.hasOwnProperty("state")) {
+                  const newErrors = { ...errors };
+                  delete newErrors["state"];
+                  setErrors(newErrors);
+                }
+              }}
+            />
+          </div>
 
-    {/* Ciudad */}
-    <label>Ciudad</label>
-    <div className="form-row">
-      <input
-        type="text"
-        name="city"
-        placeholder="Municipio o Ciudad"
-        value={city}
-        onChange={(e) => {
-          const value = e.target.value;
-          setCity(value);
-          // Remove error if user has fixed it
-          if (errors.hasOwnProperty("city")) {
-            const newErrors = { ...errors };
-            delete newErrors["city"];
-            setErrors(newErrors);
-          }
-        }}
-      />
-    </div>
+          {/* Ciudad */}
+          <label>Ciudad</label>
+          <div className="form-row">
+            <input
+              type="text"
+              name="city"
+              placeholder="Municipio o Ciudad"
+              value={city}
+              onChange={(e) => {
+                const value = e.target.value;
+                setCity(value);
+                // Remove error if user has fixed it
+                if (errors.hasOwnProperty("city")) {
+                  const newErrors = { ...errors };
+                  delete newErrors["city"];
+                  setErrors(newErrors);
+                }
+              }}
+            />
+          </div>
 
-    {/* Full email field */}
-    <label>Correo electronico (si no cuenta con uno mantenga este)</label>
-    <div className="form-row">
-      <input
-        type="text"
-        name="email"
-        placeholder="Emailisto"
-        value={email}
-        onChange={(e) => {
-          const value = e.target.value;
-          setEmail(value);
-          // Remove error if user has fixed it
-          if (errors.hasOwnProperty("email")) {
-            const newErrors = { ...errors };
-            delete newErrors["email"];
-            setErrors(newErrors);
-          }
-        }}
-      />
-    </div>
+          {/* Full email field */}
+          <label>Correo electronico (si no cuenta con uno mantenga este)</label>
+          <div className="form-row">
+            <input
+              type="text"
+              name="email"
+              placeholder="Emailisto"
+              value={email}
+              onChange={(e) => {
+                const value = e.target.value;
+                setEmail(value);
+                // Remove error if user has fixed it
+                if (errors.hasOwnProperty("email")) {
+                  const newErrors = { ...errors };
+                  delete newErrors["email"];
+                  setErrors(newErrors);
+                }
+              }}
+            />
+          </div>
 
-    <button className="select-ticket" type="submit">
-      {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
-    </button>
-  </div>
-</form>
-
+          <button className="select-ticket" type="submit">
+            {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
+          </button>
+        </div>
+      </form>
 
       <div className="search-bar selected-container">
         {selectedTickets.length > 0 &&
@@ -356,6 +355,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             </div>
           ))}
       </div>
+
       {/* Search bar with button */}
       <div className="row search-bar">
         <input
@@ -371,7 +371,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       </div>
 
       {/* Show tickets */}
-
       {loading ? (
         <div
           style={{
@@ -386,26 +385,26 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       ) : (
         <>
           <div className="ticket-list-container">
-          <div className="display-tickets">
-            {currentItems.map((ticket, index) => (
-              <div
-                key={ticket}
-                className={`ticket ${
-                  selectedTickets.includes(ticket) && "selected"
-                }`}
-                onClick={() =>
-                  setSelectedTickets(() => {
-                    if (selectedTickets.includes(ticket)) {
-                      return selectedTickets;
-                    } else return [...selectedTickets, ticket];
-                  })
-                }
-              >
-                {ticket}
-              </div>
-            ))}
-          </div>
+            <div className="display-tickets">
+              {currentItems.map((ticket, index) => (
+                <div
+                  key={ticket}
+                  className={`ticket ${
+                    selectedTickets.includes(ticket) && "selected"
+                  }`}
+                  onClick={() =>
+                    setSelectedTickets(() => {
+                      if (selectedTickets.includes(ticket)) {
+                        return selectedTickets;
+                      } else return [...selectedTickets, ticket];
+                    })
+                  }
+                >
+                  {ticket}
+                </div>
+              ))}
             </div>
+          </div>
 
           <ReactPaginate
             breakLabel="..."
@@ -432,3 +431,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 }
 
 export default TicketForm;
+
+// Agrega el ToastContainer fuera del return
+<ToastContainer position="top-center" autoClose={5000} />;
