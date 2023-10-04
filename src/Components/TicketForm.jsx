@@ -122,11 +122,13 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
               Para el sorteo de los $20,000 en efectivo.
               El día 31 de Octubre 2023.
+              
               Mi Nombre es: ${fullName}.
               Estoy ubicado en: ${city}, ${state}
               Mi número de teléfono es: ${mobNumber}.
               Mi correo electrónico es: ${email}.
               El precio total es: $${totalPrice} pesos.
+              
               Clic en el enlace de abajo para ver lo metodos de pago:
               https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
               Gracias.`
@@ -393,7 +395,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         </div>
       ) : (
         <>
-          <div className="ticket-list-container">
+          <div className="ticket-list-container" style={{ maxHeight: '300px', overflowY: 'auto' }}>>
             <div className="display-tickets">
               {currentItems.map((ticket, index) => (
                 <div
