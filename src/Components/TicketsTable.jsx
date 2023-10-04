@@ -123,13 +123,13 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   const columnDefs = [
     {
-      headerName: "Ticket No",
+      headerName: "Boletos No.#",
       field: "ticketNumber",
       sortable: true,
       resizable: true,
     },
     {
-      headerName: "Status",
+      headerName: "Estado",
       field: "sold",
       editable: true,
       sortable: true,
@@ -143,11 +143,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         },
       },
       cellRenderer: function (params) {
-        return params.value ? "Sold" : "Unsold";
+        return params.value ? "Pagado" : "No Pagado";
       },
     },
     {
-      headerName: "Availability",
+      headerName: "Disponibilidad",
       field: "availability",
       editable: true,
       sortable: true,
@@ -161,11 +161,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         },
       },
       cellRenderer: function (params) {
-        return params.value ? "Available" : "Unavailable";
+        return params.value ? "Disponible" : "No Disponible";
       },
     },
     {
-      headerName: "Ticket Owner",
+      headerName: "Propietario",
       field: "user",
       flex: 1,
       resizable: true,
