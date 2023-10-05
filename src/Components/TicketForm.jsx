@@ -129,8 +129,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               Mi correo electrónico es: ${email}.
               El precio total es: $${totalPrice} pesos.
               
-              Clic en el enlace de abajo para ver lo metodos de pago:
+              METODOS DE PAGO:
               https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
+              
               Gracias.`
             );
         }
