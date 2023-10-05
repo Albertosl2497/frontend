@@ -29,3 +29,23 @@
     opacity: 0;
   }
 }
+
+/* Estilos para las flechas hacia abajo */
+.arrow {
+  font-size: 28px; /* Tamaño de fuente deseado */
+  color: white; /* Color de las flechas */
+  margin: 0 10px; /* Espacio entre las flechas y el texto */
+}
+
+/* Estilo para el texto en negrita y color blanco */
+.bold {
+  font-weight: bold;
+  color: white;
+}
+
+/* Alinea verticalmente el contenido del párrafo adicional */
+.extra-paragraph {
+  display: flex;
+  align-items: center;
+}
+
