@@ -395,7 +395,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         </div>
       ) : (
         <>
-          <div className="ticket-list-container" style={{ maxHeight: '300px', overflowY: 'auto' }}>>
+          <div className="ticket-list-container">
             <div className="display-tickets">
               {currentItems.map((ticket, index) => (
                 <div
