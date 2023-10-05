@@ -19,10 +19,10 @@ function MainPageContent() {
 function StepsToFollow() {
   return (
     <div>
-      <p className="bold" style={{ fontSize: '22px' }}>Realiza los siguientes pasos:</p>
+      <p className="bold" style={{ fontSize: '22px' }}>REALIZA LOS SIGUIENTES PASOS:</p>
       <p className="bold" style={{ fontSize: '18px' }}>
         PASO 1: Llena el formulario con tus datos:</p>
-      <p style={{  fontWeight: 'bold', fontSize: '16px' }}>
+      <p style={{ fontSize: '16px' }}>
         - Teléfono. <br />
         - Nombre y apellidos. <br />
         - Estado. <br />
@@ -33,7 +33,7 @@ function StepsToFollow() {
         PASO 2: Selecciona tus Boletos.               </p>
       <p className="bold" style={{ fontSize: '18px' }}>
         PASO 3: Presiona el Botón Verde (Apartar Boletos).     </p>
-      <p  style={{ fontWeight: 'bold', fontSize: '16px' }}>
+      <p  style={{ fontSize: '16px' }}>
         NOTA: Al realizar esta serie de pasos y presionar en (Apartar Boletos) seras redireccionado a Whatsapp,
         Si no fuiste redireccionado a Whatsapp no te preocupes tus boletos ya estan apartados con tus datos.
         Toda tu informacion sera enviada a nuestro correo electronico, nosotros te contactaremos.    </p>
