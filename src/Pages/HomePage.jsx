@@ -15,10 +15,10 @@ function MainPageContent() {
       
       {/* Párrafo adicional con flechas parpadeantes */}
   <div className="extra-paragraph">
-    <div className="arrow left-arrow">&lt;</div>
-    BOLETOS EN LA PARTE DE ABAJO
-    <div className="arrow right-arrow">&gt;</div>
-  </div>
+  <div className="arrow down-arrow">&#8595;</div>
+  <span className="bold white-text">BOLETOS EN LA PARTE DE ABAJO</span>
+  <div className="arrow down-arrow">&#8595;</div>
+</div>
     </div>
   );
 }
