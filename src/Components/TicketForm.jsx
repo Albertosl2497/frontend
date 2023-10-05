@@ -236,7 +236,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       <form onSubmit={handleSubmit}>
         <div className="col flex-start">
           {/* Country code and number */}
-          <label>Numero de telefono</label>
+          <label className="bold-label">Numero de telefono</label>
           <div className="form-row">
             <ReactFlagsSelect
               selected={phoneNumberCountryCode}
@@ -262,7 +262,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Full field */}
-          <label>Nombre y apellidos</label>
+          <label className="bold-label">Nombre y apellidos</label>
           <div className="form-row">
             <input
               type="text"
@@ -283,7 +283,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Estado */}
-          <label>Estado</label>
+          <label className="bold-label">Estado</label>
           <div className="form-row">
             <input
               type="text"
@@ -304,7 +304,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Ciudad */}
-          <label>Ciudad</label>
+          <label className="bold-label">Ciudad</label>
           <div className="form-row">
             <input
               type="text"
@@ -325,7 +325,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Full email field */}
-          <label>Correo electronico (si no cuenta con uno mantenga este)</label>
+          <label className="bold-label">Correo electronico (si no cuenta con uno mantenga este)</label>
           <div className="form-row">
             <input
               type="text"
