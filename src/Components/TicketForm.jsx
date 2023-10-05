@@ -424,23 +424,24 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           <ReactPaginate
-            breakLabel="..."
-            nextLabel="next >"
-            onPageChange={handlePageClick}
-            pageCount={pageCount}
-            previousLabel="< previous"
-            renderOnZeroPageCount={null}
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            containerClassName="pagination"
-            activeClassName="active"
-          />
+  breakLabel="..."
+  onPageChange={handlePageClick}
+  pageCount={pageCount}
+  pageClassName="page-item"
+  pageLinkClassName="page-link"
+  previousClassName="page-item"
+  previousLinkClassName="page-link"
+  nextClassName="page-item"
+  nextLinkClassName="page-link"
+  breakClassName="page-item"
+  breakLinkClassName="page-link"
+  containerClassName="pagination"
+  activeClassName="active"
+  previousLabel={pageCount > 1 ? "< previous" : null}
+  nextLabel={pageCount > 1 ? "next >" : null}
+  renderOnZeroPageCount={null}
+/>
+
         </>
       )}
     </>
