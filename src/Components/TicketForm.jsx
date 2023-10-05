@@ -258,6 +258,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
+                style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
@@ -279,6 +280,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
+                style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
@@ -300,6 +302,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
+              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
@@ -321,6 +324,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
+              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
@@ -342,6 +346,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
+              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
@@ -374,6 +379,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           placeholder="Buscar tu boleto"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
+          style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
         />
         {/* <button className="search-button" onClick={handleSearch}>
           <BsSearch />
