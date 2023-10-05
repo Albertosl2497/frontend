@@ -14,7 +14,7 @@ function MainPageContent() {
       <br />
       <div className="extra-paragraph">
       <div className="arrow down-arrow">&#8595;</div>
-      <span className="bold white-text">BOLETOS EN LA PARTE DE ABAJO</span>
+      <span className=" white-text">BOLETOS EN LA PARTE DE ABAJO</span>
       <div className="arrow down-arrow">&#8595;</div>
       </div>
     </div>
