@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../Components/Navbar";
 import TicketForm from "../Components/TicketForm";
 import Footer from "../Components/Footer";
+import "./styles.css";
 
 function MainPageContent() {
   return (
