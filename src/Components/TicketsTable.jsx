@@ -200,7 +200,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           onGridReady={onGridReady}
           onCellDoubleClicked={onCellDoubleClicked} // add
           pagination={true}
-          paginationPageSize={10}
+          paginationPageSize={1000}
           rowSelection={"single"}
           editType={"fullRow"}
           detailRowAutoHeight={true}
