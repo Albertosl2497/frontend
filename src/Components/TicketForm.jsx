@@ -14,7 +14,7 @@ function sendWhatsAppMessage(phoneNumber, message) {
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
-  const randomNumber = Math.floor(Math.random() * 10000);
+  const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 10000));
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
 
@@ -31,7 +31,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta+${randomNumber}@gmail.com`;
     setEmail(randomEmail);
-  }, [randomNumber]);
+  }, []);
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
