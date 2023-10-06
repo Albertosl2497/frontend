@@ -334,7 +334,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Full email field */}
-          <label className="bold-label">Correo electronico</label>
+          
           <div className="form-row">
             <input
               type="hidden"
