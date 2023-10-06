@@ -125,19 +125,18 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           sendWhatsAppMessage(
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
-              Para el sorteo de los $20,000 en efectivo.
-              El día 31 de Octubre 2023.
+          Para el sorteo de los $20,000 en efectivo.
+          El día 31 de Octubre 2023.
+          El precio total es: $${totalPrice} pesos.
               
-              Mi Nombre es: ${fullName}.
-              Estoy ubicado en: ${city}, ${state}
-              Mi número de teléfono es: ${mobNumber}.
-              Mi correo electrónico es: ${email}.
-              El precio total es: $${totalPrice} pesos.
+          Mi Nombre es: ${fullName}.
+          Estoy ubicado en: ${city}, ${state}
+          Mi número de teléfono es: ${mobNumber}.
+          
+          METODOS DE PAGO:
+          https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
               
-              METODOS DE PAGO:
-              https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
-              
-              Gracias.`
+          Gracias.`
             );
         }
 
@@ -146,7 +145,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         setFullName("");
         setState("");
         setCity("");
-        setEmail("rifascampotreinta@gmail.com");
+        setEmail("randomEmail");
         setSelectedTickets([]);
 
         // clear the errors
@@ -335,10 +334,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Full email field */}
-          <label className="bold-label">Correo electronico (si no cuenta con uno mantenga este)</label>
+          <label className="bold-label">Correo electronico</label>
           <div className="form-row">
             <input
-              type="text"
+              type="hidden"
               name="email"
               placeholder="Emailisto"
               value={email}
