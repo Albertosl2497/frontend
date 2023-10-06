@@ -14,13 +14,13 @@ function MainPageContent() {
       <br />
       
       
-      <p className="col" style={{ fontSize: '20px' }} >
-        <div className="arrow down-arrow">&#8595;</div>
-        BOLETOS EN LA PARTE DE ABAJO 
-        <div className="arrow down-arrow">&#8595;</div>
+      <p className="col arrow down-arrow" style={{ fontSize: '20px' }} >
+       
+        &#8595; BOLETOS EN LA PARTE DE ABAJO &#8595;
+        
       </p>
      
-      </div>
+    
     </div>
   );
 }
