@@ -27,9 +27,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
+  const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta+${randomNumber}@gmail.com`;
-    email(randomEmail);
+    setEmail(randomEmail);
   }, [randomNumber]);
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
