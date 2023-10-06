@@ -14,7 +14,7 @@ function MainPageContent() {
       <br />
       <div className="extra-paragraph">
       <div className="arrow down-arrow">&#8595;</div>
-      <span className="bold white-text" style={{ fontSize: '20px' }} >BOLETOS EN LA PARTE DE ABAJO</span>
+      <p className="bold white-text" style={{ fontSize: '20px' }} >BOLETOS EN LA PARTE DE ABAJO</p>
       <div className="arrow down-arrow">&#8595;</div>
       </div>
     </div>
