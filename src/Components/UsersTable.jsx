@@ -110,7 +110,7 @@ function UsersTable() {
           columnDefs={columnsDef}
           onGridReady={onGridReady}
           pagination={true}
-          paginationPageSize={10}
+          paginationPageSize={100}
           rowSelection={"single"}
           editType={"fullRow"}
           domLayout="autoHeight"
