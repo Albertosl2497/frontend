@@ -12,10 +12,14 @@ function MainPageContent() {
       <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS</p>
       <p style={{ fontSize: '20px' }}>Costo por Boleto $35.00 MXN</p>
       <br />
-      <div className="extra-paragraph">
-      <div className="arrow down-arrow">&#8595;</div>
-      <p className="bold white-text" style={{ fontSize: '20px' }} >BOLETOS EN LA PARTE DE ABAJO</p>
-      <div className="arrow down-arrow">&#8595;</div>
+      
+      
+      <p className="col" style={{ fontSize: '20px' }} >
+        <div className="arrow down-arrow">&#8595;</div>
+        BOLETOS EN LA PARTE DE ABAJO 
+        <div className="arrow down-arrow">&#8595;</div>
+      </p>
+     
       </div>
     </div>
   );
