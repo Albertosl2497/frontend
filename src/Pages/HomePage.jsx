@@ -37,7 +37,6 @@ function StepsToFollow() {
         - Nombre y apellidos. <br />
         - Estado. <br />
         - Ciudad. <br />
-        - Correo Electrónico (Si no cuentas con uno, deja el que te aparece).
       </p>
       <p className="bold" style={{ fontSize: '18px' }}>
         PASO 2: Selecciona tus Boletos.               </p>
