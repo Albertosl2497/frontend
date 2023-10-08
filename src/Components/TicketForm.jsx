@@ -135,6 +135,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           
           METODOS DE PAGO:
           https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
+
+          Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
+          Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
               
           Gracias.`
             );
@@ -358,6 +361,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           <button className="select-ticket" type="submit">
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
           </button>
+          <label className="bold-label">Da click en los numeros seleccionados para elimarlo:</label>
         </div>
       </form>
 
