@@ -10,12 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 function sendWhatsAppMessage(phoneNumber, message) {
   const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-  const a = document.createElement("a");
-  a.
-  a
-setAttribute("href", url);
-  a.setAttribute("target", "_blank");
-  a.click();
+  
+ 
+window.open(url, "_blank");
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
