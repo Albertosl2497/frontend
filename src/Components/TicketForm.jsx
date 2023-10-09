@@ -27,13 +27,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
-  
+  const [email, setEmail] = useState("randomEmail"); // Declaración del estado para el correo electrónico
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
     setEmail(randomEmail);
-  }, [randomNumber]);
-  
+  }, []);
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
@@ -77,19 +75,16 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     }
 
     if (Object.keys(errors).length > 0) {
-    setErrors(errors);
-  } else {
-    // Genera un nuevo correo electrónico aleatorio
-    const randomEmail = `rifasefectivocampotreinta${Math.floor(Math.random() * 10000)}@gmail.com`;
-
-    // submit the form data con el nuevo correo electrónico
-    console.log({
-      phoneNumber,
-      fullName,
-      state,
-      city,
-      email: randomEmail, // Utiliza el nuevo correo electrónico aleatorio
-    });
+      setErrors(errors);
+    } else {
+      // submit the form data
+      console.log({
+        phoneNumber,
+        fullName,
+        state,
+        city,
+        email,
+      });
 
       let mobNumber =
         phoneNumberCountryCode === "MX"
@@ -153,7 +148,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         setFullName("");
         setState("");
         setCity("");
-        setEmail(""); // Deja el campo de correo electrónico en blanco
+        setEmail("rifasefectivocampotreinta@gmail.com");
         setSelectedTickets([]);
 
         // clear the errors
@@ -342,9 +337,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Full email field */}
+          
           <div className="form-row">
             <input
-              type="text"
+              type="hidden"
               name="email"
               placeholder="Emailisto"
               value={email}
@@ -365,7 +361,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           <button className="select-ticket" type="submit">
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
           </button>
-          <label className="bold-label">Da click en los numeros seleccionados para eliminarlo:</label>
+          <label className="bold-label">Da click en los numeros seleccionados para elimarlo:</label>
         </div>
       </form>
 
@@ -394,6 +390,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           onChange={(event) => setSearchQuery(event.target.value)}
           style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
         />
+        {/* <button className="search-button" onClick={handleSearch}>
+          <BsSearch />
+          Buscar boleto
+        </button> */}
       </div>
 
       {/* Show tickets */}
@@ -433,23 +433,24 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           <ReactPaginate
-            breakLabel="..."
-            onPageChange={handlePageClick}
-            pageCount={pageCount}
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-            containerClassName="pagination"
-            activeClassName="active"
-            previousLabel={pageCount > 1 ? "< previous" : null}
-            nextLabel={pageCount > 1 ? "next >" : null}
-            renderOnZeroPageCount={null}
-          />
+  breakLabel="..."
+  onPageChange={handlePageClick}
+  pageCount={pageCount}
+  pageClassName="page-item"
+  pageLinkClassName="page-link"
+  previousClassName="page-item"
+  previousLinkClassName="page-link"
+  nextClassName="page-item"
+  nextLinkClassName="page-link"
+  breakClassName="page-item"
+  breakLinkClassName="page-link"
+  containerClassName="pagination"
+  activeClassName="active"
+  previousLabel={pageCount > 1 ? "< previous" : null}
+  nextLabel={pageCount > 1 ? "next >" : null}
+  renderOnZeroPageCount={null}
+/>
+
         </>
       )}
     </>
