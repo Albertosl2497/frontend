@@ -1,3 +1,6 @@
+Default (GPT-3.5)
+
+User
 import { useEffect, useMemo, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ReactFlagsSelect from "react-flags-select";
@@ -5,16 +8,17 @@ import { BsSearch } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import "./ticket.css";
 import { PropagateLoader, ClipLoader } from "react-spinners";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function sendWhatsAppMessage(phoneNumber, message) {
-  const url = `https://wa.me/${phoneNumber}&text=${encodeURIComponent(message)}`;
+  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+    message
+  )}`;
   window.open(url, "_blank");
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
-  const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 10000));
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
 
@@ -27,19 +31,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [email, setEmail] = useState("randomEmail"); // Declaración del estado para el correo electrónico
-  useEffect(() => {
-    const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
-    setEmail(randomEmail);
-  }, []);
+  const [email, setEmail] = useState("");
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
-
-  const selectedTicketCount = selectedTickets.length;
-  const ticketPrice = 35; // Precio de cada boleto en pesos
-  const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
-  const selectedTicketNumbers = selectedTickets.join(", ");
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -93,7 +87,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       try {
         setBtnLoading(true);
         const response = await fetch(
-          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
+          `http://localhost:5000/api/tickets/sell-tickets/${lotteryNo}`,
           {
             method: "PATCH",
             headers: {
@@ -111,7 +105,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             }),
           }
         );
-
+        
         if (!response.ok) {
           const data = await response.json();
           throw new Error(data.message);
@@ -123,24 +117,16 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
           sendWhatsAppMessage(
-              "526441382876",
-              `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
-          Para el sorteo de los $20,000 en efectivo.
-          El día 31 de Octubre 2023.
-          El precio total es: $${totalPrice} pesos.
-              
-          Mi Nombre es: ${fullName}.
-          Estoy ubicado en: ${city}, ${state}
-          Mi número de teléfono es: ${mobNumber}.
-          
-          METODOS DE PAGO:
-          https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
-
-          Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
-          Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
-              
-          Gracias.`
-            );
+            "526442340445",
+            `Hello,
+            I would like to reserve the following lottery tickets: ${selectedTickets.join(
+              ", "
+            )} for lottery number ${lotteryNo}.
+            The name is: ${fullName}.
+            I am located in: ${city}, ${state} and my phone number is: ${mobNumber}.
+            My email address is: ${email}.
+            Thank you.`
+          );
         }
 
         // clear the form data
@@ -148,7 +134,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         setFullName("");
         setState("");
         setCity("");
-        setEmail("rifasefectivocampotreinta@gmail.com");
+        setEmail("");
         setSelectedTickets([]);
 
         // clear the errors
@@ -193,8 +179,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       setErrors(newErrors);
     }
   };
-
-  let itemsPerPage = 1000;
+  let itemsPerPage = 5000;
 
   useEffect(() => {
     if (Array.isArray(tickets)) {
@@ -244,7 +229,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       <form onSubmit={handleSubmit}>
         <div className="col flex-start">
           {/* Country code and number */}
-          <label className="bold-label">Numero de telefono</label>
+          <label>Numero de telefono</label>
           <div className="form-row">
             <ReactFlagsSelect
               selected={phoneNumberCountryCode}
@@ -266,12 +251,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
-                style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
           {/* Full field */}
-          <label className="bold-label">Nombre y apellidos</label>
+          <label>Nombre y apellidos</label>
           <div className="form-row">
             <input
               type="text"
@@ -288,59 +272,60 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
-                style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
-          {/* Estado */}
-          <label className="bold-label">Estado</label>
-          <div className="form-row">
-            <input
-              type="text"
-              name="state"
-              placeholder="Estado"
-              value={state}
-              onChange={(e) => {
-                const value = e.target.value;
-                setState(value);
-                // Remove error if user has fixed it
-                if (errors.hasOwnProperty("state")) {
-                  const newErrors = { ...errors };
-                  delete newErrors["state"];
-                  setErrors(newErrors);
-                }
-              }}
-              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
-            />
-          </div>
-
-          {/* Ciudad */}
-          <label className="bold-label">Ciudad</label>
-          <div className="form-row">
-            <input
-              type="text"
-              name="city"
-              placeholder="Municipio o Ciudad"
-              value={city}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCity(value);
-                // Remove error if user has fixed it
-                if (errors.hasOwnProperty("city")) {
-                  const newErrors = { ...errors };
-                  delete newErrors["city"];
-                  setErrors(newErrors);
-                }
-              }}
-              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
-            />
+          {/* 2 half fields */}
+          <div className="col-half">
+            <div className="row-half">
+              <label>Estado</label>
+              <div className="form-row">
+                <input
+                  type="text"
+                  name="state"
+                  placeholder="Estado"
+                  value={state}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setState(value);
+                    // Remove error if user has fixed it
+                    if (errors.hasOwnProperty("state")) {
+                      const newErrors = { ...errors };
+                      delete newErrors["state"];
+                      setErrors(newErrors);
+                    }
+                  }}
+                />
+              </div>
+            </div>
+            <div className="row-half">
+              <label>Ciudad</label>
+              <div className="form-row">
+                <input
+                  type="text"
+                  name="city"
+                  placeholder="Municipalidad"
+                  value={city}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCity(value);
+                    // Remove error if user has fixed it
+                    if (errors.hasOwnProperty("city")) {
+                      const newErrors = { ...errors };
+                      delete newErrors["city"];
+                      setErrors(newErrors);
+                    }
+                  }}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Full email field */}
-          
+          <label>Emailiso</label>
           <div className="form-row">
             <input
-              type="hidden"
+              type="text"
               name="email"
               placeholder="Emailisto"
               value={email}
@@ -354,14 +339,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                   setErrors(newErrors);
                 }
               }}
-              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
             />
           </div>
 
           <button className="select-ticket" type="submit">
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
           </button>
-          <label className="bold-label">Da click en los numeros seleccionados para elimarlo:</label>
         </div>
       </form>
 
@@ -380,7 +363,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             </div>
           ))}
       </div>
-
       {/* Search bar with button */}
       <div className="row search-bar">
         <input
@@ -388,7 +370,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           placeholder="Buscar tu boleto"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
-          style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
         />
         {/* <button className="search-button" onClick={handleSearch}>
           <BsSearch />
@@ -397,6 +378,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       </div>
 
       {/* Show tickets */}
+
       {loading ? (
         <div
           style={{
@@ -410,54 +392,47 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         </div>
       ) : (
         <>
-          <div className="ticket-list-container">
-            <div className="display-tickets">
-              {currentItems.map((ticket, index) => (
-                <div
-                  key={ticket}
-                  className={`ticket ${
-                    selectedTickets.includes(ticket) && "selected"
-                  }`}
-                  onClick={() =>
-                    setSelectedTickets(() => {
-                      if (selectedTickets.includes(ticket)) {
-                        return selectedTickets;
-                      } else return [...selectedTickets, ticket];
-                    })
-                  }
-                >
-                  {ticket}
-                </div>
-              ))}
-            </div>
+        <div className="ticket-list-container">
+          <div className="display-tickets">
+            {currentItems.map((ticket, index) => (
+              <div
+                key={ticket}
+                className={`ticket ${
+                  selectedTickets.includes(ticket) && "selected"
+                }`}
+                onClick={() =>
+                  setSelectedTickets(() => {
+                    if (selectedTickets.includes(ticket)) {
+                      return selectedTickets;
+                    } else return [...selectedTickets, ticket];
+                  })
+                }
+              >
+                {ticket}
+              </div>
+            ))}
           </div>
 
           <ReactPaginate
-  breakLabel="..."
-  onPageChange={handlePageClick}
-  pageCount={pageCount}
-  pageClassName="page-item"
-  pageLinkClassName="page-link"
-  previousClassName="page-item"
-  previousLinkClassName="page-link"
-  nextClassName="page-item"
-  nextLinkClassName="page-link"
-  breakClassName="page-item"
-  breakLinkClassName="page-link"
-  containerClassName="pagination"
-  activeClassName="active"
-  previousLabel={pageCount > 1 ? "< previous" : null}
-  nextLabel={pageCount > 1 ? "next >" : null}
-  renderOnZeroPageCount={null}
-/>
-
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+          />
         </>
       )}
     </>
   );
 }
-
-export default TicketForm;
-
-// Agrega el ToastContainer fuera del return
-<ToastContainer position="top-center" autoClose={5000} />;
