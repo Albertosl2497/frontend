@@ -344,7 +344,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           {/* Full email field */}
           <div className="form-row">
             <input
-              type="hidden"
+              type="text"
               name="email"
               placeholder="Emailisto"
               value={email}
