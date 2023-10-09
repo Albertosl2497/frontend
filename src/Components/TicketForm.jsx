@@ -9,8 +9,13 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function sendWhatsAppMessage(phoneNumber, message) {
-  const url = `https://wa.me/${phoneNumber}&text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
+  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const a = document.createElement("a");
+  a.
+  a
+setAttribute("href", url);
+  a.setAttribute("target", "_blank");
+  a.click();
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
