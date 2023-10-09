@@ -77,16 +77,19 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     }
 
     if (Object.keys(errors).length > 0) {
-      setErrors(errors);
-    } else {
-      // submit the form data
-      console.log({
-        phoneNumber,
-        fullName,
-        state,
-        city,
-        email,
-      });
+    setErrors(errors);
+  } else {
+    // Genera un nuevo correo electrónico aleatorio
+    const randomEmail = `rifasefectivocampotreinta${Math.floor(Math.random() * 10000)}@gmail.com`;
+
+    // submit the form data con el nuevo correo electrónico
+    console.log({
+      phoneNumber,
+      fullName,
+      state,
+      city,
+      email: randomEmail, // Utiliza el nuevo correo electrónico aleatorio
+    });
 
       let mobNumber =
         phoneNumberCountryCode === "MX"
