@@ -27,11 +27,13 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [email, setEmail] = useState("randomEmail"); // Declaración del estado para el correo electrónico
+  const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
+  
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
     setEmail(randomEmail);
-  }, []);
+  }, [randomNumber]);
+  
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
@@ -148,7 +150,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         setFullName("");
         setState("");
         setCity("");
-        setEmail("rifasefectivocampotreinta@gmail.com");
+        setEmail(""); // Deja el campo de correo electrónico en blanco
         setSelectedTickets([]);
 
         // clear the errors
@@ -337,7 +339,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           {/* Full email field */}
-          
           <div className="form-row">
             <input
               type="hidden"
@@ -361,7 +362,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           <button className="select-ticket" type="submit">
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
           </button>
-          <label className="bold-label">Da click en los numeros seleccionados para elimarlo:</label>
+          <label className="bold-label">Da click en los numeros seleccionados para eliminarlo:</label>
         </div>
       </form>
 
@@ -390,10 +391,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           onChange={(event) => setSearchQuery(event.target.value)}
           style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
         />
-        {/* <button className="search-button" onClick={handleSearch}>
-          <BsSearch />
-          Buscar boleto
-        </button> */}
       </div>
 
       {/* Show tickets */}
@@ -433,24 +430,23 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           </div>
 
           <ReactPaginate
-  breakLabel="..."
-  onPageChange={handlePageClick}
-  pageCount={pageCount}
-  pageClassName="page-item"
-  pageLinkClassName="page-link"
-  previousClassName="page-item"
-  previousLinkClassName="page-link"
-  nextClassName="page-item"
-  nextLinkClassName="page-link"
-  breakClassName="page-item"
-  breakLinkClassName="page-link"
-  containerClassName="pagination"
-  activeClassName="active"
-  previousLabel={pageCount > 1 ? "< previous" : null}
-  nextLabel={pageCount > 1 ? "next >" : null}
-  renderOnZeroPageCount={null}
-/>
-
+            breakLabel="..."
+            onPageChange={handlePageClick}
+            pageCount={pageCount}
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+            previousLabel={pageCount > 1 ? "< previous" : null}
+            nextLabel={pageCount > 1 ? "next >" : null}
+            renderOnZeroPageCount={null}
+          />
         </>
       )}
     </>
