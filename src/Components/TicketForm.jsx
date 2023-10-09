@@ -14,7 +14,7 @@ function sendWhatsAppMessage(phoneNumber, message) {
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
-  const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 10000));
+  const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000));
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
 
@@ -340,7 +340,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           
           <div className="form-row">
             <input
-              type="hidden"
+              type="text"
               name="email"
               placeholder="Emailisto"
               value={email}
