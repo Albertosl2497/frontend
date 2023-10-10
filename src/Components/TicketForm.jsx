@@ -152,7 +152,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         setFullName("");
         setState("");
         setCity("");
-        setEmail(""); // Deja el campo de correo electrónico en blanco
+        setEmail("rifasefectivocampotreinta${randomNumber}@gmail.com"); // Deja el campo de correo electrónico en blanco
         setSelectedTickets([]);
 
         // clear the errors
