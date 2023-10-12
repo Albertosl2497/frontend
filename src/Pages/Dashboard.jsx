@@ -4,13 +4,12 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "../Components/Sidebar";
 import TicketTable from "../Components/TicketsTable";
-import { Column } from "ag-grid-community";
 import UsersTable from "../Components/UsersTable";
 import Modal from "../Components/Modal";
 
 function Dashboard({ handleLogout, lotteryNo }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [newTicks, setTickets] = useState([]);
+  const [tickets, setTickets] = useState([]);
   const [stats, setStats] = useState({});
   const [totalTickets, setTotalTickets] = useState(0);
   const [selectedTickets, setSelectedTickets] = useState(1);
@@ -27,8 +26,12 @@ function Dashboard({ handleLogout, lotteryNo }) {
       .then((data) => {
         setStats(data);
 
-        setTickets(data.tickets);
-        console.log(newTicks);
+        // Cambiamos la estructura de los boletos para mantener "disponible" y "no pagado"
+        const newTickets = data.tickets.map((ticket) => ({
+          status: "disponible",
+          paymentStatus: "no pagado",
+        }));
+        setTickets(newTickets);
       });
   }, []);
 
@@ -46,12 +49,11 @@ function Dashboard({ handleLogout, lotteryNo }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        totalTickets: totalTickets, // Replace with the total number of tickets you want to create
+        totalTickets: totalTickets,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.message); // Successfully created lottery 1
         setLoading(false);
         toast.success("Nuevo sorteo creado");
         window.location.reload();
@@ -65,6 +67,14 @@ function Dashboard({ handleLogout, lotteryNo }) {
 
   function cancelLottery() {
     setShowModal(false);
+  }
+
+  // Función para cambiar el estado de un boleto
+  function changeTicketStatus(index, newStatus, newPaymentStatus) {
+    const updatedTickets = [...tickets];
+    updatedTickets[index].status = newStatus;
+    updatedTickets[index].paymentStatus = newPaymentStatus;
+    setTickets(updatedTickets);
   }
 
   return (
@@ -126,10 +136,11 @@ function Dashboard({ handleLogout, lotteryNo }) {
         {selectedTickets === 1 && (
           <div className="row" style={{ height: "100%" }}>
             <TicketTable
-              tickets={newTicks}
+              tickets={tickets}
               lotteryNo={lotteryNo}
               setStats={setStats}
               stats={stats}
+              changeTicketStatus={changeTicketStatus}
             />
           </div>
         )}
