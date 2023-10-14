@@ -22,8 +22,8 @@ function Sidebar({
           <div className="row">
             <img src={Logo} alt="Logo" />
             <div className="col">
-              <h1>SORTEOS </h1>
-              <h1>SONORENSE</h1>
+              <h1>RIFAS EFECTIVO </h1>
+              <h1>CAMPO 30</h1>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@ function Sidebar({
           </li>
           <li className="nav-item" onClick={() => setSelectedTickets(2)}>
             <div to="/users" className="nav-link">
-              <span>Users Management</span>
+              <span>Gestion de Usuarios</span>
             </div>
           </li>
         </ul>
