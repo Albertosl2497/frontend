@@ -16,7 +16,7 @@ window.open(url, "_blank");
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
-  const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 10000));
+  const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 100000.1416));
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
 
