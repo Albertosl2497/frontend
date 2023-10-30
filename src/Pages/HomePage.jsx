@@ -47,7 +47,7 @@ function StepsToFollow() {
       <p  style={{ fontSize: '16px' }}>
         Si tu pago es por transferencia: <br />
 Coloca tu nombre en el concepto de la transferencia. 
-Toma captura del comprobante y envialo a nuestro whatsapp: 6442382876 . <br />
+Toma captura del comprobante y envialo a nuestro whatsapp: 6441382876 . <br />
 Si tu pago es por deposito en oxxo: <br />
 Escribe tu nombre en el tiquet, tomale una foto clara y envialo a nuestro whatsapp:  6442382876 . <br />
 Liquida tus boletos en tiempo y forma para que puedas participar en nuestro sorteo de los $20,000 Mil en Efectivo.
