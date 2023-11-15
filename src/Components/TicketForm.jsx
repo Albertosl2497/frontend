@@ -130,7 +130,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
           Para el sorteo de los $5000 en efectivo.
-          El día Martes 19 de Noviembre 2023.
+          El día Domingo 19 de Noviembre 2023.
           El precio total es: $${totalPrice} pesos.
               
           Mi Nombre es: ${fullName}.
