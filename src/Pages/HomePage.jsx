@@ -7,10 +7,10 @@ import "./styles.css";
 function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
-      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 18</p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 19 DE NOVIEMBRE</p>
-      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $5000 PESOS</p>
-      <p style={{ fontSize: '20px' }}>Costo por Boleto $80.00 MXN</p>
+      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 19</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 21 DE NOVIEMBRE</p>
+      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $2000 PESOS</p>
+      <p style={{ fontSize: '20px' }}>Costo por Boleto $30.00 MXN</p>
       <br />
       
       
@@ -50,7 +50,7 @@ Coloca tu nombre en el concepto de la transferencia.
 Toma captura del comprobante y envialo a nuestro whatsapp: 6441382876 . <br />
 Si tu pago es por deposito en oxxo: <br />
 Escribe tu nombre en el tiquet, tomale una foto clara y envialo a nuestro whatsapp:  6442382876 . <br />
-Liquida tus boletos en tiempo y forma para que puedas participar en nuestro sorteo de los $5000 Mil en Efectivo.
+Liquida tus boletos en tiempo y forma para que puedas participar en nuestro sorteo de los $2000 Mil en Efectivo.
       </p>
       
     </div>
