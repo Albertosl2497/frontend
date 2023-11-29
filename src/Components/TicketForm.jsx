@@ -127,7 +127,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
           sendWhatsAppMessage(
-             mobNumber,
+              "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
           Para el sorteo de los $5000 en efectivo.
           El día Domingo 03 de Diciembre 2023.
