@@ -40,7 +40,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [errors, setErrors] = useState({});
 
   const selectedTicketCount = selectedTickets.length;
-  const ticketPrice = 50; // Precio de cada boleto en pesos
+  const ticketPrice = 80; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -127,10 +127,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
           sendWhatsAppMessage(
-              "526441382876",
+              "${mobNumber}",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
-          Para el sorteo de los $3500 en efectivo.
-          El día Martes 28 de Noviembre 2023.
+          Para el sorteo de los $5000 en efectivo.
+          El día Domingo 03 de Diciembre 2023.
           El precio total es: $${totalPrice} pesos.
               
           Mi Nombre es: ${fullName}.
