@@ -63,6 +63,10 @@ const generatePDF = () => {
   
   // Puedes agregar más información según sea necesario
 
+  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
+  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
+  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
+
   // Obtener los datos del PDF en formato Blob
   const pdfBlob = pdf.output("blob");
 
@@ -70,7 +74,34 @@ const generatePDF = () => {
   const pdfUrl = URL.createObjectURL(pdfBlob);
 
   // Abrir una nueva pestaña con el PDF
-  window.open(pdfUrl, "_blank");
+  const pdfWindow = window.open(pdfUrl, "_blank");
+
+  // Comprobar si se abrió correctamente la nueva pestaña del PDF
+  if (pdfWindow) {
+    // Redirigir a la app de WhatsApp después de abrir la pestaña del PDF
+    sendWhatsAppMessage(
+      "526441382876",
+      `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
+      Para el sorteo de los $20,000 en efectivo.
+      El día Domingo 31 de Diciembre 2023.
+      El precio total es: $${totalPrice} pesos.
+          
+      Mi Nombre es: ${fullName}.
+      Estoy ubicado en: ${city}, ${state}
+      Mi número de teléfono es: ${mobNumber}.
+      
+      METODOS DE PAGO:
+      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
+
+      Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
+      Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
+          
+      Gracias.`
+    );
+  } else {
+    // Manejar el caso en el que no se pudo abrir la pestaña del PDF
+    console.error("No se pudo abrir la pestaña del PDF");
+  }
 };
 
 
@@ -153,9 +184,11 @@ const generatePDF = () => {
           const newTickets = tickets.filter(
             (ticket) => !selectedTickets.includes(ticket)
           );
+          
           setTickets(newTickets);
 
           toast.success("Tickets Vendidos Exitosamente!");
+          /*
           sendWhatsAppMessage(
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
@@ -174,7 +207,7 @@ const generatePDF = () => {
           Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
               
           Gracias.`
-            );
+            ); */
         }
         
         generatePDF();
