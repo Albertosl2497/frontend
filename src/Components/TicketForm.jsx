@@ -1,4 +1,3 @@
-import html2canvas from "html2canvas";
 import { useEffect, useMemo, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ReactFlagsSelect from "react-flags-select";
@@ -111,17 +110,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           : `+1 ${phoneNumber}`;
       try {
         setBtnLoading(true);
-        // Capture screenshot of the form
-      const formScreenshot = await html2canvas(document.getElementById("ticket-form"));
-      
-      // Convert the screenshot to a data URL
-      const formScreenshotDataUrl = formScreenshot.toDataURL("image/png");
-
-      // Download the form screenshot
-      const formScreenshotLink = document.createElement("a");
-      formScreenshotLink.href = formScreenshotDataUrl;
-      formScreenshotLink.download = "form-screenshot.png";
-      formScreenshotLink.click();
         
         const response = await fetch(
           `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
