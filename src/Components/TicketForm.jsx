@@ -45,48 +45,19 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
+  /*
   const generatePDF = () => {
     const pdf = new jsPDF();
-    pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
-  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
-  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
+    pdf.text(`Nombre: ${fullName}`, 20, 20);
+    pdf.text(`Teléfono: ${phoneNumber}`, 20, 30);
+    pdf.text(`Estado: ${state}`, 20, 40);
+    pdf.text(`Ciudad: ${city}`, 20, 50);
+    pdf.text(`Email: ${email}`, 20, 60);
+    // Puedes agregar más información según sea necesario
 
-  // Obtener los datos del PDF en formato Blob
-  const pdfBlob = pdf.output("blob");
-
-  // Crear una URL para el Blob
-  const pdfUrl = URL.createObjectURL(pdfBlob);
-
-  // Abrir una nueva pestaña con el PDF
-  const pdfWindow = window.open(pdfUrl, "_blank");
-
-  // Comprobar si se abrió correctamente la nueva pestaña del PDF
-  if (pdfWindow) {
-    // Redirigir a la app de WhatsApp después de abrir la pestaña del PDF
-    sendWhatsAppMessage(
-      "526441382876",
-      `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
-      Para el sorteo de los $20,000 en efectivo.
-      El día Domingo 31 de Diciembre 2023.
-      El precio total es: $${totalPrice} pesos.
-          
-      Mi Nombre es: ${fullName}.
-      Estoy ubicado en: ${city}, ${state}
-      Mi número de teléfono es: ${mobNumber}.
-      
-      METODOS DE PAGO:
-      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
-
-      Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
-      Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
-          
-      Gracias.`
-    );
-  } else {
-    // Manejar el caso en el que no se pudo abrir la pestaña del PDF
-    console.error("No se pudo abrir la pestaña del PDF");
-  }
-};
+    // Guardar el PDF
+    pdf.save("formulario.pdf");
+  }; */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -170,12 +141,30 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           setTickets(newTickets);
 
           toast.success("Tickets Vendidos Exitosamente!");
+          sendWhatsAppMessage(
+              "526441382876",
+              `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
+          Para el sorteo de los $20,000 en efectivo.
+          El día Domingo 31 de Diciembre 2023.
+          El precio total es: $${totalPrice} pesos.
+              
+          Mi Nombre es: ${fullName}.
+          Estoy ubicado en: ${city}, ${state}
+          Mi número de teléfono es: ${mobNumber}.
           
-          
+          METODOS DE PAGO:
+          https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
+
+          Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
+          Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
+              
+          Gracias.`
+            );
         }
-        
+
+        /*
         generatePDF();
-        
+        */
 
         // clear the form data
         setPhoneNumber("");
