@@ -7,6 +7,7 @@ import "./ticket.css";
 import { PropagateLoader, ClipLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import jsPDF from "jspdf";
 
 function sendWhatsAppMessage(phoneNumber, message) {
   const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -44,6 +45,19 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
+
+  const generatePDF = () => {
+    const pdf = new jsPDF();
+    pdf.text(`Nombre: ${fullName}`, 20, 20);
+    pdf.text(`Teléfono: ${phoneNumber}`, 20, 30);
+    pdf.text(`Estado: ${state}`, 20, 40);
+    pdf.text(`Ciudad: ${city}`, 20, 50);
+    pdf.text(`Email: ${email}`, 20, 60);
+    // Puedes agregar más información según sea necesario
+
+    // Guardar el PDF
+    pdf.save("formulario.pdf");
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -147,7 +161,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             );
         }
 
-        
+        generatePDF();
 
         // clear the form data
         setPhoneNumber("");
