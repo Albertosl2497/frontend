@@ -45,7 +45,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-
+/*
   const generatePDF = () => {
     const pdf = new jsPDF();
     pdf.text(`Nombre: ${fullName}`, 20, 20);
@@ -57,7 +57,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
     // Guardar el PDF
     pdf.save("formulario.pdf");
-  };
+  }; */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -160,8 +160,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           Gracias.`
             );
         }
-
+        /*
         generatePDF();
+        */
 
         // clear the form data
         setPhoneNumber("");
