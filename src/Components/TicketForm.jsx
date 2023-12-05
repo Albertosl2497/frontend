@@ -45,19 +45,25 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-/*
-  const generatePDF = () => {
-    const pdf = new jsPDF();
-    pdf.text(`Nombre: ${fullName}`, 20, 20);
-    pdf.text(`Teléfono: ${phoneNumber}`, 20, 30);
-    pdf.text(`Estado: ${state}`, 20, 40);
-    pdf.text(`Ciudad: ${city}`, 20, 50);
-    pdf.text(`Email: ${email}`, 20, 60);
-    // Puedes agregar más información según sea necesario
+const generatePDF = () => {
+  const pdf = new jsPDF();
+  pdf.text(`Nombre: ${fullName}`, 20, 20);
+  pdf.text(`Teléfono: ${phoneNumber}`, 20, 30);
+  pdf.text(`Estado: ${state}`, 20, 40);
+  pdf.text(`Ciudad: ${city}`, 20, 50);
+  pdf.text(`Email: ${email}`, 20, 60);
+  // Puedes agregar más información según sea necesario
 
-    // Guardar el PDF
-    pdf.save("formulario.pdf");
-  }; */
+  // Obtener los datos del PDF en formato Blob
+  const pdfBlob = pdf.output("blob");
+
+  // Crear una URL para el Blob
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+
+  // Abrir una nueva pestaña con el PDF
+  window.open(pdfUrl, "_blank");
+};
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
