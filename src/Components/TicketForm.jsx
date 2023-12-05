@@ -1,3 +1,4 @@
+import jsPDF from 'jspdf';
 import { useEffect, useMemo, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ReactFlagsSelect from "react-flags-select";
@@ -146,6 +147,22 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           Gracias.`
             );
         }
+
+        const generatePDF = () => {
+  const pdf = new jsPDF();
+  pdf.text("Información del Formulario", 20, 10);
+  pdf.text(`Nombre: ${fullName}`, 20, 20);
+  pdf.text(`Teléfono: ${phoneNumber}`, 20, 30);
+  pdf.text(`Estado: ${state}`, 20, 40);
+  pdf.text(`Ciudad: ${city}`, 20, 50);
+  pdf.text(`Email: ${email}`, 20, 60);
+  // Puedes continuar añadiendo más información según sea necesario
+
+  // Guardar el PDF
+  pdf.save('formulario_tickets.pdf');
+};
+
+        generatePDF();
 
         // clear the form data
         setPhoneNumber("");
