@@ -45,25 +45,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-const generatePDF = () => {
-  const pdf = new jsPDF();
-   pdf.text(`BOLETOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 20);
-  pdf.text(`DOMINGO 31 DE OCTUBRE`, 20, 30);
-  
-  // Detalles del usuario
-  pdf.text(`Nombre: ${fullName}`, 20, 50);
-  pdf.text(`Mi Teléfono: ${phoneNumber}`, 20, 60);
-  pdf.text(`Estado: ${state}`, 20, 70);
-  pdf.text(`Ciudad: ${city}`, 20, 80);
-
-  // Detalles de la compra
-  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
-  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
-  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
-  
-  // Puedes agregar más información según sea necesario
-
-  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
+  const generatePDF = () => {
+    const pdf = new jsPDF();
+    pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
   pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
   pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
 
@@ -103,7 +87,6 @@ const generatePDF = () => {
     console.error("No se pudo abrir la pestaña del PDF");
   }
 };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -184,30 +167,11 @@ const generatePDF = () => {
           const newTickets = tickets.filter(
             (ticket) => !selectedTickets.includes(ticket)
           );
-          
           setTickets(newTickets);
 
           toast.success("Tickets Vendidos Exitosamente!");
-          /*
-          sendWhatsAppMessage(
-              "526441382876",
-              `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
-          Para el sorteo de los $20,000 en efectivo.
-          El día Domingo 31 de Diciembre 2023.
-          El precio total es: $${totalPrice} pesos.
-              
-          Mi Nombre es: ${fullName}.
-          Estoy ubicado en: ${city}, ${state}
-          Mi número de teléfono es: ${mobNumber}.
           
-          METODOS DE PAGO:
-          https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
-
-          Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
-          Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
-              
-          Gracias.`
-            ); */
+          
         }
         
         generatePDF();
