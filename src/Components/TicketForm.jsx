@@ -47,15 +47,19 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
 const generatePDF = () => {
   const pdf = new jsPDF();
-  pdf.text(`BOLETOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 80);
-  pdf.text(`DOMINGO 31 DE OCTUBRE`, 20, 50);
-  pdf.text(`Nombre: ${fullName}`, 20, 20);
-  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 30);
-  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 300);
-  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 40);
-  pdf.text(`Mi Teléfono: ${phoneNumber}`, 20, 30);
-  pdf.text(`Estado: ${state}`, 20, 40);
-  pdf.text(`Ciudad: ${city}`, 20, 50);
+   pdf.text(`BOLETOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 20);
+  pdf.text(`DOMINGO 31 DE OCTUBRE`, 20, 30);
+  
+  // Detalles del usuario
+  pdf.text(`Nombre: ${fullName}`, 20, 50);
+  pdf.text(`Mi Teléfono: ${phoneNumber}`, 20, 60);
+  pdf.text(`Estado: ${state}`, 20, 70);
+  pdf.text(`Ciudad: ${city}`, 20, 80);
+
+  // Detalles de la compra
+  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
+  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
+  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
   
   // Puedes agregar más información según sea necesario
 
