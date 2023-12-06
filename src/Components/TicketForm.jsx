@@ -45,7 +45,40 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  
+  const generateHTML = () => {
+  // Crea el contenido HTML como una cadena
+  const htmlContent = `
+    <html>
+      <head>
+        <title>Formulario</title>
+        <!-- Agrega estilos o encabezados según sea necesario -->
+      </head>
+      <body>
+        <h1>Formulario de Confirmación</h1>
+        <p>Nombre: ${fullName}</p>
+        <p>Teléfono: ${phoneNumber}</p>
+        <p>Estado: ${state}</p>
+        <p>Ciudad: ${city}</p>
+        <p>Email: ${email}</p>
+        <!-- Agrega más contenido HTML según sea necesario -->
+      </body>
+    </html>
+  `;
+
+  // Convierte el contenido HTML en Blob
+  const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+
+  // Crea una URL para el Blob
+  const htmlUrl = URL.createObjectURL(htmlBlob);
+
+  // Abre la URL del Blob en la misma pestaña
+  window.location.href = htmlUrl;
+
+  // Revoca la URL del Blob después de abrir el HTML
+  URL.revokeObjectURL(htmlUrl);
+};
+
+  /*
   const generatePDF = () => {
     const pdf = new jsPDF();
     pdf.text(`BOLETOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 20);
@@ -73,7 +106,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   // Revoca la URL del Blob después de abrir el PDF
   URL.revokeObjectURL(pdfUrl);
-};
+}; */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -158,7 +191,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
 
-           generatePDF();
+           generateHTML();
           
           sendWhatsAppMessage(
               "526441382876",
