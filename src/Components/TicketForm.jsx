@@ -45,19 +45,28 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  /*
+  
   const generatePDF = () => {
     const pdf = new jsPDF();
-    pdf.text(`Nombre: ${fullName}`, 20, 20);
-    pdf.text(`Teléfono: ${phoneNumber}`, 20, 30);
-    pdf.text(`Estado: ${state}`, 20, 40);
-    pdf.text(`Ciudad: ${city}`, 20, 50);
-    pdf.text(`Email: ${email}`, 20, 60);
-    // Puedes agregar más información según sea necesario
+    pdf.text(`BOLETOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 20);
+  pdf.text(`DOMINGO 31 DE OCTUBRE`, 20, 30);
 
-    // Guardar el PDF
-    pdf.save("formulario.pdf");
-  }; */
+  // Detalles del usuario
+  pdf.text(`Nombre: ${fullName}`, 20, 50);
+  pdf.text(`Mi Teléfono: ${phoneNumber}`, 20, 60);
+  pdf.text(`Estado: ${state}`, 20, 70);
+  pdf.text(`Ciudad: ${city}`, 20, 80);
+
+  // Detalles de la compra
+  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
+  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
+  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
+ // Obtén el contenido del PDF como Base64
+  const pdfContent = pdf.output("datauristring");
+
+  // Abre una nueva pestaña con el contenido del PDF
+  window.open(pdfContent, "_blank");
+  }; 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -141,6 +150,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           setTickets(newTickets);
 
           toast.success("Tickets Vendidos Exitosamente!");
+
+           generatePDF();
+          
           sendWhatsAppMessage(
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
@@ -162,9 +174,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             );
         }
 
-        /*
-        generatePDF();
-        */
+        
+        
+        
 
         // clear the form data
         setPhoneNumber("");
