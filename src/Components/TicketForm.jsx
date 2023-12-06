@@ -61,11 +61,19 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
   pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
   pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
- // Obtén el contenido del PDF como Base64
-  const pdfContent = pdf.output("datauristring");
+ 
 
-  // Abre una nueva pestaña con el contenido del PDF
-  window.open(pdfContent, "_blank");
+     // Obtén el blob del PDF
+  const pdfBlob = pdf.output("blob");
+
+  // Crea un objeto URL a partir del blob
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+
+  // Abre una nueva pestaña con el objeto URL del PDF
+  window.open(pdfUrl, "_blank");
+
+  // Libera el objeto URL cuando ya no sea necesario
+  URL.revokeObjectURL(pdfUrl);
   }; 
 
   const handleSubmit = async (event) => {
