@@ -62,22 +62,25 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
   pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
  
-const pdfBlob = pdf.output("blob");
+// Obtén el contenido del PDF como Blob
+  const pdfBlob = pdf.output("blob");
 
-  // Crea una URL de objeto a partir del blob
+  // Crea una URL para el Blob
   const pdfUrl = URL.createObjectURL(pdfBlob);
 
-  // Crea un enlace oculto en el documento
-  const downloadLink = document.createElement("a");
-  downloadLink.href = pdfUrl;
-  downloadLink.download = "formulario.pdf"; // Puedes ajustar el nombre del archivo según tus necesidades
+  // Crea un elemento iframe para mostrar el PDF en la misma pestaña
+  const iframe = document.createElement("iframe");
+  iframe.src = pdfUrl;
+  iframe.style.width = "100%";
+  iframe.style.height = "500px"; // Ajusta la altura según sea necesario
 
-  // Agrega el enlace al documento y simula un clic
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
+  // Remueve el iframe después de cargar el PDF
+  iframe.onload = () => {
+    URL.revokeObjectURL(pdfUrl);
+  };
 
-  // Elimina el enlace del documento
-  document.body.removeChild(downloadLink);
+  // Agrega el iframe al cuerpo del documento
+  document.body.appendChild(iframe);
 };
 
   const handleSubmit = async (event) => {
