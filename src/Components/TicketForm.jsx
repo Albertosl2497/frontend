@@ -4,9 +4,11 @@ import ReactFlagsSelect from "react-flags-select";
 import { BsSearch } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import "./ticket.css";
+import './TicketForm.css';
 import { PropagateLoader, ClipLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from 'react-modal';
 
 
 function sendWhatsAppMessage(phoneNumber, message) {
@@ -17,6 +19,8 @@ window.open(url, "_blank");
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [selectedTickets, setSelectedTickets] = useState([]);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const [btnLoading, setBtnLoading] = useState(false);
 
   const [itemOffset, setItemOffset] = useState(0);
@@ -29,6 +33,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
+  const [isModalOpen, setIsModalOpen] = useState(false); // Nuevo estado para el modal
   
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
@@ -371,6 +376,29 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           <label className="bold-label">Da click en los numeros seleccionados para eliminarlo:</label>
         </div>
       </form>
+
+       <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Confirmación"
+        className="modal" // Agrega la clase del modal
+        overlayClassName="modal-overlay" // Clase para el fondo del modal
+      >
+        {/* Contenido del modal */}
+        <h2>Confirmar Información</h2>
+        <p>Nombre: {fullName}</p>
+        <p>Teléfono: {phoneNumber}</p>
+        <p>Estado: {state}</p>
+        <p>Ciudad: {city}</p>
+        <p>Email: {email}</p>
+
+        {/* Botones del modal */}
+        <div className="modal-buttons">
+          <button className="accept" onClick={handleSubmit}>Aceptar</button>
+          <button className="cancel" onClick={closeModal}>Cancelar</button>
+        </div>
+      </Modal>
+
 
       <div className="search-bar selected-container">
         {selectedTickets.length > 0 &&
