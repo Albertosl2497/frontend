@@ -62,12 +62,22 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
   pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
  
-// Guarda el PDF con un nombre único (puedes ajustar esto según tus necesidades)
-  const pdfFileName = `formulario_${Date.now()}.pdf`;
-  pdf.save(pdfFileName);
+const pdfBlob = pdf.output("blob");
 
-  // Cambia la ubicación de la pestaña actual para cargar el PDF
-  window.location.href = pdfFileName;
+  // Crea una URL de objeto a partir del blob
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+
+  // Crea un enlace oculto en el documento
+  const downloadLink = document.createElement("a");
+  downloadLink.href = pdfUrl;
+  downloadLink.download = "formulario.pdf"; // Puedes ajustar el nombre del archivo según tus necesidades
+
+  // Agrega el enlace al documento y simula un clic
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+
+  // Elimina el enlace del documento
+  document.body.removeChild(downloadLink);
 };
 
   const handleSubmit = async (event) => {
