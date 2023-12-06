@@ -8,6 +8,7 @@ import { PropagateLoader, ClipLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import jsPDF from "jspdf";
+import Alert from "./Alert"; // Ajusta la ruta según tu estructura de carpetas
 
 function sendWhatsAppMessage(phoneNumber, message) {
   const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -17,6 +18,9 @@ window.open(url, "_blank");
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+  
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
@@ -161,6 +165,17 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           /*
            generatePDF();
           */
+
+          setShowAlert(true);
+        setAlertContent(
+          <>
+            <p>Nombre: {fullName}</p>
+            <p>Mi Teléfono: {phoneNumber}</p>
+            <p>Estado: {state}</p>
+            <p>Ciudad: {city}</p>
+            {/* Otros detalles del formulario según tu estructura */}
+          </>
+        );
           
           sendWhatsAppMessage(
               "526441382876",
@@ -181,6 +196,8 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               
           Gracias.`
             );
+
+          
         }
 
         
@@ -401,12 +418,16 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             />
           </div>
 
-          <button className="select-ticket" type="submit">
+          <button className="select-ticket" type="button" onClick={handleShowAlert}>
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
           </button>
           <label className="bold-label">Da click en los numeros seleccionados para eliminarlo:</label>
         </div>
       </form>
+
+      {showAlert && (
+        <Alert onClose={handleCloseAlert} content={alertContent} />
+      )}
 
       <div className="search-bar selected-container">
         {selectedTickets.length > 0 &&
