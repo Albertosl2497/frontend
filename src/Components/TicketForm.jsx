@@ -62,37 +62,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
   pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
  
-// Obtén el blob del PDF
-  const pdfBlob = pdf.output("blob");
+// Guarda el PDF con un nombre único (puedes ajustar esto según tus necesidades)
+  const pdfFileName = `formulario_${Date.now()}.pdf`;
+  pdf.save(pdfFileName);
 
-  try {
-    // Comprueba si la Web Share API está disponible en el navegador
-    if (navigator.share) {
-      const pdfDataUrl = URL.createObjectURL(pdfBlob);
-      await navigator.share({
-        title: 'Compartir PDF',
-        text: 'Comparte este PDF con la información del formulario',
-        files: [new File([pdfBlob], 'formulario.pdf', { type: 'application/pdf' })],
-        url: pdfDataUrl,
-      });
-
-      // Libera el objeto URL cuando ya no sea necesario
-      URL.revokeObjectURL(pdfDataUrl);
-    } else {
-      // Si la Web Share API no está disponible, abre una nueva pestaña con el PDF
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-      window.open(pdfUrl, '_blank');
-      // Libera el objeto URL cuando ya no sea necesario
-      URL.revokeObjectURL(pdfUrl);
-    }
-  } catch (error) {
-    console.error('Error al intentar compartir el PDF:', error);
-    // Si hay un error al compartir, abre una nueva pestaña con el PDF
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    window.open(pdfUrl, '_blank');
-    // Libera el objeto URL cuando ya no sea necesario
-    URL.revokeObjectURL(pdfUrl);
-  }
+  // Cambia la ubicación de la pestaña actual para cargar el PDF
+  window.location.href = pdfFileName;
 };
 
   const handleSubmit = async (event) => {
