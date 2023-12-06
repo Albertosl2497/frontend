@@ -62,25 +62,17 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
   pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
  
-// Obtén el contenido del PDF como Blob
+  // Obtén el contenido del PDF como Blob
   const pdfBlob = pdf.output("blob");
 
   // Crea una URL para el Blob
   const pdfUrl = URL.createObjectURL(pdfBlob);
 
-  // Crea un elemento iframe para mostrar el PDF en la misma pestaña
-  const iframe = document.createElement("iframe");
-  iframe.src = pdfUrl;
-  iframe.style.width = "100%";
-  iframe.style.height = "500px"; // Ajusta la altura según sea necesario
+  // Abre la URL del Blob en la misma pestaña
+  window.location.href = pdfUrl;
 
-  // Remueve el iframe después de cargar el PDF
-  iframe.onload = () => {
-    URL.revokeObjectURL(pdfUrl);
-  };
-
-  // Agrega el iframe al cuerpo del documento
-  document.body.appendChild(iframe);
+  // Revoca la URL del Blob después de abrir el PDF
+  URL.revokeObjectURL(pdfUrl);
 };
 
   const handleSubmit = async (event) => {
