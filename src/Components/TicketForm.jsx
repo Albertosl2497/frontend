@@ -45,11 +45,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  
-
-  
-
-  
+/*
   const generatePDF = () => {
     const pdf = new jsPDF();
     pdf.text(`BOLETOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 20);
@@ -77,7 +73,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   // Revoca la URL del Blob después de abrir el PDF
   URL.revokeObjectURL(pdfUrl);
-}; 
+}; */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -162,7 +158,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
 
+          /*
            generatePDF();
+          */
           
           sendWhatsAppMessage(
               "526441382876",
