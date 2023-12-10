@@ -4,23 +4,21 @@ import ReactFlagsSelect from "react-flags-select";
 import { BsSearch } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import "./ticket.css";
-import './TicketForm.css';
 import { PropagateLoader, ClipLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Modal from 'react-modal';
+import jsPDF from "jspdf";
 
- 
 function sendWhatsAppMessage(phoneNumber, message) {
   const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  
+ 
 window.open(url, "_blank");
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [selectedTickets, setSelectedTickets] = useState([]);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
   const [btnLoading, setBtnLoading] = useState(false);
 
   const [itemOffset, setItemOffset] = useState(0);
@@ -33,7 +31,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
-  const [isModalOpen, setIsModalOpen] = useState(false); // Nuevo estado para el modal
   
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
@@ -48,7 +45,28 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  
+  const generatePDF = () => {
+    const pdf = new jsPDF();
+    pdf.text(`BOLETOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 20);
+  pdf.text(`DOMINGO 31 DE OCTUBRE`, 20, 30);
+
+  // Detalles del usuario
+  pdf.text(`Nombre: ${fullName}`, 20, 50);
+  pdf.text(`Mi Teléfono: ${phoneNumber}`, 20, 60);
+  pdf.text(`Estado: ${state}`, 20, 70);
+  pdf.text(`Ciudad: ${city}`, 20, 80);
+
+  // Detalles de la compra
+  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
+  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
+  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
+ 
+ 
+    // Puedes agregar más información según sea necesario
+
+    // Guardar el PDF
+    pdf.save("formulario.pdf");
+  }; 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -131,7 +149,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           );
           setTickets(newTickets);
 
+         
           toast.success("Tickets Vendidos Exitosamente!");
+          generatePDF();
           sendWhatsAppMessage(
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
@@ -153,7 +173,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             );
         }
         
-        
+ 
         
 
         // clear the form data
@@ -376,29 +396,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           <label className="bold-label">Da click en los numeros seleccionados para eliminarlo:</label>
         </div>
       </form>
-
-       <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Confirmación"
-        className="modal" // Agrega la clase del modal
-        overlayClassName="modal-overlay" // Clase para el fondo del modal
-      >
-        {/* Contenido del modal */}
-        <h2>Confirmar Información</h2>
-        <p>Nombre: {fullName}</p>
-        <p>Teléfono: {phoneNumber}</p>
-        <p>Estado: {state}</p>
-        <p>Ciudad: {city}</p>
-        <p>Email: {email}</p>
-
-        {/* Botones del modal */}
-        <div className="modal-buttons">
-          <button className="accept" onClick={handleSubmit}>Aceptar</button>
-          <button className="cancel" onClick={closeModal}>Cancelar</button>
-        </div>
-      </Modal>
-
 
       <div className="search-bar selected-container">
         {selectedTickets.length > 0 &&
