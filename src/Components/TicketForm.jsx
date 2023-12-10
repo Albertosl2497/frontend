@@ -481,10 +481,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         </>
       )}
     </>
-    <ToastContainer position="top-center" autoClose={5000} />;
+    
   );
 }
 
 export default TicketForm;
-
+<ToastContainer position="top-center" autoClose={5000} />;
 
