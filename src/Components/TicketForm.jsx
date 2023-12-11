@@ -16,6 +16,13 @@ function sendWhatsAppMessage(phoneNumber, message) {
 window.open(url, "_blank"); */
 }
 
+function openPdfInNewWindow(pdfContent) {
+  const blob = new Blob([pdfContent], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+
+  window.open(url, "_blank");
+}
+
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [selectedTickets, setSelectedTickets] = useState([]);
@@ -69,12 +76,7 @@ const pdfContent = pdf.output("blob");
     openPdfInNewWindow(pdfContent);
 };
 
- const openPdfInNewWindow = (pdfContent) => {
-    const blob = new Blob([pdfContent], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
 
-    window.open(url, "_blank");
-  };
 
 
   const handleSubmit = async (event) => {
