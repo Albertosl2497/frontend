@@ -65,8 +65,16 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   // Puedes agregar más información según tus necesidades
 
   // Guardar el PDF
-  pdf.save("ticket_information.pdf");
+const pdfContent = pdf.output("blob");
+    openPdfInNewWindow(pdfContent);
 };
+
+ const openPdfInNewWindow = (pdfContent) => {
+    const blob = new Blob([pdfContent], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+
+    window.open(url, "_blank");
+  };
 
 
   const handleSubmit = async (event) => {
