@@ -16,12 +16,7 @@ function sendWhatsAppMessage(phoneNumber, message) {
 window.open(url, "_blank"); */
 }
 
-function openPdfInNewWindow(pdfContent) {
-  const blob = new Blob([pdfContent], { type: "application/pdf" });
-  const url = URL.createObjectURL(blob);
 
-  window.open(url, "_self");
-}
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
@@ -52,29 +47,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  const generatePDF = () => {
-  const pdf = new jsPDF();
-  pdf.text(`RIFAS EFECTIVO CAMPO 30`, 20, 10);
-  pdf.text(`BOLETOS APARTADOS PARA LA RIFA DE LOS $20,000 EN EFECTIVO`, 20, 20);
-  pdf.text(`DOMINGO 31 DE OCTUBRE`, 20, 30);
+ 
 
-  // Detalles del usuario
-  pdf.text(`Nombre: ${fullName}`, 20, 50);
-  pdf.text(`Mi Teléfono: ${phoneNumber}`, 20, 60);
-  pdf.text(`Estado: ${state}`, 20, 70);
-  pdf.text(`Ciudad: ${city}`, 20, 80);
 
-  // Detalles de la compra
-  pdf.text(`Total de Boletos: ${selectedTicketCount}`, 20, 100);
-  pdf.text(`Numeros Seleccionados: ${selectedTicketNumbers}`, 20, 110);
-  pdf.text(`Total a Pagar: $${totalPrice} pesos`, 20, 120);
-
-  // Puedes agregar más información según tus necesidades
-
-  // Guardar el PDF
-const pdfContent = pdf.output("blob");
-    openPdfInNewWindow(pdfContent);
-};
 
 
 
@@ -161,7 +136,7 @@ const pdfContent = pdf.output("blob");
           setTickets(newTickets);
 
           toast.success("Tickets Vendidos Exitosamente!");
-          generatePDF();
+      
           sendWhatsAppMessage(
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
