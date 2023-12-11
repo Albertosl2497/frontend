@@ -20,7 +20,7 @@ function openPdfInNewWindow(pdfContent) {
   const blob = new Blob([pdfContent], { type: "application/pdf" });
   const url = URL.createObjectURL(blob);
 
-  window.open(url, "_blank");
+  window.open(url, "_self");
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
