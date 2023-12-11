@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { useHistory } from 'react-router-dom'; // Importa el hook useHistory
+import ConfirmationPage from './ConfirmationPage';
 import ReactPaginate from "react-paginate";
 import ReactFlagsSelect from "react-flags-select";
 import { BsSearch } from "react-icons/bs";
@@ -17,6 +19,7 @@ window.open(url, "_blank");
 }
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
+  const history = useHistory(); // Inicializa el hook useHistory
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
@@ -150,7 +153,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
             );
         }
         
-        
+        // Redirige a la página de confirmación con los datos necesarios
+      history.push('/confirmacion', {
+        selectedTickets,
+        totalPrice,
+      });
         
 
         // clear the form data
