@@ -140,7 +140,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           sendWhatsAppMessage(
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
-          Para el sorteo de los $5000 en efectivo.
+          Para el sorteo de los $7000 en efectivo.
           El día Domingo 7 de Enero 2024.
           El precio total es: $${totalPrice} pesos.
               
