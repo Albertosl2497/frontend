@@ -7,10 +7,10 @@ import "./styles.css";
 function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
-      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 28</p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 14 DE ENERO</p>
-      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $7000 PESOS</p>
-      <p style={{ fontSize: '20px' }}>Costo por Boleto $100.00 MXN</p>
+      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 29</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 13 DE FEBRERO</p>
+      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $20,000 PESOS</p>
+      <p style={{ fontSize: '20px' }}>Costo por Boleto $35.00 MXN</p>
       <br />
       
       
