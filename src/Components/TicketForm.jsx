@@ -158,10 +158,11 @@ sendWhatsAppMessage(
   
   𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime}.
 
-  EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE.
-  SALUDOS Y MUCHA SUERTE.
+  EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.
+  
   CUALQUIER DUDA CONTACTANOS A: +52 6441382876.
-  METODOS DE PAGO:
+  
+  METODOS DE PAGO AQUÍ PUEDES VERLOS:
   https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
 );
 
