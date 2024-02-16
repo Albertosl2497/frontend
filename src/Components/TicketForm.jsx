@@ -11,10 +11,9 @@ import jsPDF from "jspdf";
 
 function sendWhatsAppMessage(phoneNumber, message) {
   const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-  
- 
-window.open(url, "_blank"); 
+  window.open(url, "_blank");
 }
+
 
 
 
@@ -138,24 +137,25 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           toast.success("Tickets Vendidos Exitosamente!");
       
           sendWhatsAppMessage(
-              "526441382876",
-              `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
-          Para el sorteo de los $5000 en efectivo.
-          El día Domingo 18 de Fabrero 2024.
-          El precio total es: $${totalPrice} pesos.
-              
-          Mi Nombre es: ${fullName}.
-          Estoy ubicado en: ${city}, ${state}
-          Mi número de teléfono es: ${mobNumber}.
-          
-          METODOS DE PAGO:
-          https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
+  phoneNumber, // Aquí usamos el número de teléfono del cliente
+  `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
+  Para el sorteo de los $5000 en efectivo.
+  El día Domingo 18 de Fabrero 2024.
+  El precio total es: $${totalPrice} pesos.
+      
+  Mi Nombre es: ${fullName}.
+  Estoy ubicado en: ${city}, ${state}
+  Mi número de teléfono es: ${mobNumber}.
+  
+  METODOS DE PAGO:
+  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
 
-          Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
-          Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
-              
-          Gracias.`
-            );
+  Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
+  Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
+      
+  Gracias.`
+);
+
         }
         
    
