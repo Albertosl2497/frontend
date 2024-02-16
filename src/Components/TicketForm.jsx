@@ -138,22 +138,16 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       
           sendWhatsAppMessage(
   `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
-  `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
+  `Hola, has reservado ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
   Para el sorteo de los $5000 en efectivo.
-  El día Domingo 18 de Fabrero 2024.
-  El precio total es: $${totalPrice} pesos.
-      
-  Mi Nombre es: ${fullName}.
-  Estoy ubicado en: ${city}, ${state}
-  Mi número de teléfono es: ${mobNumber}.
-  
-  METODOS DE PAGO:
-  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
+  Del día Domingo 18 de Fabrero 2024.
+  𝐄𝐥 𝐩𝐫𝐞𝐜𝐢𝐨 𝐭𝐨𝐭𝐚𝐥 𝐞𝐬: $${totalPrice} 𝐩𝐞𝐬𝐨𝐬.
+  𝐓𝐮𝐬 𝐛𝐨𝐥𝐞𝐭𝐨𝐬 𝐞𝐬𝐭𝐚𝐧 𝐚 𝐧𝐨𝐦𝐛𝐫𝐞 𝐝𝐞: ${fullName}.
+  𝐂𝐨𝐧 𝐝𝐨𝐦𝐢𝐜𝐢𝐥𝐢𝐨 𝐞𝐧: ${city}, ${state}
+  𝐓𝐮 𝐧𝐮́𝐦𝐞𝐫𝐨 𝐝𝐞 𝐭𝐞𝐥𝐞́𝐟𝐨𝐧𝐨 𝐞𝐬: ${mobNumber}.
 
-  Al realizar tu pago por transferencia, coloca tu nombre como concepto de transferencia. Toma captura del comprobante y envialo a nuestro Whatsapp..
-  Si tu pago es por deposito en oxxo escribe tu nombre en el ticket y envia una foto clara a nuestro whatsapp.
-      
-  Gracias.`
+  EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE.
+  SALUDOS Y MUCHA SUERTE.🍀`
 );
 
         }
