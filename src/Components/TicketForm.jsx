@@ -136,25 +136,31 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success("Tickets Vendidos Exitosamente!");
       
-          sendWhatsAppMessage(
+          const currentDate = new Date();
+          const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+
+sendWhatsAppMessage(
   `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
   `HOLA,
-  HAS RESERVADO ${selectedTicketCount} BOLETOS(S).
+  HAS RESERVADO ${selectedTicketCount} BOLETO(S).
   CON LOS NUMEROS: [ ${selectedTicketNumbers} ].
-  PARA EL SORTEO DE LOS $5000 PESOS EN EFECTIVO.
-  DEL DIA DOMINGO 18 DE FEBRERO DE 2024.
-  EL PRECIO A PAGAR ES:
-  $${totalPrice} PESOS.
-  TUS BOLETOS ESTAN A NOMBRE DE:
+  PARA EL SORTEO DE LOS $5000 PESOS EN EFECTIVO. DEL DIA DOMINGO 18 DE FEBRERO DE 2024.
+  
+  𝗘𝗟 𝗣𝗥𝗘𝗖𝗜𝗢 𝗔 𝗣𝗔𝗚𝗔𝗥 𝗘𝗦:
+  $${totalPrice} 𝗣𝗘𝗦𝗢𝗦.
+  𝗧𝗨𝗦 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 𝗘𝗦𝗧𝗔𝗡 𝗔 𝗡𝗢𝗠𝗕𝗥𝗘 𝗗𝗘:
   ${fullName}.
-  CON DOMICILIO EN:
+  𝗖𝗢𝗡 𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢 𝗘𝗡:
   ${city}, ${state}
-  TU NUMERO DE TELEFONO ES:
+  𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎:
   ${mobNumber}.
+  
+  𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate}.
 
   EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE.
-  SALUDOS Y MUCHA SUERTE.`
+  SALUDOS Y MUCHA SUERTE.🎉🎈🍀`
 );
+
 
         }
         
