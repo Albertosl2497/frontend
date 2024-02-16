@@ -137,7 +137,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           toast.success("Tickets Vendidos Exitosamente!");
       
           sendWhatsAppMessage(
-  phoneNumber, // Aquí usamos el número de teléfono del cliente
+  `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
   `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
   Para el sorteo de los $5000 en efectivo.
   El día Domingo 18 de Fabrero 2024.
