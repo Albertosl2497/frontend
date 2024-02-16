@@ -138,6 +138,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       
           const currentDate = new Date();
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+          const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
 
 sendWhatsAppMessage(
   `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
@@ -155,7 +156,7 @@ sendWhatsAppMessage(
   𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎:
   ${mobNumber}.
   
-  𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate}.
+  𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime}.
 
   EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE.
   SALUDOS Y MUCHA SUERTE.
@@ -163,6 +164,7 @@ sendWhatsAppMessage(
   METODOS DE PAGO:
   https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
 );
+
 
 
 
