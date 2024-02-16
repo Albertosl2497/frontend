@@ -139,32 +139,30 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           const currentDate = new Date();
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
 
-const message = {
-  to: `52${phoneNumber}`, // Número de teléfono del cliente
-  type: 'image', // Tipo de mensaje (imagen en este caso)
-  media: 'https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg', // URL de la imagen que quieres enviar
-  caption: `HOLA,
+sendWhatsAppMessage(
+  `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
+  `HOLA,
   HAS RESERVADO ${selectedTicketCount} BOLETO(S).
-  CON LOS NUMEROS: [ ${selectedTicketNumbers} ].
-  PARA EL SORTEO DE LOS $5000 PESOS EN EFECTIVO.
-  DEL DIA DOMINGO 18 DE FEBRERO DE 2024.
-  EL PRECIO A PAGAR ES:
-  $${totalPrice} PESOS.
-  TUS BOLETOS ESTAN A NOMBRE DE:
+  𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $5000 EN EFECTIVO. DEL DIA 18 DE FEBRERO DE 2024.
+  
+  𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
+  $${totalPrice} 𝗣𝗘𝗦𝗢𝗦.
+  𝙏𝙐𝙎 𝘽𝙊𝙇𝙀𝙏𝙊𝙎 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀:
   ${fullName}.
-  CON DOMICILIO EN:
+  𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉:
   ${city}, ${state}
-  TU NUMERO DE TELEFONO ES:
+  𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎:
   ${mobNumber}.
   
-  FECHA DE REGISTRO DEL BOLETO: ${formattedDate}.
+  𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate}.
 
   EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE.
-  SALUDOS Y MUCHA SUERTE.`
-};
-
-// Aquí se envía el mensaje utilizando la API de WhatsApp Business
-sendWhatsAppMessage(message);
+  SALUDOS Y MUCHA SUERTE.
+  CUALQUIER DUDA CONTACTANOS A: +52 6441382876.
+  METODOS DE PAGO:
+  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
+);
 
 
 
