@@ -140,10 +140,17 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
           const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
           
+// Definir la función buildPhoneNumber para construir el número de teléfono completo
+function buildPhoneNumber(phoneNumber, countryCode) {
+  return `+${countryCode} ${phoneNumber}`;
+}
 
+// Luego, utilizar esta función para construir el número de teléfono completo en tu código
+const mobNumber = buildPhoneNumber(phoneNumber, phoneNumberCountryCode);
 
+// Finalmente, llamar a sendWhatsAppMessage con el número de teléfono completo
 sendWhatsAppMessage(
-  `+${phoneNumberCountryCode} ${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
+  mobNumber, // Aquí usamos el número de teléfono del cliente
   `HOLA,
   HAS RESERVADO ${selectedTicketCount} BOLETO(S).
   𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
