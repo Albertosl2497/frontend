@@ -139,7 +139,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           const currentDate = new Date();
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
           const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-          const mobNumber = buildPhoneNumber(phoneNumber, phoneNumberCountryCode);
+          
 
 
 sendWhatsAppMessage(
