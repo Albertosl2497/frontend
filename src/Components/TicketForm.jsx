@@ -139,9 +139,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           const currentDate = new Date();
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
           const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+          const mobNumber = buildPhoneNumber(phoneNumber, phoneNumberCountryCode);
+
 
 sendWhatsAppMessage(
-  `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
+  mobNumber, // Aquí usamos el número de teléfono del cliente
   `HOLA,
   HAS RESERVADO ${selectedTicketCount} BOLETO(S).
   𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
