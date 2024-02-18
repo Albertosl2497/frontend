@@ -10,7 +10,7 @@ function MainPageContent() {
       <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 35</p>
       <p className="bold" style={{ fontSize: '24px' }}>ESTE 20 DE FEBRERO</p>
       <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $3000 PESOS</p>
-      <p style={{ fontSize: '20px' }}>Costo por Boleto $80.00 MXN</p>
+      <p style={{ fontSize: '20px' }}>Costo por Boleto $50.00 MXN</p>
       <br />
       
       
