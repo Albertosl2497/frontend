@@ -143,7 +143,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
 
 sendWhatsAppMessage(
-  `526441382876`, // Aquí usamos el número de teléfono del cliente
+  "526441382876", // Aquí usamos el número de teléfono del cliente
   `HOLA,
   HAS RESERVADO ${selectedTicketCount} BOLETO(S).
   𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
