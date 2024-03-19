@@ -462,7 +462,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     }
   >
     {ticket} {/* Número original */}
-    <span style={{marginLeft: '0.5rem'}}> {-}
+    <span style={{marginLeft: '0.5rem'}}> {/* espacio entre numeros */}
       {parseInt(ticket) + 5000} {/* Número adicional */}
     </span>
   </div>
