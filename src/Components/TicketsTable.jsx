@@ -136,7 +136,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       field: "ticketNumber",
       sortable: true,
       resizable: true,
-      width: 50,
+      width: 80,
     },
     {
       headerName: "Propietario",
@@ -144,6 +144,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       flex: 1,
       resizable: true,
       sortable: true,
+      width: 150,
       cellRenderer: function (params) {
         return params.value;
       },
@@ -154,6 +155,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       editable: true,
       sortable: true,
       resizable: true,
+      width: 100,
       cellClassRules: {
         "cell-value-green": function (params) {
           return !params.value;
@@ -172,6 +174,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       editable: true,
       sortable: true,
       resizable: true,
+      width: 100,
       cellClassRules: {
         "cell-value-green": function (params) {
           return !params.value;
@@ -188,6 +191,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     {
       headerName: "Copiar Usuario",
       field: "user",
+      width: 80,
       cellRendererFramework: (params) => (
         <button onClick={() => copyUserName(params.value)}>Copiar</button>
       ),
