@@ -451,22 +451,24 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           <div className="ticket-list-container">
             <div className="display-tickets">
               {currentItems.map((ticket, index) => (
-                <div
-                  key={ticket}
-                  className={`ticket ${
-                    selectedTickets.includes(ticket) && "selected"
-                  }`}
-                  onClick={() =>
-                    setSelectedTickets(() => {
-                      if (selectedTickets.includes(ticket)) {
-                        return selectedTickets;
-                      } else return [...selectedTickets, ticket];
-                    })
-                  }
-                >
-                  {ticket}
-                </div>
-              ))}
+  <div
+    key={ticket}
+    className={`ticket ${selectedTickets.includes(ticket) && "selected"}`}
+    onClick={() =>
+      setSelectedTickets(() => {
+        if (selectedTickets.includes(ticket)) {
+          return selectedTickets;
+        } else return [...selectedTickets, ticket];
+      })
+    }
+  >
+    {ticket} {/* Número original */}
+    <span style={{marginLeft: '0.5rem'}}> {/* Espacio entre los números */}
+      {parseInt(ticket) + 5000} {/* Número adicional */}
+    </span>
+  </div>
+))}
+
 
             </div>
           </div>
