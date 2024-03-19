@@ -129,6 +129,16 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       resizable: true,
     },
     {
+      headerName: "Propietario",
+      field: "user",
+      flex: 1,
+      resizable: true,
+      sortable: true,
+      cellRenderer: function (params) {
+        return params.value;
+      },
+    },
+    {
       headerName: "Estado",
       field: "sold",
       editable: true,
@@ -164,16 +174,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         return params.value ? "Disponible" : "No Disponible";
       },
     },
-    {
-      headerName: "Propietario",
-      field: "user",
-      flex: 1,
-      resizable: true,
-      sortable: true,
-      cellRenderer: function (params) {
-        return params.value;
-      },
-    },
+    
   ];
 
   useEffect(() => {
