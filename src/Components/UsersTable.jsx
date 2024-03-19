@@ -99,15 +99,19 @@ function UsersTable() {
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
-  const message = `HOLA CONFIRMAMOS SU RESERVACIÓN DE ${ticketCount} NÚMEROS:
-  [ ${bookedTickets.join(", ")} ]
-  PARA EL SORTEO DEL DIA:
+  const message = `𝙃𝙊𝙇𝘼 𝘾𝙊𝙉𝙁𝙄𝙍𝙈𝘼𝙈𝙊𝙎 𝙎𝙐 𝙍𝙀𝙎𝙀𝙍𝙑𝘼𝘾𝙄𝙊́𝙉 𝘿𝙀 ${ticketCount} 𝙉𝙐́𝙈𝙀𝙍𝙊𝙎: [ ${bookedTickets.join(", ")} ].
+  
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀𝙇 𝘿𝙄𝘼:
   10 DE MAYO 2024.
-  A NOMBRE DE:
+  
+  𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀:
   ${fullName}.
-  CON DOMICILIO EN:
+  𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉:
   ${ciudad}, ${estado}.
-  CON UN PRECIO TOTAL DE: $${totalPrice} PESOS.`;
+  𝘾𝙊𝙉 𝙐𝙉 𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇 𝘿𝙀: $${totalPrice} 𝙋𝙀𝙎𝙊𝙎.
+  
+  METODOS DE PAGO AQUÍ:
+  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 };
