@@ -110,7 +110,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const generatePair = (number) => parseInt(number) + 5000;
 
   // Generar las parejas de los números de boleto reservados
-  const bookedTicketsWithPair = bookedTickets.map(ticketNumber => `${ticketNumber} - ${generatePair(ticketNumber)}`);
+const bookedTicketsWithPair = bookedTickets.map(ticketNumber => `(${ticketNumber} - ${generatePair(ticketNumber)})`);
 
   const message = `𝙃𝙊𝙇𝘼 𝘾𝙊𝙉𝙁𝙄𝙍𝙈𝘼𝙈𝙊𝙎 𝙎𝙐 𝙍𝙀𝙎𝙀𝙍𝙑𝘼𝘾𝙄𝙊́𝙉 𝘿𝙀 ${ticketCount} 𝙉𝙐́𝙈𝙀𝙍𝙊(𝙎):
   [ ${bookedTicketsWithPair.join(", ")} ].
