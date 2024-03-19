@@ -75,14 +75,9 @@
   margin-bottom: 10px; /* Márgenes inferiores para separación desde abajo */
 }
 
-.dialog-button-container {
-  text-align: center;
-  margin-top: 20px; /* Ajusta el margen superior según sea necesario */
-}
-
-.dialog-button {
-  background-color: #4caf50; /* Color de fondo del botón */
-  color: white; /* Color del texto */
+.dialog-button-whatsapp {
+  background-color: #25d366; /* Color verde de WhatsApp */
+  color: white; /* Color de texto blanco */
   padding: 10px 20px; /* Espaciado interno del botón */
   border: none; /* Quita el borde */
   border-radius: 5px; /* Borde redondeado */
@@ -90,8 +85,12 @@
   transition: background-color 0.3s ease; /* Transición suave del color de fondo */
 }
 
-.dialog-button:hover {
-  background-color: #45a049; /* Cambia el color de fondo al pasar el ratón */
+.dialog-button-whatsapp:hover {
+  background-color: #128c7e; /* Cambia el color de fondo al pasar el ratón */
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+}
 
