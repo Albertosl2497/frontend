@@ -42,7 +42,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [errors, setErrors] = useState({});
 
   const selectedTicketCount = selectedTickets.length;
-  const ticketPrice = 50; // Precio de cada boleto en pesos
+  const ticketPrice = 20; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -143,14 +143,20 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
                 [ {selectedTicketNumbers} ].< br/>
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $3000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜́𝗔: 19 DE MARZO DE 2024.< br/>
-                𝗧𝗘𝗟𝗘́𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
+                $20,000 PESOS EN EFECTIVO.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 10 DE MAYO DE 2024.< br/>
+                (𝘼𝘿𝙀𝙈𝘼𝙎 $10,000 𝙀𝙉 𝙀𝙁𝙀𝘾𝙏𝙄𝙑𝙊 𝘿𝙀 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝙀𝙇 𝘿𝙄𝘼 30 𝘿𝙀 𝘼𝘽𝙍𝙄𝙇)< br/>
+                𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
                 {city}, {state}.< br/>
                 𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
+
+                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊
+                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6442340445.
+
+                 NOTA: TOMA CAPTURA DE PANTALLA PARA QUE TENGAS REGISTRO DE TUS BOLETOS.
             </div>
     
              
