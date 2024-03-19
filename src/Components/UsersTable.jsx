@@ -83,7 +83,7 @@ function UsersTable() {
     const phoneNumber = selectedRows[0].user.phoneNumber;
     const fullName = selectedRows[0].user.fullName;
     const message = `Hola ${fullName}, ¿cómo estás?`;
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=52${phoneNumber}&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   } else {
     console.error("No row selected");
