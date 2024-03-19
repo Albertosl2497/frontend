@@ -75,3 +75,23 @@
   margin-bottom: 10px; /* Márgenes inferiores para separación desde abajo */
 }
 
+.dialog-button-container {
+  text-align: center;
+  margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+.dialog-button {
+  background-color: #4caf50; /* Color de fondo del botón */
+  color: white; /* Color del texto */
+  padding: 10px 20px; /* Espaciado interno del botón */
+  border: none; /* Quita el borde */
+  border-radius: 5px; /* Borde redondeado */
+  cursor: pointer; /* Cursor al pasar el ratón */
+  transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+}
+
+.dialog-button:hover {
+  background-color: #45a049; /* Cambia el color de fondo al pasar el ratón */
+}
+
+
