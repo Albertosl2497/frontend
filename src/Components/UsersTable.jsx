@@ -106,8 +106,14 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
+  // Función para generar la pareja de un número de boleto
+  const generatePair = (number) => parseInt(number) + 5000;
+
+  // Generar las parejas de los números de boleto reservados
+  const bookedTicketsWithPair = bookedTickets.map(ticketNumber => `${ticketNumber} - ${generatePair(ticketNumber)}`);
+
   const message = `𝙃𝙊𝙇𝘼 𝘾𝙊𝙉𝙁𝙄𝙍𝙈𝘼𝙈𝙊𝙎 𝙎𝙐 𝙍𝙀𝙎𝙀𝙍𝙑𝘼𝘾𝙄𝙊́𝙉 𝘿𝙀 ${ticketCount} 𝙉𝙐́𝙈𝙀𝙍𝙊(𝙎):
-  [ ${bookedTickets.join(", ")} ].
+  [ ${bookedTicketsWithPair.join(", ")} ].
   
   𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀:
   $40,000 PESOS 💸💰 𝘿𝙀𝙇 𝘿𝙄𝘼: 10 DE MAYO 2024.
