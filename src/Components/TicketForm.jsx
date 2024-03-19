@@ -135,19 +135,18 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           setTickets(newTickets);
 
           toast.success(  <>
-              <h2>BOLETOS VENDIDOS EXITOSAMENTE</h2>
-              <p>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
-              <p>LOS NÚMEROS SON: [ {selectedTicketNumbers} ].</p>
-              <p>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
-              <p>EL PRECIO TOTAL ES: ${totalPrice} PESOS.</p>
-              <p>TUS BOLETOS A NOMBRE DE: {fullName}.</p>
-              <p>CON DOMICILIO EN: {city}, {state}</p>
-              <p>TELÉFONO: {mobNumber}.</p>
-              <p>FECHA Y HORA DE REGISTRO: {formattedDate} A LAS {formattedTime} HORAS.</p>
-              <p>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
+              <h2 style={{ color: 'blue' }}>BOLETOS VENDIDOS EXITOSAMENTE</h2>
+              <p style={{ color: 'brown' }}>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
+              <p style={{ color: 'brown' }}>LOS NÚMEROS SON: [ {selectedTicketNumbers} ].</p>
+              <p style={{ color: 'brown' }}>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
+              <p style={{ color: 'brown' }}>EL PRECIO TOTAL ES: ${totalPrice} PESOS.</p>
+              <p style={{ color: 'brown' }}>TUS BOLETOS A NOMBRE DE: {fullName}.</p>
+              <p style={{ color: 'brown' }}>CON DOMICILIO EN: {city}, {state}</p>
+              <p style={{ color: 'brown' }}>TELÉFONO: {mobNumber}.</p>
+              <p style={{ color: 'purple' }}>FECHA Y HORA DE REGISTRO: {formattedDate} A LAS {formattedTime} HORAS.</p>
+              <p style={{ color: 'black' }}>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
             </>, {
           position: toast.POSITION.TOP_CENTER,
-          draggable={false}, // Para evitar que el usuario arrastre la notificación
           autoClose: false, // Para que no se cierre automáticamente
           hideProgressBar: true, // Para ocultar la barra de progreso
           
