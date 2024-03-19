@@ -10,7 +10,8 @@ function MainPageContent() {
       <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 42</p>
       <p className="bold" style={{ fontSize: '24px' }}>ESTE 10 DE MAYO</p>
       <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $40,000 PESOS</p>
-      <p className="bold" style={{ color: "green", fontSize: '21px' }}>(ADEMAS $10,000 PESOS <br /> EN PRESORTEO EL 30 DE ABRIL)</p>
+      <p className="bold" style={{ color: "green", fontSize: '21px' }}>ADEMAS $10,000 PESOS</p>
+      <p className="bold" style={{ color: "green", fontSize: '21px' }}>EN PRESORTEO EL 30 DE ABRIL</p>
       <p style={{ fontSize: '20px' }}>Costo por Boleto $20.00 MXN</p>
       <br />
       
