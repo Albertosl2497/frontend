@@ -135,6 +135,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       field: "ticketNumber",
       sortable: true,
       resizable: true,
+      width: 150,
     },
     {
       headerName: "Propietario",
