@@ -166,12 +166,13 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     },
     {
       headerName: "Propietario",
-      field: "user",
-      flex: 1,
-      resizable: true,
-      sortable: true,
-      cellRenderer: function (params) {
-        return params.value;
+  field: "user",
+  flex: 1,
+  resizable: true,
+  sortable: true,
+  cellRenderer: function (params) {
+    const user = params.value;
+    return user.name;
       },
     },
   ];
