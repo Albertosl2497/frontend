@@ -135,7 +135,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           setTickets(newTickets);
 
           toast.success(  <>
-              <h3>BOLETOS VENDIDOS EXITOSAMENTE</h3>
+              <h2>BOLETOS VENDIDOS EXITOSAMENTE</h2>
               <p>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
               <p>LOS NÚMEROS SON: [ {selectedTicketNumbers} ].</p>
               <p>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
@@ -147,6 +147,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               <p>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
             </>, {
           position: toast.POSITION.TOP_CENTER,
+          draggable={false}, // Para evitar que el usuario arrastre la notificación
           autoClose: false, // Para que no se cierre automáticamente
           hideProgressBar: true, // Para ocultar la barra de progreso
           
