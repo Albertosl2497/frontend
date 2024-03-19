@@ -150,7 +150,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 {fullName}.< br/>
                 𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
                 {city}, {state}.< br/>
-                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.<p/>
+                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.</p>
             </div>
                  <button onClick={() => 
                       sendWhatsAppMessage(
