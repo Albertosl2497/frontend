@@ -77,13 +77,14 @@ function UsersTable() {
     },
   ];
 
-  const sendWhatsAppMessage = (user) => {
-  const phoneNumber = user.phoneNumber;
-  const fullName = user.fullName;
+  const sendWhatsAppMessage = (data) => {
+  const phoneNumber = data.phoneNumber;
+  const fullName = data.user.fullName;
   const message = `Hola ${fullName}, ¿cómo estás?`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 };
+
 
 
 
