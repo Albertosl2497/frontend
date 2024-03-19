@@ -58,7 +58,8 @@
 /* Establece el ancho de cada boleto para evitar el scroll horizontal */
 .ticket {
   width: 100%; /* Ocupa todo el ancho disponible */
-  border-radius: 20px;
+  border-radius: 10px;
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 
