@@ -65,7 +65,24 @@ function UsersTable() {
       },
       resizable: true,
     },
+    {
+      headerName: "Send WhatsApp Message",
+      cellRendererFramework: (params) => {
+        const userPhoneNumber = params.data.user.phoneNumber;
+        return (
+          <button onClick={() => sendWhatsAppMessage(userPhoneNumber)}>
+            Send Message
+          </button>
+        );
+      },
+    },
   ];
+
+  const sendWhatsAppMessage = (phoneNumber) => {
+    const message = "Hola, ¿cómo estás?";
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
 
   const onGridReady = (params) => {
     setGridApi(params.api);
