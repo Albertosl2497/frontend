@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 // Definimos la función copyUserName fuera del componente
 const copyUserName = (userName) => {
   // Dividir el nombre de usuario y el correo electrónico
-  const [name, email] = userName.split('@');
+  const [name, email] = userName.split(' (');
   navigator.clipboard.writeText(name.trim()); // Copiar solo el nombre de usuario
   toast.success("Nombre de usuario copiado exitosamente");
 };
