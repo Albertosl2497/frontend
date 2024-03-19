@@ -136,7 +136,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       field: "ticketNumber",
       sortable: true,
       resizable: true,
-      width: 80,
+      width: 100,
     },
     {
       headerName: "Propietario",
@@ -155,7 +155,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       editable: true,
       sortable: true,
       resizable: true,
-      width: 100,
+      width: 110,
       cellClassRules: {
         "cell-value-green": function (params) {
           return !params.value;
@@ -174,7 +174,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       editable: true,
       sortable: true,
       resizable: true,
-      width: 100,
+      width: 120,
       cellClassRules: {
         "cell-value-green": function (params) {
           return !params.value;
