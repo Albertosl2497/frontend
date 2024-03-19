@@ -140,12 +140,16 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               <h3 style={{ color: '#333', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>"REGISTRO EXITOSO"</h3>
               <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '12px' }}
-                >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦: [ {selectedTicketNumbers} ].< br/>< br/>
-                𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘: $3000 en efectivo.< br/>
-                𝗗𝗘𝗟 𝗗𝗜́𝗔: 19 DE MARZO DE 2024.< br/>< br/>
-                𝗧𝗘𝗟𝗘́𝗙𝗢𝗡𝗢: {mobNumber}.< br/></p>
-                𝗡𝗢𝗠𝗕𝗥𝗘: {fullName}.< br/>
-                𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢: {city}, {state}.< br/>
+                >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
+                [ {selectedTicketNumbers} ].< br/>
+                𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
+                $3000 PESOS.< br/>
+                𝗗𝗘𝗟 𝗗𝗜́𝗔: 19 DE MARZO DE 2024.< br/>
+                𝗧𝗘𝗟𝗘́𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
+                𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
+                {fullName}.< br/>
+                𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
+                {city}, {state}.< br/>
                 𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.< br/>
             </div>
 
