@@ -6,6 +6,8 @@ function UsersTable() {
 
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
+  const [confirmationSentRows, setConfirmationSentRows] = useState([]);
+
 
   const columnsDef = [
   {
@@ -55,13 +57,14 @@ function UsersTable() {
   },
     {
     headerName: "Confirmacion",
-    cellRendererFramework: (params) => {
-      return (
-        <button onClick={() => sendWhatsAppMessageConfirmation(params.data)}
-          style={{ backgroundColor: "green", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
-          >
-          WhatsApp
-        </button>
+  cellRendererFramework: (params) => {
+    const isConfirmationSent = confirmationSentRows.includes(params.data.id); // Suponiendo que userData contiene una propiedad 'id' única para cada fila
+    const buttonStyle = isConfirmationSent ? { backgroundColor: "gray", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "not-allowed" } : { backgroundColor: "green", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" };
+
+    return (
+      <button onClick={() => sendWhatsAppMessageConfirmation(params.data)} style={buttonStyle}>
+        WhatsApp
+      </button>
       );
     },
   },
@@ -124,6 +127,7 @@ function UsersTable() {
   https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
+  setConfirmationSentRows(prevState => [...prevState, userData.id]); // Suponiendo que userData contiene una propiedad 'id' única para cada fila
 };
 
 
