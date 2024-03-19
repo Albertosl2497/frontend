@@ -46,7 +46,17 @@ function UsersTable() {
     cellRendererFramework: (params) => {
       return (
         <button onClick={() => sendWhatsAppMessage(params.data)}>
-          Send Message
+          WhatsApp
+        </button>
+      );
+    },
+  },
+    {
+    headerName: "Confirmacion",
+    cellRendererFramework: (params) => {
+      return (
+        <button onClick={() => sendWhatsAppMessageConfirmation(params.data)}>
+          WhatsApp
         </button>
       );
     },
@@ -78,6 +88,16 @@ function UsersTable() {
     resizable: true,
   },
 ];
+
+  const sendWhatsAppMessageConfirmation = (userData) => {
+  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
+  const fullName = userData.user.fullName;
+  const bookedTickets = userData.bookedTickets.map((ticket) => ticket.ticketNumbers.join(", ")); // Obtiene los números de ticket directamente de la fuente de datos de "Booked Tickets"
+  const message = `HOLA CONFIRMAMOS SU RESERVACIÓN DE LOS NÚMEROS: [ ${bookedTickets.join(", ")} ]`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, "_blank");
+};
+
 
   const sendWhatsAppMessage = (userData) => {
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, ""); // Elimina los espacios en blanco del número de teléfono
