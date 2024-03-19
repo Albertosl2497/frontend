@@ -96,10 +96,18 @@ function UsersTable() {
   const ticketCount = bookedTickets.length; // Contar la cantidad de tickets reservados
   const ticketPrice = 10; // Precio por ticket (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
+  const ciudad = userData.user.city;
+  const estado = userData.user.state;
 
   const message = `HOLA CONFIRMAMOS SU RESERVACIÓN DE ${ticketCount} NÚMEROS:
   [ ${bookedTickets.join(", ")} ]
-  CON UN PRECIO TOTAL DE: $${totalPrice} PESOS`;
+  PARA EL SORTEO DEL DIA:
+  10 DE MAYO 2024.
+  A NOMBRE DE:
+  ${fullName}.
+  CON DOMICILIO EN:
+  ${city}, ${state}.
+  CON UN PRECIO TOTAL DE: $${totalPrice} PESOS.`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 };
