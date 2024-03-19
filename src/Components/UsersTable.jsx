@@ -6,7 +6,7 @@ function UsersTable() {
 
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
-  const [confirmationSentRows, setConfirmationSentRows] = useState([]);
+const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
 
   const columnsDef = [
@@ -58,7 +58,7 @@ function UsersTable() {
     {
     headerName: "Confirmacion",
   cellRendererFramework: (params) => {
-    const isConfirmationSent = confirmationSentRows.includes(params.data.id); // Suponiendo que userData contiene una propiedad 'id' única para cada fila
+    const isConfirmationSent = confirmationSentEmails.includes(params.data.user.email);
     const buttonStyle = isConfirmationSent ? { backgroundColor: "gray", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "not-allowed" } : { backgroundColor: "green", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" };
 
     return (
@@ -127,7 +127,7 @@ function UsersTable() {
   https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
-  setConfirmationSentRows(prevState => [...prevState, userData.id]); // Suponiendo que userData contiene una propiedad 'id' única para cada fila
+  setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
 
 
