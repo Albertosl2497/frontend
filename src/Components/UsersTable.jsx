@@ -135,7 +135,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const sendWhatsAppMessage = (userData) => {
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, ""); // Elimina los espacios en blanco del número de teléfono
   const fullName = userData.user.fullName;
-  const message = `Hola buen día. Solo para recordarle que el dia de hoy se llevara acabo la rifa de los $3000 Pesos. 𝗘𝘀𝘁𝗮𝗿𝗲𝗺𝗼𝘀 𝗿𝗲𝗰𝗶𝗯𝗶𝗲𝗻𝗱𝗼 𝗹𝗼𝘀 𝗽𝗮𝗴𝗼𝘀 𝗵𝗮𝘀𝘁𝗮 𝗹𝗮𝘀 𝟱𝗣𝗠. GRACIAS😊🌼`;
+  const message = `Hola buen día. Solo para informarle que la hora maxima de pago sera hasta las 5:20PM. DEPUES DE ESA HORA SUS NUMEROS YA NO ESTARAN PARTICIPADO. GRACIAS😊🌼`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 };
