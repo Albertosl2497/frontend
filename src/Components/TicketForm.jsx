@@ -151,12 +151,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 {fullName}.< br/>
                 𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
                 {city}, {state}.< br/>
-                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
+                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/>
 
-                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊
-                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6442340445.
+                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊<br/>
+                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6442340445.<br/>
 
-                 NOTA: TOMA CAPTURA DE PANTALLA PARA QUE TENGAS REGISTRO DE TUS BOLETOS.
+                 NOTA: TOMA CAPTURA DE PANTALLA PARA QUE TENGAS REGISTRO DE TUS BOLETOS.</p>
             </div>
     
              
