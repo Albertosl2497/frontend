@@ -134,7 +134,18 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           );
           setTickets(newTickets);
 
-          toast.success("Tickets Vendidos Exitosamente!", {
+          toast.success(  <>
+              <h3>BOLETOS VENDIDOS EXITOSAMENTE</h3>
+              <p>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
+              <p>LOS NÚMEROS SON: [ {selectedTicketNumbers} ].</p>
+              <p>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
+              <p>EL PRECIO TOTAL ES: ${totalPrice} PESOS.</p>
+              <p>TUS BOLETOS A NOMBRE DE: {fullName}.</p>
+              <p>CON DOMICILIO EN: {city}, {state}</p>
+              <p>TELÉFONO: {mobNumber}.</p>
+              <p>FECHA Y HORA DE REGISTRO: {formattedDate} A LAS {formattedTime} HORAS.</p>
+              <p>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
+            </>, {
           position: toast.POSITION.TOP_CENTER,
           autoClose: false, // Para que no se cierre automáticamente
           hideProgressBar: true, // Para ocultar la barra de progreso
