@@ -92,8 +92,8 @@ function UsersTable() {
   const sendWhatsAppMessageConfirmation = (userData) => {
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
-  const bookedTickets = userData.bookedTickets.map((ticket) => ticket.ticketNumbers.join(", ")); // Obtener números de ticket
-  const ticketCount = bookedTickets.length; // Contar la cantidad de tickets reservados
+  const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
+  const ticketCount = bookedTickets.length; // Contar la cantidad de boletos reservados
   const ticketPrice = 10; // Precio por ticket (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
@@ -106,7 +106,7 @@ function UsersTable() {
   A NOMBRE DE:
   ${fullName}.
   CON DOMICILIO EN:
-  ${city}, ${state}.
+  ${ciudad}, ${estado}.
   CON UN PRECIO TOTAL DE: $${totalPrice} PESOS.`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
