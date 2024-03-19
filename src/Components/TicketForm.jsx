@@ -152,30 +152,36 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 {city}, {state}.< br/>
                 𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.</p>
             </div>
-                 <button onClick={() => 
-                      sendWhatsAppMessage(
-  `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
-  `HOLA,
-  HAS RESERVADO ${selectedTicketCount} BOLETO(S).
-  𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
-  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 EN EFECTIVO. DEL DIA 19 DE MARZO DE 2024.
-  
-  𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
-  $${totalPrice} 𝗣𝗘𝗦𝗢𝗦.
-  𝙏𝙐𝙎 𝘽𝙊𝙇𝙀𝙏𝙊𝙎 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀:
-  ${fullName}.
-  𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉:
-  ${city}, ${state}
-  𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎:
-  ${mobNumber}.
-  
-  𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
+                 <div className="button-container">
+  <button 
+    onClick={() => sendWhatsAppMessage(
+      `52${phoneNumber}`, 
+      `HOLA,
+      HAS RESERVADO ${selectedTicketCount} BOLETO(S).
+      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 EN EFECTIVO. DEL DIA 19 DE MARZO DE 2024.
+      
+      𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
+      $${totalPrice} PESOS.
+      𝙏𝙐𝙎 𝘽𝙊𝙇𝙀𝙏𝙊𝙎 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀:
+      ${fullName}.
+      𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉:
+      ${city}, ${state}
+      𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎:
+      ${mobNumber}.
+      
+      𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
 
-  EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.
-  
-  METODOS DE PAGO AQUÍ PUEDES VERLOS:
-  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
-)}>Enviar a WhatsApp</button>
+      EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.
+      
+      METODOS DE PAGO AQUÍ PUEDES VERLOS:
+      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
+    )}
+    className="dialog-button-whatsapp"
+  >
+    Enviar a WhatsApp
+  </button>
+</div>
 
   </>,
   {
