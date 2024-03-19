@@ -136,18 +136,19 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           toast.success(
   <>
-    <div style={{ padding: '20px', backgroundColor: '#f2f2f2', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
-      <h3 style={{ color: '#333', marginBottom: '10px' }}>"REGISTRO EXITOSO"</h3>
-      <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
-      <p style={{ color: '#555', marginBottom: '3px' }}>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
-      <p style={{ color: '#555', marginBottom: '3px' }}>CON LOS NUMEROS: [ {selectedTicketNumbers} ].</p>
-      <p style={{ color: '#555', marginBottom: '3px' }}>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
-      <p style={{ color: '#555', marginBottom: '3px' }}>EL PRECIO TOTAL ES: ${totalPrice} PESOS.</p>
-      <p style={{ color: '#555', marginBottom: '3px' }}>TUS BOLETOS A NOMBRE DE: {fullName}.</p>
-      <p style={{ color: '#555', marginBottom: '3px' }}>CON DOMICILIO EN: {city}, {state}</p>
-      <p style={{ color: '#555', marginBottom: '3px' }}>TU NÚMERO DE TELÉFONO ES: {mobNumber}.</p>
-      <p style={{ color: '#555', marginBottom: '3px' }}>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
-    </div>
+               <div style={{ padding: '20px', backgroundColor: '#f2f2f2', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
+              <h3 style={{ color: '#333', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>"REGISTRO EXITOSO"</h3>
+              <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>CON LOS NUMEROS: [ {selectedTicketNumbers} ].</p>
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>EL PRECIO TOTAL ES: ${totalPrice} PESOS.</p>
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>TUS BOLETOS A NOMBRE DE: {fullName}.</p>
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>CON DOMICILIO EN: {city}, {state}</p>
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>TU NÚMERO DE TELÉFONO ES: {mobNumber}.</p>
+              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px', fontWeight: 'bold' }}>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
+            </div>
+
   </>,
   {
     position: toast.POSITION.TOP_CENTER,
