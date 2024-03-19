@@ -7,10 +7,11 @@ import "./styles.css";
 function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
-      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 41</p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 19 DE MARZO</p>
-      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $3000 PESOS</p>
-      <p style={{ fontSize: '20px' }}>Costo por Boleto $50.00 MXN</p>
+      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 42</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 10 DE MAYO</p>
+      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $40,000 PESOS</p>
+      <p className="bold" style={{ color: "green", fontSize: '21px' }}>(ADEMAS $10,000 PESOS EN PRESORTEO EL 30 DE ABRIL)</p>
+      <p style={{ fontSize: '20px' }}>Costo por Boleto $20.00 MXN</p>
       <br />
       
       
