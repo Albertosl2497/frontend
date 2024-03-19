@@ -6,6 +6,12 @@ import "./ticket.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Definimos la función copyUserName fuera del componente
+const copyUserName = (userName) => {
+  navigator.clipboard.writeText(userName);
+  toast.success("Nombre de usuario copiado exitosamente");
+};
+
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const onCellDoubleClicked = (params) => {
     const requestOptions = {
