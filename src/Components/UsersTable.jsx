@@ -78,11 +78,14 @@ function UsersTable() {
     },
   ];
 
-  const sendWhatsAppMessage = (phoneNumber) => {
-    const message = "Hola, ¿cómo estás?";
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
-  };
+  const sendWhatsAppMessage = (user) => {
+  const phoneNumber = user.user.phoneNumber;
+  const fullName = user.user.fullName;
+  const message = `Hola ${fullName}, ¿cómo estás?`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, "_blank");
+};
+
 
   const onGridReady = (params) => {
     setGridApi(params.api);
