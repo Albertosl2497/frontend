@@ -67,23 +67,24 @@ function UsersTable() {
     },
     {
       headerName: "Send WhatsApp Message",
-            cellRendererFramework: (params) => {
-        return (
-          <button onClick={() => sendWhatsAppMessage(params.data)}>
-            Send Message
-          </button>
-        );
+  cellRendererFramework: (params) => {
+    return (
+      <button onClick={() => sendWhatsAppMessage(params.data)}>
+        Send Message
+      </button>
+    );
       },
     },
   ];
 
-  const sendWhatsAppMessage = (data) => {
-  const phoneNumber = data.phoneNumber;
-  const fullName = data.user.fullName;
+  const sendWhatsAppMessage = (userData) => {
+  const phoneNumber = userData.phoneNumber;
+  const fullName = userData.user.fullName;
   const message = `Hola ${fullName}, ¿cómo estás?`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 };
+
 
 
 
