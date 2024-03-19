@@ -134,23 +134,29 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           );
           setTickets(newTickets);
 
-          toast.success(  <>
-              <h2 style={{ color: 'blue' }}>BOLETOS VENDIDOS EXITOSAMENTE</h2>
-              <p style={{ color: 'brown' }}>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
-              <p style={{ color: 'brown' }}>LOS NÚMEROS SON: [ {selectedTicketNumbers} ].</p>
-              <p style={{ color: 'brown' }}>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
-              <p style={{ color: 'brown' }}>EL PRECIO TOTAL ES: ${totalPrice} PESOS.</p>
-              <p style={{ color: 'brown' }}>TUS BOLETOS A NOMBRE DE: {fullName}.</p>
-              <p style={{ color: 'brown' }}>CON DOMICILIO EN: {city}, {state}</p>
-              <p style={{ color: 'brown' }}>TELÉFONO: {mobNumber}.</p>
-              <p style={{ color: 'purple' }}>FECHA Y HORA DE REGISTRO: {formattedDate} A LAS {formattedTime} HORAS.</p>
-              <p style={{ color: 'black' }}>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
-            </>, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: false, // Para que no se cierre automáticamente
-          hideProgressBar: true, // Para ocultar la barra de progreso
-          
-        });
+          toast.success(
+  <>
+    <div style={{ padding: '20px', backgroundColor: '#f2f2f2', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
+      <h3 style={{ color: '#333', marginBottom: '10px' }}>HOLA,</h3>
+      <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
+      <p style={{ color: '#555', marginBottom: '10px' }}>HAS RESERVADO {selectedTicketCount} BOLETO(S).</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>LOS NÚMEROS SON: [ {selectedTicketNumbers} ].</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>PARA EL SORTEO DE: $3000 EN EFECTIVO. DEL DÍA 19 DE MARZO DE 2024.</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>EL PRECIO TOTAL ES: ${totalPrice} PESOS.</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>TUS BOLETOS A NOMBRE DE: {fullName}.</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>UBICACIÓN: {city}, {state}</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>TU NÚMERO DE TELÉFONO ES: {mobNumber}.</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>FECHA Y HORA DEL SORTEO: {formattedDate} {formattedTime} Horas.</p>
+      <p style={{ color: '#555', marginBottom: '10px' }}>EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.</p>
+    </div>
+  </>,
+  {
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: false,
+    hideProgressBar: true,
+  }
+);
+
       
           const currentDate = new Date();
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
