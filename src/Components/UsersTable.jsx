@@ -113,8 +113,10 @@ function UsersTable() {
   𝘾𝙊𝙉 𝙐𝙉 𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇 𝘿𝙀:
   $${totalPrice} 𝙋𝙀𝙎𝙊𝙎.
 
-  𝗡𝗢𝗧𝗔: Para poder participar en el presorteo de los $10,000 pesos el dia 30 de Abril 𝙩𝙚𝙣𝙙𝙧𝙖𝙨 𝙦𝙪𝙚 𝙩𝙚𝙣𝙚𝙧 𝙩𝙪𝙨 𝙣𝙪𝙢𝙚𝙧𝙤𝙨 𝙡𝙞𝙦𝙪𝙞𝙙𝙖𝙙𝙤𝙨. De lo contrario no estaras participando.🍀😊
   𝗙𝗘𝗖𝗛𝗔 𝗟𝗜𝗠𝗜𝗧𝗘 𝗗𝗘 𝗣𝗔𝗚𝗢: DOMINGO 5 DE MAYO
+
+  𝗡𝗢𝗧𝗔: Para poder participar en el presorteo de los $10,000 pesos, 𝙩𝙚𝙣𝙙𝙧𝙖𝙨 𝙦𝙪𝙚 𝙩𝙚𝙣𝙚𝙧 𝙩𝙪𝙨 𝙣𝙪𝙢𝙚𝙧𝙤𝙨 𝙡𝙞𝙦𝙪𝙞𝙙𝙖𝙙𝙤𝙨 antes del dia 30 de Abril. De lo contrario no estaras participando.🍀😊
+  
   
   METODOS DE PAGO AQUÍ:
   https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
