@@ -94,7 +94,7 @@ function UsersTable() {
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const ticketCount = bookedTickets.length; // Contar la cantidad de boletos reservados
-  const ticketPrice = 10; // Precio por ticket (¡ajusta según tus necesidades!)
+  const ticketPrice = 20; // Precio por ticket (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
