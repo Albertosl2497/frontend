@@ -153,8 +153,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 {city}, {state}.< br/>
                 𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
                   <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
-                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊
-                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6442340445.<br/>        
+                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6442340445.       
                  NOTA: TOMA CAPTURA DE PANTALLA PARA QUE TENGAS REGISTRO DE TUS BOLETOS.</p>
             </div>
     
