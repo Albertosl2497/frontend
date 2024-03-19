@@ -29,21 +29,7 @@ function MainPageContent() {
 function StepsToFollow() {
   return (
     <div>
-      <p className="bold" style={{ fontSize: '22px' }}>REALIZA LOS SIGUIENTES PASOS:</p>
-      <p className="bold" style={{ fontSize: '18px' }}>
-        PASO 1: Llena el formulario con tus datos:</p>
-      <p style={{ fontSize: '16px' }}>
-        - Teléfono. <br />
-        - Nombre y apellidos. <br />
-        - Estado. <br />
-        - Ciudad. <br />
-      </p>
-      <p className="bold" style={{ fontSize: '18px' }}>
-        PASO 2: Selecciona tus Boletos.               </p>
-      <p className="bold" style={{ fontSize: '18px' }}>
-        PASO 3: Presiona el Botón Verde (Apartar Boletos).     </p>
-      <p  style={{ fontSize: '16px' }}>
-        NOTA: Al presionar en el boton verde (Apartar Boletos), aparecera un mensaje que dice: Tickets Vendidos Exitosamente.</p>
+      <p className="bold" style={{ fontSize: '22px' }}>A CONTINUACIÓN INGRESE SUS DATOS:</p>
       
       
     </div>
