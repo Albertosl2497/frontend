@@ -67,10 +67,9 @@ function UsersTable() {
     },
     {
       headerName: "Send WhatsApp Message",
-      cellRendererFramework: (params) => {
-        const userPhoneNumber = params.data.user.phoneNumber;
+            cellRendererFramework: (params) => {
         return (
-          <button onClick={() => sendWhatsAppMessage(userPhoneNumber)}>
+          <button onClick={() => sendWhatsAppMessage(params.data)}>
             Send Message
           </button>
         );
@@ -79,12 +78,13 @@ function UsersTable() {
   ];
 
   const sendWhatsAppMessage = (user) => {
-  const phoneNumber = user.user.phoneNumber;
-  const fullName = user.user.fullName;
+  const phoneNumber = user.phoneNumber;
+  const fullName = user.fullName;
   const message = `Hola ${fullName}, ¿cómo estás?`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 };
+
 
 
   const onGridReady = (params) => {
