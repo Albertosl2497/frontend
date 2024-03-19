@@ -127,7 +127,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           );
           setTickets(newTickets);
 
-          toast.success("Tickets Vendidos Exitosamente!");
+          toast.success("Tickets Vendidos Exitosamente!", { autoClose: false });
           sendWhatsAppMessage(
               "526441382876",
               `Hola, me gustaría reservar ${selectedTicketCount} boleto(s) de la rifa: ${selectedTicketNumbers}
