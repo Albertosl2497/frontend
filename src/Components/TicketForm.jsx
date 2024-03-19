@@ -150,25 +150,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 {fullName}.< br/>
                 𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
                 {city}, {state}.< br/>
-                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.< br/>
+                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.<p/>
             </div>
-
-  </>,
-  {
-    position: toast.POSITION.TOP_CENTER,
-    autoClose: false,
-    hideProgressBar: true,
-  }
-);
-
-      
-          const currentDate = new Date();
-          const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-          const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-          
-
-
-sendWhatsAppMessage(
+                 <button onClick={() => 
+                      sendWhatsAppMessage(
   `52${phoneNumber}`, // Aquí usamos el número de teléfono del cliente
   `HOLA,
   HAS RESERVADO ${selectedTicketCount} BOLETO(S).
@@ -190,7 +175,24 @@ sendWhatsAppMessage(
   
   METODOS DE PAGO AQUÍ PUEDES VERLOS:
   https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
+)}>Enviar a WhatsApp</button>
+
+  </>,
+  {
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: false,
+    hideProgressBar: true,
+  }
 );
+
+      
+          const currentDate = new Date();
+          const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+          const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+          
+
+
+
 
 
 
