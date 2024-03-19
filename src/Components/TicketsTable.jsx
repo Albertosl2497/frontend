@@ -144,7 +144,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       flex: 1,
       resizable: true,
       sortable: true,
-      width: 150,
+      width: 110,
       cellRenderer: function (params) {
         return params.value;
       },
