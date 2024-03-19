@@ -45,7 +45,9 @@ function UsersTable() {
     headerName: "Mensaje de Cobro",
     cellRendererFramework: (params) => {
       return (
-        <button onClick={() => sendWhatsAppMessage(params.data)}>
+        <button onClick={() => sendWhatsAppMessage(params.data)}
+          style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
+          >
           WhatsApp
         </button>
       );
@@ -55,7 +57,9 @@ function UsersTable() {
     headerName: "Confirmacion",
     cellRendererFramework: (params) => {
       return (
-        <button onClick={() => sendWhatsAppMessageConfirmation(params.data)}>
+        <button onClick={() => sendWhatsAppMessageConfirmation(params.data)}
+          style={{ backgroundColor: "green", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
+          >
           WhatsApp
         </button>
       );
