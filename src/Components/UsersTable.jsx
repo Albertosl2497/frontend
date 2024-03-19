@@ -99,12 +99,12 @@ function UsersTable() {
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
-  const message = `𝙃𝙊𝙇𝘼 𝘾𝙊𝙉𝙁𝙄𝙍𝙈𝘼𝙈𝙊𝙎 𝙎𝙐 𝙍𝙀𝙎𝙀𝙍𝙑𝘼𝘾𝙄𝙊́𝙉 𝘿𝙀 ${ticketCount} 𝙉𝙐́𝙈𝙀𝙍𝙊𝙎: [ ${bookedTickets.join(", ")} ].
+  const message = `𝙃𝙊𝙇𝘼 𝘾𝙊𝙉𝙁𝙄𝙍𝙈𝘼𝙈𝙊𝙎 𝙎𝙐 𝙍𝙀𝙎𝙀𝙍𝙑𝘼𝘾𝙄𝙊́𝙉 𝘿𝙀 ${ticketCount} 𝙉𝙐́𝙈𝙀𝙍𝙊(𝙎):
+  [ ${bookedTickets.join(", ")} ].
   
-  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $40,000 PESOS 💸💰
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 10 DE MAYO 2024.
-  𝘼𝘿𝙀𝙈𝘼𝙎 𝙐𝙉 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $10,000 💸💰
-  𝙀𝙇 𝘿𝙄𝘼: 30 DE ABRIL
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀:
+  $40,000 PESOS 💸💰 𝘿𝙀𝙇 𝘿𝙄𝘼: 10 DE MAYO 2024.
+  (𝘼𝘿𝙀𝙈𝘼𝙎 𝙐𝙉 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $10,000 💸💰 𝙀𝙇 𝘿𝙄𝘼: 30 DE ABRIL).
   
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀:
   ${fullName}.
