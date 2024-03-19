@@ -48,26 +48,26 @@
   background-color: green !important;
 }
 
-/* Establece un alto máximo para la lista de boletos */
+/* Establece un alto máximo para la lista de boletos 
 .display-tickets {
-  max-height: 40vh; /* Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) */
-  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
+  max-height: 40vh; /* Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) 
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario 
 }
 
-/* Establece el ancho de cada boleto para evitar el scroll horizontal */
+/* Establece el ancho de cada boleto para evitar el scroll horizontal 
 .ticket {
-  width: 100%; /* Ocupa todo el ancho disponible */
+  width: 100%; /* Ocupa todo el ancho disponible 
 }
 
-/* Agrega estilos adicionales según sea necesario para los boletos */
+/* Agrega estilos adicionales según sea necesario para los boletos 
 
-/* Estilos para el contenedor de la lista de tickets */
+/* Estilos para el contenedor de la lista de tickets 
 .ticket-list-container {
-  background-color: #f9f9f9; /* Color de fondo del contenedor */
-  border-radius: 30px; /* Borde redondeado para dar profundidad */
-  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
-  padding: 10px; /* Espacio interior para crear separación */
-  margin-top: 10px; /* Márgenes superiores para separación desde arriba */
-  margin-bottom: 10px; /* Márgenes inferiores para separación desde abajo */
+  background-color: #f9f9f9; /* Color de fondo del contenedor 
+  border-radius: 30px; /* Borde redondeado para dar profundidad 
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad 
+  padding: 10px; /* Espacio interior para crear separación 
+  margin-top: 10px; /* Márgenes superiores para separación desde arriba 
+  margin-bottom: 10px; /* Márgenes inferiores para separación desde abajo 
 }
-
+*/
