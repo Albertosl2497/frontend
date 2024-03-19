@@ -134,7 +134,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           );
           setTickets(newTickets);
 
-          toast.success("Tickets Vendidos Exitosamente!");
+          toast.success("Tickets Vendidos Exitosamente!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: false, // Para que no se cierre automáticamente
+          hideProgressBar: true, // Para ocultar la barra de progreso
+          
+        });
       
           const currentDate = new Date();
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
