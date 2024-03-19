@@ -8,74 +8,76 @@ function UsersTable() {
   const [gridColumnApi, setGridColumnApi] = useState(null);
 
   const columnsDef = [
-    {
-      headerName: "User",
-      children: [
-        {
-          field: "user.fullName",
-          headerName: "Full Name",
-          sortable: true,
-          resizable: true,
-        },
-        {
-          field: "user.email",
-          headerName: "Email",
-          sortable: true,
-          resizable: true,
-        },
-        {
-          field: "user.phoneNumber",
-          headerName: "Phone Number",
-          sortable: true,
-          resizable: true,
-        },
-        {
-          field: "user.state",
-          headerName: "State",
-          sortable: true,
-          resizable: true,
-        },
-        {
-          field: "user.city",
-          headerName: "City",
-          sortable: true,
-          resizable: true,
-        },
-      ],
-    },
-    {
-      headerName: "Booked Tickets",
-      field: "bookedTickets",
-      sortable: true,
-      valueGetter: (params) => {
-        return params.data.bookedTickets
-          .map((ticket) => ticket.ticketNumbers.join(", "))
-          .join("\n");
+  {
+    headerName: "User",
+    children: [
+      {
+        field: "user.fullName",
+        headerName: "Full Name",
+        sortable: true,
+        resizable: true,
       },
-      resizable: true,
+    ],
+  },
+  {
+    headerName: "Booked Tickets",
+    field: "bookedTickets",
+    sortable: true,
+    valueGetter: (params) => {
+      return params.data.bookedTickets
+        .map((ticket) => ticket.ticketNumbers.join(", "))
+        .join("\n");
     },
-    {
-      headerName: "Sold Tickets",
-      field: "soldTickets",
-      sortable: true,
-      valueGetter: (params) => {
-        return params.data.soldTickets.map((ticket) =>
-          ticket.ticketNumbers.join(", ")
-        );
-      },
-      resizable: true,
+    resizable: true,
+  },
+  {
+    headerName: "Sold Tickets",
+    field: "soldTickets",
+    sortable: true,
+    valueGetter: (params) => {
+      return params.data.soldTickets.map((ticket) =>
+        ticket.ticketNumbers.join(", ")
+      );
     },
-    {
-      headerName: "Mensaje de Cobro",
-  cellRendererFramework: (params) => {
-    return (
-      <button onClick={() => sendWhatsAppMessage(params.data)}>
-        Send Message
-      </button>
-    );
-      },
+    resizable: true,
+  },
+  {
+    headerName: "Mensaje de Cobro",
+    cellRendererFramework: (params) => {
+      return (
+        <button onClick={() => sendWhatsAppMessage(params.data)}>
+          Send Message
+        </button>
+      );
     },
-  ];
+  },
+  // Las columnas restantes pueden ir aquí según el orden deseado
+  // Por ejemplo:
+  {
+    field: "user.email",
+    headerName: "Email",
+    sortable: true,
+    resizable: true,
+  },
+  {
+    field: "user.phoneNumber",
+    headerName: "Phone Number",
+    sortable: true,
+    resizable: true,
+  },
+  {
+    field: "user.state",
+    headerName: "State",
+    sortable: true,
+    resizable: true,
+  },
+  {
+    field: "user.city",
+    headerName: "City",
+    sortable: true,
+    resizable: true,
+  },
+];
 
   const sendWhatsAppMessage = (userData) => {
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, ""); // Elimina los espacios en blanco del número de teléfono
