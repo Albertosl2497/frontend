@@ -141,7 +141,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
                 >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
-                [ {selectedTicketNumbers} ].< br/>
+                [ {selectedTickets.map(ticket => `${ticket} - ${parseInt(ticket) + 5000}`).join(", ")} ]< br/>
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $20,000 PESOS EN EFECTIVO.< br/>
                 𝗗𝗘𝗟 𝗗𝗜𝗔: 10 DE MAYO DE 2024.< br/>
@@ -153,8 +153,8 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 {city}, {state}.< br/>
                 𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
                   <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
-                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊<br/>
-                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6442340445.        
+                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊
+                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6442340445.<br/>        
                  NOTA: TOMA CAPTURA DE PANTALLA PARA QUE TENGAS REGISTRO DE TUS BOLETOS.</p>
             </div>
     
@@ -462,7 +462,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     }
   >
     {ticket} {/* Número original */}
-    <span style={{marginLeft: '0.5rem'}}> {/* Espacio entre los números */}
+    <span style={{marginLeft: '0.5rem'}}> {-}
       {parseInt(ticket) + 5000} {/* Número adicional */}
     </span>
   </div>
