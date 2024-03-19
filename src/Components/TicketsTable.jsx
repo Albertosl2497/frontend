@@ -174,6 +174,14 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         return params.value ? "Disponible" : "No Disponible";
       },
     },
+
+    {
+      headerName: "Copiar Usuario",
+      field: "user",
+      cellRendererFramework: (params) => (
+        <button onClick={() => copyUserName(params.value)}>Copiar</button>
+      ),
+    },
     
   ];
 
