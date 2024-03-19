@@ -66,10 +66,10 @@ function UsersTable() {
       resizable: true,
     },
     {
-      headerName: "Send WhatsApp Message",
-  cellRendererFramework: () => {
+      headerName: "Mensaje de Cobro",
+  cellRendererFramework: (params) => {
     return (
-      <button onClick={sendWhatsAppMessage}>
+      <button onClick={() => sendWhatsAppMessage(params.data)}>
         Send Message
       </button>
     );
@@ -77,18 +77,14 @@ function UsersTable() {
     },
   ];
 
-  const sendWhatsAppMessage = () => {
-  const selectedRows = gridApi.getSelectedRows();
-  if (selectedRows.length > 0) {
-    const phoneNumber = selectedRows[0].user.phoneNumber;
-    const fullName = selectedRows[0].user.fullName;
-    const message = `Hola ${fullName}, ¿cómo estás?`;
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=52${phoneNumber}&text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
-  } else {
-    console.error("No row selected");
-  }
+  const sendWhatsAppMessage = (userData) => {
+  const phoneNumber = userData.user.phoneNumber;
+  const fullName = userData.user.fullName;
+  const message = `Hola ${fullName}, ¿cómo estás?`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, "_blank");
 };
+
 
 
 
