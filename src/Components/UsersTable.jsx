@@ -101,23 +101,18 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const ticketCount = bookedTickets.length; // Contar la cantidad de boletos reservados
-  const ticketPrice = 20; // Precio por ticket (¡ajusta según tus necesidades!)
+  const ticketPrice = 100; // Precio por ticket (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
-  // Función para generar la pareja de un número de boleto
-  const generatePair = (number) => parseInt(number) + 5000;
 
-  // Generar las parejas de los números de boleto reservados
-const bookedTicketsWithPair = bookedTickets.map(ticketNumber => `(${ticketNumber} - ${generatePair(ticketNumber)})`);
 
   const message = `𝙃𝙊𝙇𝘼 𝘾𝙊𝙉𝙁𝙄𝙍𝙈𝘼𝙈𝙊𝙎 𝙎𝙐 𝙍𝙀𝙎𝙀𝙍𝙑𝘼𝘾𝙄𝙊́𝙉 𝘿𝙀 ${ticketCount} 𝙉𝙐́𝙈𝙀𝙍𝙊(𝙎):
-  [ ${bookedTicketsWithPair.join(" | ")} ].
+  [ ${bookedTickets} ].
   
   𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀:
-  $40,000 PESOS 💸💰 𝘿𝙀𝙇 𝘿𝙄𝘼: 10 DE MAYO 2024.
-  (𝘼𝘿𝙀𝙈𝘼𝙎 𝙐𝙉 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $10,000 💸💰 𝙀𝙇 𝘿𝙄𝘼: 30 DE ABRIL).
+  $7000 PESOS 💸💰 𝘿𝙀𝙇 𝘿𝙄𝘼: 24 DE MARZO 2024.
   
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀:
   ${fullName}.
@@ -125,9 +120,7 @@ const bookedTicketsWithPair = bookedTickets.map(ticketNumber => `(${ticketNumber
   ${ciudad}, ${estado}.
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇:
   $${totalPrice} 𝙋𝙀𝙎𝙊𝙎.
-  𝗙𝗘𝗖𝗛𝗔 𝗟𝗜𝗠𝗜𝗧𝗘 𝗗𝗘 𝗣𝗔𝗚𝗢: DOMINGO 5 DE MAYO.
 
-  𝗡𝗢𝗧𝗔: Para poder participar en el presorteo de los $10,000 pesos, 𝙩𝙚𝙣𝙙𝙧𝙖𝙨 𝙦𝙪𝙚 𝙩𝙚𝙣𝙚𝙧 𝙩𝙪𝙨 𝙣𝙪𝙢𝙚𝙧𝙤𝙨 𝙡𝙞𝙦𝙪𝙞𝙙𝙖𝙙𝙤𝙨 𝙖𝙣𝙩𝙚𝙨 𝙙𝙚𝙡 𝙙𝙞𝙖 30 𝙙𝙚 𝘼𝙗𝙧𝙞𝙡. De lo contrario no estaras participando.🍀😊
   
   METODOS DE PAGO AQUÍ:
   https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
