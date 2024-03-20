@@ -143,7 +143,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
                 [ {selectedTickets.map(ticket => `${ticket} - ${parseInt(ticket) + 5000}`).join(", ")} ]< br/>
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $20,000 PESOS EN EFECTIVO. 𝗗𝗘𝗟 𝗗𝗜𝗔: 10 DE MAYO DE 2024.< br/>
+                $40,000 PESOS EN EFECTIVO. 𝗗𝗘𝗟 𝗗𝗜𝗔: 10 DE MAYO DE 2024.< br/>
                 (𝘼𝘿𝙀𝙈𝘼𝙎 $10,000 𝙀𝙉 𝙀𝙁𝙀𝘾𝙏𝙄𝙑𝙊 𝘿𝙀 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝙀𝙇 𝘿𝙄𝘼 30 𝘿𝙀 𝘼𝘽𝙍𝙄𝙇)< br/> < br/>
                 𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
@@ -234,7 +234,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     }
   };
 
-  let itemsPerPage = 1000;
+  let itemsPerPage = 5000;
 
   useEffect(() => {
     if (Array.isArray(tickets)) {
