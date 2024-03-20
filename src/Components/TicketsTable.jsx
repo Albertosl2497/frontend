@@ -132,16 +132,16 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   const columnDefs = [
     {
-    headerName: "Boletos No.#",
-    field: "ticketNumber",
-    sortable: true,
-    resizable: true,
-    width: 180,
-    cellRenderer: function (params) {
-      const ticketNumber = params.value;
-      const pairNumber = ticketNumber + 5000; // Sumar 5000 al número del boleto para obtener la pareja
-      return `(${ticketNumber} - ${pairNumber})`; // Mostrar el número de boleto junto con su pareja en el formato (0001 - 5001)
-    },
+  headerName: "Boletos No.#",
+  field: "ticketNumber",
+  sortable: true,
+  resizable: true,
+  width: 180,
+  cellRenderer: function (params) {
+    const ticketNumber = parseInt(params.value); // Convertir el número del boleto a entero
+    const pairNumber = ticketNumber + 5000; // Sumar 5000 al número del boleto para obtener la pareja
+    return `(${ticketNumber} - ${pairNumber})`; // Mostrar el número de boleto junto con su pareja en el formato (0001 - 5001)
+  },
        },
     {
       headerName: "Propietario",
