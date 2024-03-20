@@ -141,17 +141,19 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
                 >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
-                [ {selectedTickets.slice(0, 10).map(ticket => `${ticket} - ${parseInt(ticket) + 5000}`).join(", ")} {selectedTickets.length > 10 ? "..." : ""} ]<br />                𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $40,000 PESOS EN EFECTIVO. 𝗗𝗘𝗟 𝗗𝗜𝗔: 10 DE MAYO DE 2024.< br/>
-                (𝘼𝘿𝙀𝙈𝘼𝙎 $10,000 𝙀𝙉 𝙀𝙁𝙀𝘾𝙏𝙄𝙑𝙊 𝘿𝙀 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝙀𝙇 𝘿𝙄𝘼 30 𝘿𝙀 𝘼𝘽𝙍𝙄𝙇)< br/>
-                    𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
-                    𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
-                    {fullName}.< br/>
-                    𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
-                    {city}, {state}.< br/>
-                    𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
-                  <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
-                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Gracias por participar.😊🌼</p>
+                [ {selectedTicketNumbers} ].< br/>
+                𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
+                $7000 PESOS EN EFECTIVO.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 24 DE MARZO DE 2024.< br/>
+                𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
+                𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
+                {fullName}.< br/>
+                𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
+                {city}, {state}.< br/>
+                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/>
+
+                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊
+                 Estaras recibiendo confirmacion por Whatsapp en unos momentos.</p>
             </div>
     
              
