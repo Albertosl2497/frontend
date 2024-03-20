@@ -42,7 +42,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [errors, setErrors] = useState({});
 
   const selectedTicketCount = selectedTickets.length;
-  const ticketPrice = 20; // Precio de cada boleto en pesos
+  const ticketPrice = 100; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
