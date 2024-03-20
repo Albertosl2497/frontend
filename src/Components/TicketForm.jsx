@@ -153,8 +153,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
 
                <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
-                 Tus numeros han sido registrados con exito. Gracias por participar.🍀😊
-                 Estaras recibiendo confirmacion por Whatsapp en unos momentos.</p>
+                Gracias por participar.🍀😊 Estaras recibiendo confirmacion por Whatsapp en unos momentos.</p>
             </div>
     
              
