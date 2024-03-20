@@ -155,6 +155,39 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
                 Gracias por participar.🍀😊 Estaras recibiendo confirmacion por Whatsapp en unos momentos.</p>
             </div>
+             <div className="button-container">
+  <button 
+    onClick={() => sendWhatsAppMessage(
+      `52${phoneNumber}`, 
+      `HOLA,
+      HE RESERVADO ${selectedTicketCount} BOLETO(S).
+      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $40,000 EN EFECTIVO. DEL DIA 10 DE MAYO DE 2024.
+      (ADEMAS UN PRESORTE DE $10,000 PESOS EL DIA 30 DE ABRIL).
+      
+      𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
+      $${totalPrice} PESOS.
+      𝙏𝙐𝙎 𝘽𝙊𝙇𝙀𝙏𝙊𝙎 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀:
+      ${fullName}.
+      𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉:
+      ${city}, ${state}
+      𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎:
+      ${mobNumber}.
+
+      𝗡𝗢𝗧𝗔: Para poder participar en el presorteo de los $10,000 pesos, 𝙩𝙚𝙣𝙙𝙧𝙖𝙨 𝙦𝙪𝙚 𝙩𝙚𝙣𝙚𝙧 𝙩𝙪𝙨 𝙣𝙪𝙢𝙚𝙧𝙤𝙨 𝙡𝙞𝙦𝙪𝙞𝙙𝙖𝙙𝙤𝙨 antes del dia 30 de Abril. De lo contrario no estaras participando.🍀😊
+      
+      𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
+
+      EL EQUIPO DE RIFAS EFECTIVO CAMPO TREINTA TE AGRADECE. SALUDOS Y MUCHA SUERTE.
+      
+      METODOS DE PAGO AQUÍ PUEDES VERLOS:
+      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
+    )}
+    className="dialog-button-whatsapp"
+  >
+    Enviar a WhatsApp
+  </button>
+</div> 
     
              
 
