@@ -140,7 +140,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     cellRenderer: function (params) {
       const ticketNumber = params.value;
       const pairNumber = ticketNumber + 5000; // Sumar 5000 al número del boleto para obtener la pareja
-      return `${ticketNumber} (${pairNumber})`; // Mostrar el número de boleto junto con su pareja
+      return `(${ticketNumber} - ${pairNumber})`; // Mostrar el número de boleto junto con su pareja en el formato (0001 - 5001)
     },
        },
     {
