@@ -144,16 +144,15 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 [ {selectedTickets.map(ticket => `${ticket} - ${parseInt(ticket) + 5000}`).join(", ")} ]< br/>
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $40,000 PESOS EN EFECTIVO. 𝗗𝗘𝗟 𝗗𝗜𝗔: 10 DE MAYO DE 2024.< br/>
-                (𝘼𝘿𝙀𝙈𝘼𝙎 $10,000 𝙀𝙉 𝙀𝙁𝙀𝘾𝙏𝙄𝙑𝙊 𝘿𝙀 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝙀𝙇 𝘿𝙄𝘼 30 𝘿𝙀 𝘼𝘽𝙍𝙄𝙇)< br/> < br/>
-                𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
-                𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
-                {fullName}.< br/>
-                𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
-                {city}, {state}.< br/>
-                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
+                (𝘼𝘿𝙀𝙈𝘼𝙎 $10,000 𝙀𝙉 𝙀𝙁𝙀𝘾𝙏𝙄𝙑𝙊 𝘿𝙀 𝙋𝙍𝙀𝙎𝙊𝙍𝙏𝙀𝙊 𝙀𝙇 𝘿𝙄𝘼 30 𝘿𝙀 𝘼𝘽𝙍𝙄𝙇)< br/>
+                    𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
+                    𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
+                    {fullName}.< br/>
+                    𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
+                    {city}, {state}.< br/>
+                    𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
                   <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
-                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Cualquier duda contactar a: 6441382876.       
-                 NOTA: TOMA CAPTURA DE PANTALLA PARA QUE TENGAS REGISTRO DE TUS BOLETOS.</p>
+                 Estaras recibiendo confirmacion por Whatsapp en unos momentos. Gracias por participar.😊🌼
             </div>
     
              
