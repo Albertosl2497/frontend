@@ -42,7 +42,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [errors, setErrors] = useState({});
 
   const selectedTicketCount = selectedTickets.length;
-  const ticketPrice = 100; // Precio de cada boleto en pesos
+  const ticketPrice = 50; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -143,8 +143,8 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
                 [ {selectedTicketNumbers} ].< br/>
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $7000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 24 DE MARZO DE 2024.< br/>
+                $3000 PESOS EN EFECTIVO.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 22 DE MARZO DE 2024.< br/>
                 𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
@@ -161,7 +161,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $7000 EN EFECTIVO. DEL DIA 24 DE MARZO DE 2024.
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 EN EFECTIVO. DEL DIA 22 DE MARZO DE 2024.
       
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
       $${totalPrice} PESOS.
