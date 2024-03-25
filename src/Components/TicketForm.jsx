@@ -144,7 +144,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 [ {selectedTicketNumbers} ].< br/>
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $3000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 22 DE MARZO DE 2024.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 26 DE MARZO DE 2024.< br/>
                 𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
