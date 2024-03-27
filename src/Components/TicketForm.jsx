@@ -143,7 +143,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
               <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
                 >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
-                [ {selectedTicketNumbers} ].< br/>
+                [ ${selectedTicketNumbersWithPairs.join(', ')} ].< br/>
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $3000 PESOS EN EFECTIVO.< br/>
                 𝗗𝗘𝗟 𝗗𝗜𝗔: 26 DE MARZO DE 2024.< br/>
