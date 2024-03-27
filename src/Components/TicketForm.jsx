@@ -433,21 +433,26 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         </div>
       </form>
 
-      <div className="search-bar selected-container">
-        {selectedTickets.length > 0 &&
-          selectedTickets.map((ticket, index) => (
-            <div
-              className="selected-ticket"
-              onClick={() => {
-                const updatedTickets = [...selectedTickets];
-                updatedTickets.splice(index, 1);
-                setSelectedTickets(updatedTickets);
-              }}
-            >
-              {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
-            </div>
-          ))}
+<div className="search-bar selected-container">
+  {selectedTickets.length > 0 &&
+    selectedTickets.map((ticket, index) => (
+      <div
+        className="selected-ticket"
+        onClick={() => {
+          const updatedTickets = [...selectedTickets];
+          updatedTickets.splice(index, 1);
+          setSelectedTickets(updatedTickets);
+        }}
+      >
+        {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
+        {/* Agregar los 3 números adicionales */}
+        {[250, 500, 750].map((additionalNumber) => (
+          <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
+        ))}
       </div>
+    ))}
+</div>
+
 
       {/* Search bar with button */}
       <div className="row search-bar">
