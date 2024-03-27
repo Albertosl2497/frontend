@@ -46,15 +46,22 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  // Separar la cadena de números de boletos en un array de números individuales
-const selectedTicketNumbersArray = selectedTicketNumbers.split(", ");
+ const ticketNumbersArray = selectedTicketNumbersArray.map(ticket => {
+  const parsedTicket = parseInt(ticket);
+  return isNaN(parsedTicket) ? null : parsedTicket;
+}).filter(ticket => ticket !== null);
 
-// Convertir cada número de boleto a entero y calcular los números adicionales
-const ticketNumbersArray = selectedTicketNumbersArray.map(ticket => parseInt(ticket));
+// Verifica que todos los elementos sean números válidos
+if (ticketNumbersArray.length !== selectedTicketNumbersArray.length) {
+  // Mostrar un mensaje de error o manejar la situación según sea necesario
+}
+
+// Calcular los números adicionales a, b, c, d
 const [a, b, c, d] = ticketNumbersArray.map(ticket => ticket + 250);
 
 // Construir la cadena con los números de boletos dentro de los corchetes y separados por comas
 const ticketNumbersString = `[${a}, ${b}, ${c}, ${d}]`;
+
 
  
 
