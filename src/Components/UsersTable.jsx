@@ -97,20 +97,22 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 ];
 
   const sendWhatsAppMessageConfirmation = (userData) => {
-  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
+   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
-  const ticketCount = bookedTickets.length; // Contar la cantidad de boletos reservados
-  const ticketPrice = 50; // Precio por ticket (¡ajusta según tus necesidades!)
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
+  const allTickets = [...bookedTickets, ...additionalNumbers]; // Agrupar todos los números de boletos, incluidos los adicionales
+  const ticketCount = allTickets.length; // Contar la cantidad total de boletos
+  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
 
 
-  const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${bookedTickets} ].
-  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 PESOS 💸💰
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 26 DE MARZO 2024.
+  const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 PESOS 💸💰
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 09 DE ABRIL 2024.
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
   𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${ciudad}, ${estado}.
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
