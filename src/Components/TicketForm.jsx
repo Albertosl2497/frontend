@@ -46,6 +46,14 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
+  const a = selectedTicketNumbers;
+  const b = a + 250;
+  const c = b + 250;
+  const d = c + 250;
+
+  // Construir la cadena con los números de boletos dentro de los corchetes y separados por comas
+  const ticketNumbersString = `[${a}, ${b}, ${c}, ${d}]`;
+
  
 
 
@@ -160,7 +168,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     onClick={() => sendWhatsAppMessage(
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
-      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbers} ].
+      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: ${ticketNumbersString}.
       𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 EN EFECTIVO. DEL DIA 26 DE MARZO DE 2024.
       
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
