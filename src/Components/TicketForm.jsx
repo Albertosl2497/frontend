@@ -46,7 +46,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  const a = selectedTicketNumbers;
+  const a = parseInt(selectedTicketNumbers);
   const b = a + 250;
   const c = b + 250;
   const d = c + 250;
