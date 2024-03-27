@@ -51,7 +51,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   return isNaN(parsedTicket) ? null : parsedTicket;
 }).filter(ticket => ticket !== null);
 
-// Verifica que todos los elementos sean números válidos
+// Verifica que todos los elementos sean números válidos 
 if (ticketNumbersArray.length !== selectedTicketNumbersArray.length) {
   // Mostrar un mensaje de error o manejar la situación según sea necesario
 }
