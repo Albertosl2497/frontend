@@ -322,7 +322,7 @@ const totalTickets = selectedTicketCount * 4;
               countries={["MX", "US"]}
             ></ReactFlagsSelect>
             <input
-              type="number"
+              type="tel"
               name="phoneNumber"
               placeholder="Numero de telefono"
               value={phoneNumber}
