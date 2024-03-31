@@ -322,22 +322,23 @@ const totalTickets = selectedTicketCount * 4;
               countries={["MX", "US"]}
             ></ReactFlagsSelect>
             <input
-              type="tel"
-              name="phoneNumber"
-              placeholder="Numero de telefono"
-              value={phoneNumber}
-              onChange={(e) => {
-                const value = e.target.value;
-                setPhoneNumber(value);
-                // Remove error if user has fixed it
-                if (errors.hasOwnProperty("phoneNumber")) {
-                  const newErrors = { ...errors };
-                  delete newErrors["phoneNumber"];
-                  setErrors(newErrors);
-                }
-              }}
-                style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
-            />
+  type="tel"
+  name="phoneNumber"
+  placeholder="Numero de telefono"
+  value={phoneNumber}
+  onChange={(e) => {
+    const value = e.target.value.replace(/\s/g, ''); // Eliminar espacios en blanco
+    setPhoneNumber(value);
+    // Remove error if user has fixed it
+    if (errors.hasOwnProperty("phoneNumber")) {
+      const newErrors = { ...errors };
+      delete newErrors["phoneNumber"];
+      setErrors(newErrors);
+    }
+  }}
+  style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
+/>
+
           </div>
 
           {/* Full field */}
