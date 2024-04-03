@@ -50,7 +50,7 @@ const totalTickets = selectedTicketCount;
   const selectedTicketNumbersWithPairs = selectedTickets.flatMap(ticket => {
     const original = parseInt(ticket);
     const pairs = [original + 250, original + 500, original + 750];
-    return [original, ...pairs].map(num => num.toString().padStart(3, '0')); // Añadir ceros a la izquierda si es necesario
+    return pairs.map(num => num.toString().padStart(3, '0')); // Añadir ceros a la izquierda si es necesario
 });
 
 
@@ -163,7 +163,9 @@ const totalTickets = selectedTicketCount;
     onClick={() => sendWhatsAppMessage(
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
-      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎: [ ${selectedTicketNumbersWithPairs.join(', ')} ].
+      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:${selectedTicketNumbers}.
+      OPORTUNIDADES ADICIONALES:
+      [ ${selectedTicketNumbersWithPairs.join(', ')} ].
       𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 9 DE ABRIL DE 2024.
       
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
