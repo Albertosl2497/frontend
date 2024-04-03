@@ -143,16 +143,16 @@ const totalTickets = selectedTicketCount;
               <h3 style={{ color: '#333', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>"REGISTRO EXITOSO"</h3>
               <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
-                >𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:< br/>
-                [ ${selectedTicketNumbersWithPairs.join(', ')} ].< br/>
+                >HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
+                𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
+                OPORTUNIDADES ADICIONALES:
+                [ ${selectedTicketNumbersWithPairs.join(', ')} ].
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $15,000 PESOS EN EFECTIVO.< br/>
                 𝗗𝗘𝗟 𝗗𝗜𝗔: 09 DE ABRIL DE 2024.< br/>
-                𝗧𝗘𝗟𝗘𝗙𝗢𝗡𝗢: {mobNumber}.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
-                𝗗𝗢𝗠𝗜𝗖𝗜𝗟𝗜𝗢:< br/>
-                {city}, {state}.< br/>
+                
                 𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
 
                <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
@@ -163,7 +163,8 @@ const totalTickets = selectedTicketCount;
     onClick={() => sendWhatsAppMessage(
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
-      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:${selectedTicketNumbers}.
+      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
+      
       OPORTUNIDADES ADICIONALES:
       [ ${selectedTicketNumbersWithPairs.join(', ')} ].
       𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 9 DE ABRIL DE 2024.
