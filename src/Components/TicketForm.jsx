@@ -164,7 +164,6 @@ const totalTickets = selectedTicketCount;
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-      
       OPORTUNIDADES ADICIONALES:
       [ ${selectedTicketNumbersWithPairs.join(', ')} ].
       𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 9 DE ABRIL DE 2024.
