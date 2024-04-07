@@ -1,4 +1,4 @@
-import { AgGridReact } from "ag-grid-react";
+  import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 
 function UsersTable() {
@@ -138,7 +138,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUEN DIA🌼😊 SOLO PARA RECORDAR QUE YA ESTE MARTES ES LA RIFA DE LOS $15,000 PESOS💰
+  const message = `HOLA BUEN DIA🌼😊
+  SOLO PARA RECORDAR QUE YA ESTE MARTES ES LA RIFA DE LOS $15,000 PESOS💰
   TENEMOS AUN PAGOS PENDIENTES DE ${ticketCount} BOLETOS.
   CON LOS NUMEROS:
   [ ${bookedTickets.join(", ")} ].
