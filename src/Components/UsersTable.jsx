@@ -138,21 +138,15 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUEN DIA🌼😊
-  SOLO PARA RECORDAR QUE YA ESTE MARTES ES LA RIFA DE LOS $15,000 PESOS💰
-  TENEMOS AUN PAGOS PENDIENTES DE ${ticketCount} BOLETOS.
-  CON LOS NUMEROS:
+  const message = `𝗛𝗢𝗟𝗔 𝗕𝗨𝗘𝗡 𝗗𝗜𝗔🌼😊 𝗦𝗢𝗟𝗢 𝗣𝗔𝗥𝗔 𝗥𝗘𝗖𝗢𝗥𝗗𝗔𝗥 𝗤𝗨𝗘 𝗬𝗔 𝗘𝗦𝗧𝗘 𝗠𝗔𝗥𝗧𝗘𝗦 𝗘𝗦 𝗟𝗔 𝗥𝗜𝗙𝗔 𝗗𝗘 𝗟𝗢𝗦 $𝟭𝟱,𝟬𝟬𝟬 𝗣𝗘𝗦𝗢𝗦💰
+  𝗧𝗘𝗡𝗘𝗠𝗢𝗦 𝗔𝗨𝗡 𝗣𝗔𝗚𝗢𝗦 𝗣𝗘𝗡𝗗𝗜𝗘𝗡𝗧𝗘𝗦 𝗗𝗘 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦. 𝗖𝗢𝗡 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:
   [ ${bookedTickets.join(", ")} ].
   
   OPORTUNIDADES ADICIONALES:
   [ ${additionalNumbers.join(", ")} ].
   
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
-  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
-  
-  METODOS DE PAGO AQUÍ:
-  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.`;
   window.open(whatsappUrl, "_blank");
   setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
