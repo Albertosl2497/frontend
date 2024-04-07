@@ -127,11 +127,32 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
 
   const sendWhatsAppMessage = (userData) => {
-  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, ""); // Elimina los espacios en blanco del número de teléfono
+ const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
-  const message = `Hola buen día, solo para recordar que hoy es la rifa de los $3000 Pesos. Estaremos recibiendo los pagos hasta las 4:30PM. Gracias😊🌼`;
+  const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
+  const ticketCount = allTickets.length / 4; // Contar la cantidad total de boletos
+  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
+  const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
+  const ciudad = userData.user.city;
+  const estado = userData.user.state;
+
+    
+  const message = `HOLA BUEN DIA🌼😊 SOLO PARA RECORDAR QUE YA ESTE MARTES ES LA RIFA DE LOS $15,000 PESOS💰
+  TENEMOS AUN PAGOS PENDIENTES DE TUS NUMEROS:
+  [ ${bookedTickets.join(", ")} ].
+  
+  OPORTUNIDADES ADICIONALES:
+  [ ${additionalNumbers.join(", ")} ].
+  
+  𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
+  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
+  
+  METODOS DE PAGO AQUÍ:
+  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
+  setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
 
 
