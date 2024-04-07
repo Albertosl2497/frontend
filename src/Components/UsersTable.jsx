@@ -131,7 +131,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
-  const ticketCount = allTickets.length / 4; // Contar la cantidad total de boletos
+  const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
@@ -139,7 +139,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
     
   const message = `HOLA BUEN DIA🌼😊 SOLO PARA RECORDAR QUE YA ESTE MARTES ES LA RIFA DE LOS $15,000 PESOS💰
-  TENEMOS AUN PAGOS PENDIENTES DE TUS NUMEROS:
+  TENEMOS AUN PAGOS PENDIENTES DE ${ticketCount} BOLETOS.
+  CON LOS NUMEROS:
   [ ${bookedTickets.join(", ")} ].
   
   OPORTUNIDADES ADICIONALES:
