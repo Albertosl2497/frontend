@@ -149,8 +149,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
-  setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
-};
+ 
 };
 
 
