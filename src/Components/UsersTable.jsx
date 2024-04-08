@@ -146,7 +146,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   [ ${additionalNumbers.join(", ")} ].
   
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
-  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.}`;
+  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.`};
   window.open(whatsappUrl, "_blank");
   setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
