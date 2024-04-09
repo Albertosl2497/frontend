@@ -138,15 +138,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `𝗛𝗢𝗟𝗔 𝗕𝗨𝗘𝗡 𝗗𝗜𝗔🌼😊 𝗣𝗔𝗥𝗔 𝗥𝗘𝗖𝗢𝗥𝗗𝗔𝗥 𝗤𝗨𝗘 𝗬𝗔 MAÑANA 𝗠𝗔𝗥𝗧𝗘𝗦 𝗘𝗦 𝗟𝗔 𝗥𝗜𝗙𝗔 𝗗𝗘 𝗟𝗢𝗦 $𝟭𝟱,𝟬𝟬𝟬 𝗣𝗘𝗦𝗢𝗦💰
-  𝗦𝗢𝗟𝗢 𝗣𝗔𝗥𝗔 𝗩𝗘𝗥 𝗦𝗜 𝗧𝗘𝗡𝗗𝗥𝗔 𝗘𝗟 𝗣𝗔𝗚𝗢  𝗗𝗘 𝗦𝗨𝗦 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢(𝗦). 𝗖𝗢𝗡 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢𝗦:
-  [ ${bookedTickets.join(", ")} ].
-  
-  OPORTUNIDADES ADICIONALES:
-  [ ${additionalNumbers.join(", ")} ].
-  
-  𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
-  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.`
+  const message = `𝗛𝗢𝗟𝗔 𝗕𝗨𝗘𝗡 𝗗𝗜𝗔, 𝗣𝗔𝗥𝗔 𝗥𝗘𝗖𝗢𝗥𝗗𝗔𝗥 𝗤𝗨𝗘 HOY 𝗘𝗦 𝗟𝗔 𝗥𝗜𝗙𝗔 𝗗𝗘 𝗟𝗢𝗦 $𝟭𝟱,𝟬𝟬𝟬 𝗣𝗘𝗦𝗢𝗦💰
+  ESTAREMOS RECIBIENDO LOS PAGOS HASTA LAS 4:00PM. GRACIAS🌼😊`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
