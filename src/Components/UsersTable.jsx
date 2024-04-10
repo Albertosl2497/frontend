@@ -138,7 +138,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 5PM. 𝗦𝗜 𝗚𝗨𝗦𝗧𝗔 𝗤𝗨𝗘 𝗟𝗢 𝗘𝗦𝗣𝗘𝗥𝗘𝗠𝗢𝗦 𝗨𝗡 𝗣𝗢𝗖𝗢 𝗠𝗔𝗦 𝗡𝗢𝗦 𝗔𝗩𝗜𝗦𝗔 𝗣𝗢𝗥𝗙𝗔. GRACIAS🌼😊`
+  const message = `HOLA BUENAS TARDES SOLO PARA INFORMAR SUS NUMEROS YA NO ESTAN PARTICIPANDO. GRACIAS, CUANDO GUSTE PUEDE VOLVER A PARTICIPAR🌼😊`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
