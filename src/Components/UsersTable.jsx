@@ -138,7 +138,14 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES SOLO PARA INFORMAR SUS NUMEROS YA NO ESTAN PARTICIPANDO. GRACIAS, CUANDO GUSTE PUEDE VOLVER A PARTICIPAR🌼😊`
+  const message = `HOLA BUEN DIA PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS. 
+  SOLO PARA VER SI TENDRA EL PAGO DE SUS ${ticketCount} BOLETO(S).
+CON LOS NUMEROS A PARTICIPAR: ${bookedTickets}.
+OPORTUNIDADES ADICIONALES: ${additionalNumbers}.
+
+PRECIO A PAGAR: ${totalPrice}.
+
+ESTAREMOS RECIBIENDO LOS PAGOS HASTA LAS 4:30PM. GRACIAS😊🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
