@@ -7,8 +7,8 @@ import "./styles.css";
 function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
-      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 46</p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 21 DE ABRIL</p>
+      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 57</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 26 DE MAYO</p>
       <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $15,000 PESOS</p>
       <p style={{ fontSize: '20px' }}>(SOLO 250 PARTICIPANTES)</p>
       <p style={{ fontSize: '20px' }}>Cada boleto con 4 oportunidades</p>
