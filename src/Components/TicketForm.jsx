@@ -149,7 +149,7 @@ const totalTickets = selectedTicketCount;
                 [ {selectedTicketNumbersWithPairs.join(', ')} ].
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $15,000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 21 DE ABRIL DE 2024.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 26 DE MAYO DE 2024.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 
@@ -166,7 +166,7 @@ const totalTickets = selectedTicketCount;
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
       OPORTUNIDADES ADICIONALES:
       [ ${selectedTicketNumbersWithPairs.join(', ')} ].
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 21 DE ABRIL DE 2024.
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 26 DE MAYO DE 2024.
       
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎:
       $${totalPrice} PESOS.
