@@ -102,7 +102,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
-  const ticketCount = allTickets.length / 4; // Contar la cantidad total de boletos
+  const ticketCount = allTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
@@ -139,7 +139,15 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 5:30. SI GUSTA QUE ESPEREMOS UN POCO MAS NOS CONFIRMA PORFA. GRACIAS🌼😊`
+  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 𝟭𝟭𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
+  TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE:
+  ${fullName}.
+  CON UN PRECIO DE: $${totalPrice} PESOS.
+  TUS NUMEROS A PARTICIPAR SON:
+  [ ${allTickets.join(", ")} ].
+  OPORTUNIDADES ADICIONALES: 
+  [ ${additionalNumbers} ].`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
