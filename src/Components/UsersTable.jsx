@@ -146,10 +146,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   CON UN PRECIO DE: $${totalPrice} PESOS.
   
   TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ].
-  
-  OPORTUNIDADES ADICIONALES: 
-  [ ${additionalNumbers} ].`
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
