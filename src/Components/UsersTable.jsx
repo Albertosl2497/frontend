@@ -164,7 +164,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
  
 };
 
-  const sendWhatsAppMessage = (userData) => {
+  const sendWhatsAppMessage2 = (userData) => {
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
