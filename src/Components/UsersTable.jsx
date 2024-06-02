@@ -152,7 +152,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
     
   const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
-  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 3PM 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 2PM 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
   CON UN PRECIO DE: $${totalPrice} PESOS.
@@ -176,7 +176,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS NOCHES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 10AM.
+  const message = `HOLA BUENAS NOCHES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 12PM EN MEDIO DIA.
   SI GUSTA QUE ESPEREMOS UN POCO MAS NOS CONFIRMA PORFA. GRACIAS😊🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
