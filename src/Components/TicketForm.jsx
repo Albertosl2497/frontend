@@ -36,7 +36,10 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
     setEmail(randomEmail);
+    setCity(" ");
   }, [randomNumber]);
+
+   
   
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
@@ -214,7 +217,7 @@ const totalTickets = selectedTicketCount;
         setPhoneNumber("");
         setFullName("");
         setState("");
-        setCity("");
+        setCity(" ");
         setRandomNumber(Math.floor(Math.random() * 1000000000)); // Genera un nuevo número aleatorio
         setSelectedTickets([]);
 
@@ -386,7 +389,7 @@ const totalTickets = selectedTicketCount;
           <label className="bold-label">Ciudad</label>
           <div className="form-row">
             <input
-              type="text"
+              type="hiden"
               name="city"
               placeholder="Municipio o Ciudad"
               value={city}
@@ -407,7 +410,7 @@ const totalTickets = selectedTicketCount;
           {/* Full email field */}
           <div className="form-row">
             <input
-              type="text"
+              type="hiden"
               name="email"
               placeholder="Emailisto"
               value={email}
