@@ -215,7 +215,7 @@ const totalTickets = selectedTicketCount;
         setFullName("");
         setState("");
         setCity("");
-        setEmail("rifasefectivocampotreinta${randomNumber}@gmail.com"); // Deja el campo de correo electrónico en blanco
+        setRandomNumber(Math.floor(Math.random() * 1000000000)); // Genera un nuevo número aleatorio
         setSelectedTickets([]);
 
         // clear the errors
