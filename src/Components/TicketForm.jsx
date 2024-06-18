@@ -171,9 +171,10 @@ const totalTickets = selectedTicketCount;
       [ ${selectedTicketNumbersWithPairs.join(', ')} ].
       𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 30 DE JUNIO DE 2024.
       
+      𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.
-      𝙏𝙐𝙎 𝘽𝙊𝙇𝙀𝙏𝙊𝙎 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
       𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎: ${mobNumber}.
+      CON DOMICILIO EN: ${state}.
       
       𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
       
@@ -389,7 +390,7 @@ const totalTickets = selectedTicketCount;
           <label className="bold-label">Ciudad</label>
           <div className="form-row">
             <input
-              type="hiden"
+              type="hidden"
               name="city"
               placeholder="Municipio o Ciudad"
               value={city}
@@ -410,7 +411,7 @@ const totalTickets = selectedTicketCount;
           {/* Full email field */}
           <div className="form-row">
             <input
-              type="hiden"
+              type="hidden"
               name="email"
               placeholder="Emailisto"
               value={email}
