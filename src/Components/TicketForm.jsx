@@ -430,26 +430,12 @@ const totalTickets = selectedTicketCount;
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
           </button>
           <label className="bold-label">DA CLIC SOBRE LOS NUMEROS SELECCIONADOS PARA CANCELARLO:</label>
-          <div className="input-container">
-  <label className="input-label">Total de boletos seleccionados:</label>
-  <input
-    type="text"
-    value={totalTickets}
-    readOnly
-    className="input-readonly"
-  />
+  <div className="total-info-container">
+  <div className="total-info-item">
+    <label>Total de boletos seleccionados:</label><span>{totalTickets}</span>
+    <label>Precio total:</label><span>{totalPrice} pesos</span>
+  </div>
 </div>
-
-<div className="input-container">
-  <label className="input-label">Precio total:</label>
-  <input
-    type="text"
-    value={totalPrice}
-    readOnly
-    className="input-readonly"
-  />
-</div>
-        </div>
       </form>
 
 <div className="search-bar selected-container">
