@@ -436,6 +436,7 @@ const totalTickets = selectedTicketCount;
     <label>Precio total:</label><span>{totalPrice} pesos</span>
   </div>
 </div>
+          </div>
       </form>
 
 <div className="search-bar selected-container">
