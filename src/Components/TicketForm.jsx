@@ -432,8 +432,8 @@ const totalTickets = selectedTicketCount;
           <label className="bold-label">DA CLIC SOBRE LOS NUMEROS SELECCIONADOS PARA CANCELARLO:</label>
   <div className="total-info-container">
   <div className="total-info-item">
-    <label>Total de boletos seleccionados: {totalTickets}</label>
-    <label>Precio total: ${totalPrice} pesos</label>
+    <label style={{ fontSize: '16px', fontWeight: 'bold' }}>Total de boletos seleccionados: {totalTickets}</label>
+    <label style={{ fontSize: '16px', fontWeight: 'bold' }}>Precio total: ${totalPrice} pesos</label>
   </div>
 </div>
           </div>
