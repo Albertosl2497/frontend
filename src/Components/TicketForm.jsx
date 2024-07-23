@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import ReactPaginate from "react-paginate";
-import ReactFlagsSelect from "react-flags-select"; 
+import ReactFlagsSelect from "react-flags-select";
 import { BsSearch } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import "./ticket.css";
@@ -46,7 +46,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   const selectedTicketCount = selectedTickets.length;
 const totalTickets = selectedTicketCount;
-  const ticketPrice = 35; // Precio de cada boleto en pesos
+  const ticketPrice = 100; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -148,9 +148,11 @@ const totalTickets = selectedTicketCount;
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
                 >HOLA, HAS RESERVADO {totalTickets} BOLETO(S).
                 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
+                OPORTUNIDADES ADICIONALES:
+                [ {selectedTicketNumbersWithPairs.join(', ')} ].
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $20,000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 21 DE JULIO DE 2024.< br/>
+                $15,000 PESOS EN EFECTIVO.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 30 DE JUNIO DE 2024.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 
@@ -165,8 +167,9 @@ const totalTickets = selectedTicketCount;
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-      
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $20,000 EN EFECTIVO. DEL DIA 21 DE JULIO DE 2024.
+      OPORTUNIDADES ADICIONALES:
+      [ ${selectedTicketNumbersWithPairs.join(', ')} ].
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 30 DE JUNIO DE 2024.
       
       𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.
@@ -384,7 +387,7 @@ const totalTickets = selectedTicketCount;
           </div>
 
           {/* Ciudad */}
-          
+          <label className="bold-label">Ciudad</label>
           <div className="form-row">
             <input
               type="hidden"
@@ -429,14 +432,8 @@ const totalTickets = selectedTicketCount;
           <button className="select-ticket" type="submit">
             {btnLoading ? <ClipLoader color="white" /> : "Apartar boletos"}
           </button>
-          <label className="bold-label">DA CLIC SOBRE LOS NUMEROS SELECCIONADOS PARA CANCELARLO:</label>
-  <div className="total-info-container">
-  <div className="total-info-item">
-    <label style={{ fontSize: '16px', fontWeight: 'bold' }}>Total de boletos seleccionados: {totalTickets}</label>
-    <label style={{ fontSize: '16px', fontWeight: 'bold' }}>Precio total: ${totalPrice} pesos</label>
-  </div>
-</div>
-          </div>
+          <label className="bold-label">Da click en los numeros seleccionados para eliminarlo:</label>
+        </div>
       </form>
 
 <div className="search-bar selected-container">
@@ -452,7 +449,9 @@ const totalTickets = selectedTicketCount;
       >
         {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
         {/* Agregar los 3 números adicionales */}
-        
+        {[250, 500, 750].map((additionalNumber) => (
+          <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
+        ))}
       </div>
     ))}
 </div>
