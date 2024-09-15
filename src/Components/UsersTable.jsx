@@ -152,7 +152,9 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
     
   const message = `HOLA BUEN DIA SOLO PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $7000 PESOS💸
-  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 1𝗣𝗠 YA QUE LA RIFA EL DIA DE HOY SERA A LAS 4PM. Si gusta que esperemos un poco mas nos confirma porfa. Gracias😊🌼
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 1𝗣𝗠.
+  
+  YA QUE LA RIFA EL DIA DE HOY SERA A LAS 4PM. Si gusta que esperemos un poco mas nos confirma porfa. Gracias😊🌼
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
   CON UN PRECIO DE: $${totalPrice} PESOS.
