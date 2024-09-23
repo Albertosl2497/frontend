@@ -1,4 +1,4 @@
-import { AgGridReact } from "ag-grid-react";
+  import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 
 function UsersTable() {
@@ -122,7 +122,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
 
 
-  const message = 𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
+  const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
   
   𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 PESOS 💸💰
   𝘿𝙀𝙇 𝘿𝙄𝘼: 24 DE SEPTIEMBRE 2024.
@@ -131,8 +131,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
   
   METODOS DE PAGO AQUÍ:
-  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago;
-  const whatsappUrl = https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)};
+  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
   setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
@@ -145,21 +145,21 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
-  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
+  const ticketPrice = 50; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
     
-  const message = HOLA BUEN DIA SOLO PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $7000 PESOS💸
-  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 7𝗣𝗠. Si gusta que esperemos un poco mas nos confirma porfa. Gracias😊🌼
+  const message = `HOLA BUENOS DIAS SOLO PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $3000 PESOS💸
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 5𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
   CON UN PRECIO DE: $${totalPrice} PESOS.
   
   TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ].
- const whatsappUrl = https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)};
+  [ ${bookedTickets.join(", ")} ].`
+ const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
 };
@@ -176,8 +176,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = HOLA BUENAS TARDES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 5:30PM. Si gusta que esperemos un poco mas nos avisa porfa. GRACIAS😊🌼
- const whatsappUrl = https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)};
+  const message = `HOLA BUENAS TARDES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 5:30PM. Si gusta que esperemos un poco mas nos avisa porfa. GRACIAS😊🌼`
+ const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
 };
