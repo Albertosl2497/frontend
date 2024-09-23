@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 function UsersTable() {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
-  const [gridColumnApi, setGridColumnApi] = useState(null);
+  const [gridColumnApi, setGridColumnApi] = useState([]);
   const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
   const columnsDef = [
@@ -79,45 +79,14 @@ function UsersTable() {
       },
     },
     {
-  headerName: "Método de Pago",
-  children: [
-    {
-      headerName: "Efectivo",
-      cellRendererFramework: (params) => {
-        const isCash = params.data.paymentMethod === "efectivo";
-        return (
-          <label style={{ display: 'flex', alignItems: 'center', margin: '0 5px' }}>
-            <input
-              type="checkbox"
-              checked={isCash}
-              onChange={() => updatePaymentMethod(params.data, "efectivo")}
-              style={{ margin: '0', cursor: 'pointer' }} // Estilo del checkbox
-            />
-            <span style={{ marginLeft: '4px', fontSize: '14px' }}>Efectivo</span>
-          </label>
-        );
+      headerName: "Método de Pago",
+      field: "paymentMethod",
+      sortable: true,
+      resizable: true,
+      cellRenderer: (params) => {
+        return params.value === "efectivo" ? "Efectivo" : params.value === "transferencia" ? "Transferencia" : "Sin pago";
       },
     },
-    {
-      headerName: "Transferencia",
-      cellRendererFramework: (params) => {
-        const isTransfer = params.data.paymentMethod === "transferencia";
-        return (
-          <label style={{ display: 'flex', alignItems: 'center', margin: '0 5px' }}>
-            <input
-              type="checkbox"
-              checked={isTransfer}
-              onChange={() => updatePaymentMethod(params.data, "transferencia")}
-              style={{ margin: '0', cursor: 'pointer' }} // Estilo del checkbox
-            />
-            <span style={{ marginLeft: '4px', fontSize: '14px' }}>Transferencia</span>
-          </label>
-        );
-      },
-    },
-  ],
-},
-
     {
       field: "user.email",
       headerName: "Email",
