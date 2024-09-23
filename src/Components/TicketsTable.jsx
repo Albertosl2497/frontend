@@ -66,10 +66,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           });
       } else {
         const value = ticketToUpdate.availability;
-        fetch(
-          https://rifasefectivocampotreinta.onrender.com/api/tickets/claim-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${value},
-          requestOptions
-        )
+        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`, requestOptions)
           .then((response) => response.json())
           .then((data) => {
             if (data.message === "Sold Tickets can not be made available") {
