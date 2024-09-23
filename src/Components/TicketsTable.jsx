@@ -1,5 +1,4 @@
-tengo esta tabla donde me muestra varias columnas:
-  import { AgGridReact } from "ag-grid-react";
+import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 
 function UsersTable() {
