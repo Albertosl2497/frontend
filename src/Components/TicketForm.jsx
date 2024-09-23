@@ -447,9 +447,7 @@ const totalTickets = selectedTicketCount;
       >
         {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
         {/* Agregar los 3 números adicionales */}
-        {[250, 500, 750].map((additionalNumber) => (
-         // <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
-        ))}
+        
       </div>
     ))}
 </div>
