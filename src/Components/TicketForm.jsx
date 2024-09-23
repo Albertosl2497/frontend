@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import jsPDF from "jspdf";
 
 function sendWhatsAppMessage(phoneNumber, message) {
-  const url = https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)};
+  const url = 'https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}';
   window.open(url, "_blank");
 }
 
