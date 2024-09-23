@@ -79,36 +79,45 @@ function UsersTable() {
       },
     },
     {
-      headerName: "Método de Pago",
-      children: [
-        {
-          headerName: "Efectivo",
-          cellRendererFramework: (params) => {
-            const isCash = params.data.paymentMethod === "efectivo";
-            return (
-              <input
-                type="checkbox"
-                checked={isCash}
-                onChange={() => updatePaymentMethod(params.data, "efectivo")}
-              />
-            );
-          },
-        },
-        {
-          headerName: "Transferencia",
-          cellRendererFramework: (params) => {
-            const isTransfer = params.data.paymentMethod === "transferencia";
-            return (
-              <input
-                type="checkbox"
-                checked={isTransfer}
-                onChange={() => updatePaymentMethod(params.data, "transferencia")}
-              />
-            );
-          },
-        },
-      ],
+  headerName: "Método de Pago",
+  children: [
+    {
+      headerName: "Efectivo",
+      cellRendererFramework: (params) => {
+        const isCash = params.data.paymentMethod === "efectivo";
+        return (
+          <label style={{ display: 'flex', alignItems: 'center', margin: '0 5px' }}>
+            <input
+              type="checkbox"
+              checked={isCash}
+              onChange={() => updatePaymentMethod(params.data, "efectivo")}
+              style={{ margin: '0', cursor: 'pointer' }} // Estilo del checkbox
+            />
+            <span style={{ marginLeft: '4px', fontSize: '14px' }}>Efectivo</span>
+          </label>
+        );
+      },
     },
+    {
+      headerName: "Transferencia",
+      cellRendererFramework: (params) => {
+        const isTransfer = params.data.paymentMethod === "transferencia";
+        return (
+          <label style={{ display: 'flex', alignItems: 'center', margin: '0 5px' }}>
+            <input
+              type="checkbox"
+              checked={isTransfer}
+              onChange={() => updatePaymentMethod(params.data, "transferencia")}
+              style={{ margin: '0', cursor: 'pointer' }} // Estilo del checkbox
+            />
+            <span style={{ marginLeft: '4px', fontSize: '14px' }}>Transferencia</span>
+          </label>
+        );
+      },
+    },
+  ],
+},
+
     {
       field: "user.email",
       headerName: "Email",
