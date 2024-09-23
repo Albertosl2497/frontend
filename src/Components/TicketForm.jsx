@@ -34,7 +34,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
   
   useEffect(() => {
-    const randomEmail = rifasefectivocampotreinta${randomNumber}@gmail.com;
+    const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
     setEmail(randomEmail);
     setCity(" ");
   }, [randomNumber]);
@@ -112,7 +112,7 @@ const totalTickets = selectedTicketCount;
         setBtnLoading(true);
         
         const response = await fetch(
-          https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo},
+          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
           {
             method: "PATCH",
             headers: {
@@ -177,7 +177,7 @@ const totalTickets = selectedTicketCount;
       𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
       
       METODOS DE PAGO AQUÍ PUEDES VERLOS:
-      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
+      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
     )}
     className="dialog-button-whatsapp"
   >
