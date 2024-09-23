@@ -452,7 +452,12 @@ const totalTickets = selectedTicketCount;
     ))}
 </div>
 
-      <div className="ticket-counter">
+      <div className="ticket-counter" style={{
+  marginBottom: '10px',  // Espacio debajo del contador
+  fontSize: '16px',      // Tamaño de fuente
+  fontWeight: 'bold',    // Negrita
+  color: '#333'          // Color del texto
+}}>
   <span>Cantidad de tickets: {selectedTicketCount}</span>
 </div>
 
