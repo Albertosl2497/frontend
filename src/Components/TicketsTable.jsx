@@ -1,125 +1,194 @@
-import { useState, useEffect, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import "./ticket.css";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+tengo esta tabla donde me muestra varias columnas:
+  import { AgGridReact } from "ag-grid-react";
+import React, { useEffect, useState } from "react";
 
-// Definimos la función copyUserName fuera del componente
-const copyUserName = (userName) => {
-  // Dividir el nombre de usuario y el correo electrónico
-  const [name, email] = userName.split(' (');
-  const uppercaseName = name.trim().toUpperCase(); // Convertir el nombre a mayúsculas
-  navigator.clipboard.writeText(uppercaseName); // Copiar el nombre de usuario en mayúsculas
-  toast.success("Nombre de usuario copiado exitosamente");
-};
-
-function TicketTable({ tickets, lotteryNo, setStats, stats }) {
-  const onCellDoubleClicked = (params) => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    };
-    let isChanged = false;
-    if (
-      params.colDef.field === "sold" ||
-      params.colDef.field === "availability"
-    ) {
-      const ticketToUpdate = params.data;
-      let newStatus, newAvailability;
-      if (params.colDef.field === "sold") {
-        let value = ticketToUpdate.sold;
-        fetch(
-          https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${
-            ticketToUpdate.ticketNumber
-          }/${!value},
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            newStatus = ticketToUpdate.sold ? false : true;
-            newAvailability = ticketToUpdate.availability;
-            isChanged = true;
-            if (isChanged) {
-              const updatedData = [...rowData];
-              const updatedTicket = {
-                ...ticketToUpdate,
-                sold: newStatus,
-                availability: !newStatus,
-              };
-              const rowIndex = updatedData.findIndex((row) => {
-                return row.ticketNumber === ticketToUpdate.ticketNumber;
-              });
-
-              let soldCount = newStatus ? 1 : -1;
-
-              setStats({
-                soldCount: stats.soldCount + soldCount,
-                bookedCount: stats.bookedCount,
-              });
-
-              updatedData[rowIndex] = updatedTicket;
-              setRowData(updatedData);
-            }
-            toast.success("Estado del boleto actualizado exitosamente");
-          })
-          .catch((error) => {
-            console.error(error);
-            toast.error("Error al actualizar el estado del boleto");
-          });
-      } else {
-        const value = ticketToUpdate.availability;
-        fetch(
-          https://rifasefectivocampotreinta.onrender.com/api/tickets/claim-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${value},
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.message === "Sold Tickets can not be made available") {
-              toast.error(data.message);
-              return;
-            }
-
-            newStatus = ticketToUpdate.sold;
-            newAvailability = ticketToUpdate.availability ? false : true;
-            isChanged = true;
-            if (isChanged) {
-              const updatedData = [...rowData];
-              const updatedTicket = {
-                ...ticketToUpdate,
-                sold: newAvailability ? false : newStatus,
-                availability: newAvailability,
-              };
-
-              let bookedCount = !newAvailability ? 1 : -1;
-
-              setStats({
-                soldCount: stats.soldCount,
-                bookedCount: stats.bookedCount + bookedCount,
-              });
-
-              const rowIndex = updatedData.findIndex((row) => {
-                return row.ticketNumber === ticketToUpdate.ticketNumber;
-              });
-
-              updatedData[rowIndex] = updatedTicket;
-              setRowData(updatedData);
-            }
-            toast.success("Ticket availability updated successfully");
-          })
-          .catch((error) => {
-            console.error(error);
-            toast.error("Error updating ticket availability");
-          });
-      }
-    }
-  };
-
+function UsersTable() {
   const [rowData, setRowData] = useState([]);
 
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
+const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
+
+
+  const columnsDef = [
+  {
+    headerName: "User",
+    children: [
+      {
+        field: "user.fullName",
+        headerName: "Full Name",
+        sortable: true,
+        resizable: true,
+      },
+    ],
+  },
+  {
+    headerName: "Booked Tickets",
+    field: "bookedTickets",
+    sortable: true,
+    valueGetter: (params) => {
+      return params.data.bookedTickets
+        .map((ticket) => ticket.ticketNumbers.join(", "))
+        .join("\n");
+    },
+    resizable: true,
+  },
+  {
+    headerName: "Sold Tickets",
+    field: "soldTickets",
+    sortable: true,
+    valueGetter: (params) => {
+      return params.data.soldTickets.map((ticket) =>
+        ticket.ticketNumbers.join(", ")
+      );
+    },
+    resizable: true,
+  },
+  {
+    headerName: "Mensaje de Cobro",
+    cellRendererFramework: (params) => {
+      return (
+        <button onClick={() => sendWhatsAppMessage(params.data)}
+          style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
+          >
+          WhatsApp
+        </button>
+      );
+    },
+  },
+    {
+    headerName: "Mensaje de Cobro2",
+    cellRendererFramework: (params) => {
+      return (
+        <button onClick={() => sendWhatsAppMessage2(params.data)}
+          style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
+          >
+          WhatsApp
+        </button>
+      );
+    },
+  },
+    {
+    headerName: "Confirmacion",
+  cellRendererFramework: (params) => {
+    const isConfirmationSent = confirmationSentEmails.includes(params.data.user.email);
+    const buttonStyle = isConfirmationSent ? { backgroundColor: "gray", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "not-allowed" } : { backgroundColor: "green", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" };
+
+    return (
+      <button onClick={() => sendWhatsAppMessageConfirmation(params.data)} style={buttonStyle}>
+        WhatsApp
+      </button>
+      );
+    },
+  },
+  // Las columnas restantes pueden ir aquí según el orden deseado
+  // Por ejemplo:
+  {
+    field: "user.email",
+    headerName: "Email",
+    sortable: true,
+    resizable: true,
+  },
+  {
+    field: "user.phoneNumber",
+    headerName: "Phone Number",
+    sortable: true,
+    resizable: true,
+  },
+  {
+    field: "user.state",
+    headerName: "State",
+    sortable: true,
+    resizable: true,
+  },
+  {
+    field: "user.city",
+    headerName: "City",
+    sortable: true,
+    resizable: true,
+  },
+];
+
+  const sendWhatsAppMessageConfirmation = (userData) => {
+  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
+  const fullName = userData.user.fullName;
+  const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
+  const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
+  const ticketCount = allTickets.length; // Contar la cantidad total de boletos
+  const ticketPrice = 50; // Precio por boleto (¡ajusta según tus necesidades!)
+  const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
+  const ciudad = userData.user.city;
+  const estado = userData.user.state;
+
+
+
+  const message = 𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
+  
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 PESOS 💸💰
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 24 DE SEPTIEMBRE 2024.
+  𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
+  𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
+  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
+  
+  METODOS DE PAGO AQUÍ:
+  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago;
+  const whatsappUrl = https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)};
+  window.open(whatsappUrl, "_blank");
+  setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
+};
+
+
+
+  const sendWhatsAppMessage = (userData) => {
+ const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
+  const fullName = userData.user.fullName;
+  const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
+  const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
+  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
+  const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
+  const ciudad = userData.user.city;
+  const estado = userData.user.state;
+
+    
+  const message = HOLA BUEN DIA SOLO PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $7000 PESOS💸
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 7𝗣𝗠. Si gusta que esperemos un poco mas nos confirma porfa. Gracias😊🌼
+  
+  TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
+  CON UN PRECIO DE: $${totalPrice} PESOS.
+  
+  TUS NUMEROS A PARTICIPAR SON:
+  [ ${bookedTickets.join(", ")} ].
+ const whatsappUrl = https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)};
+  window.open(whatsappUrl, "_blank");
+ 
+};
+
+  const sendWhatsAppMessage2 = (userData) => {
+ const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
+  const fullName = userData.user.fullName;
+  const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
+  const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
+  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
+  const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
+  const ciudad = userData.user.city;
+  const estado = userData.user.state;
+
+    
+  const message = HOLA BUENAS TARDES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 5:30PM. Si gusta que esperemos un poco mas nos avisa porfa. GRACIAS😊🌼
+ const whatsappUrl = https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)};
+  window.open(whatsappUrl, "_blank");
+ 
+};
+
+
+
+
+
+
+
 
   const onGridReady = (params) => {
     setGridApi(params.api);
@@ -130,105 +199,43 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     gridApi.setQuickFilter(document.getElementById("quickFilter").value);
   };
 
-  const columnDefs = [
-    {
-  headerName: "Boletos #",
-      field: "ticketNumber",
-      sortable: true,
-      resizable: true,
-      width: 80,
-       },
-    {
-      headerName: "Propietario",
-      field: "user",
-      flex: 1,
-      resizable: true,
-      sortable: true,
-      width: 110,
-      cellRenderer: function (params) {
-        return params.value;
-      },
-    },
-    {
-      headerName: "Estado",
-      field: "sold",
-      editable: true,
-      sortable: true,
-      resizable: true,
-      width: 130,
-      cellClassRules: {
-        "cell-value-green": function (params) {
-          return !params.value;
-        },
-        "cell-value-red": function (params) {
-          return params.value;
-        },
-      },
-      cellRenderer: function (params) {
-        return params.value ? "Pagado" : "No Pagado";
-      },
-    },
-    {
-      headerName: "Disponibilidad",
-      field: "availability",
-      editable: true,
-      sortable: true,
-      resizable: true,
-      width: 130,
-      cellClassRules: {
-        "cell-value-green": function (params) {
-          return !params.value;
-        },
-        "cell-value-red": function (params) {
-          return params.value;
-        },
-      },
-      cellRenderer: function (params) {
-        return params.value ? "Disponible" : "No Disponible";
-      },
-    },
-
-    {
-      headerName: "Copiar Usuario",
-      field: "user",
-      width: 110,
-      cellRendererFramework: (params) => (
-        <button onClick={() => copyUserName(params.value)}
-        style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
-          >Copiar</button>
-      ),
-    },
-    
-  ];
-
   useEffect(() => {
-    setRowData(tickets || []);
-  }, [tickets]);
+    const getUsers = async () => {
+      fetch("https://rifasefectivocampotreinta.onrender.com/api/users/latest-lottery")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setRowData(data); // do something with the response data
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    };
 
+    getUsers();
+  }, []);
   return (
-    <div style={{ width: "100%", marginTop: 20, height: "100%" }}>
+    <div style={{ width: "100%", marginTop: 20 }}>
       <input
         type="text"
         id="quickFilter"
         placeholder="Search..."
         onChange={onQuickFilterChanged}
-        style={{
-          backgroundColor: "black",
-          color: "white",
-          border: "none",
-        }}
+        style={{ backgroundColor: "black", color: "white", border: "none" }}
       />
       <div className="ag-theme-alpine-dark">
         <AgGridReact
           rowData={rowData}
-          columnDefs={columnDefs}
+          columnDefs={columnsDef}
           onGridReady={onGridReady}
-          onCellDoubleClicked={onCellDoubleClicked} // add
           pagination={true}
-          paginationPageSize={1000}
+          paginationPageSize={100}
           rowSelection={"single"}
           editType={"fullRow"}
-          detailRowAutoHeight={true}
           domLayout="autoHeight"
         />
       </div>
@@ -236,4 +243,4 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   );
 }
 
-export default TicketTable;
+export default UsersTable;
