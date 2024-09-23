@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 function UsersTable() {
   const [rowData, setRowData] = useState([]);
 
-  const [gridApi, setGridApi] = useState(null);
+  const [gridApi, setGridApi] = useState(null); 
   const [gridColumnApi, setGridColumnApi] = useState(null);
 const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
