@@ -385,7 +385,7 @@ const totalTickets = selectedTicketCount;
           </div>
 
           {/* Ciudad */}
-          <label className="bold-label">Ciudad</label>
+          
           <div className="form-row">
             <input
               type="hidden"
