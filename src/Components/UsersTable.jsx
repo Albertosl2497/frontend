@@ -33,7 +33,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     resizable: true,
   },
   {
-    headerName: "Sold Tickets",
+    headerName: "Sold Tickets"
     field: "soldTickets",
     sortable: true,
     valueGetter: (params) => {
