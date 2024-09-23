@@ -1,4 +1,4 @@
-  import { AgGridReact } from "ag-grid-react";
+import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 
 function UsersTable() {
@@ -33,7 +33,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     resizable: true,
   },
   {
-    headerName: "Sold Tickets"
+    headerName: "Sold Tickets",
     field: "soldTickets",
     sortable: true,
     valueGetter: (params) => {
