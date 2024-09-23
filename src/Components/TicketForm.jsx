@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import jsPDF from "jspdf";
 
 function sendWhatsAppMessage(phoneNumber, message) {
-  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const url = https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)};
   window.open(url, "_blank");
 }
 
@@ -34,7 +34,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
   
   useEffect(() => {
-    const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
+    const randomEmail = rifasefectivocampotreinta${randomNumber}@gmail.com;
     setEmail(randomEmail);
     setCity(" ");
   }, [randomNumber]);
@@ -106,13 +106,13 @@ const totalTickets = selectedTicketCount;
 
       let mobNumber =
         phoneNumberCountryCode === "MX"
-          ? `+52 ${phoneNumber}`
-          : `+1 ${phoneNumber}`;
+          ? +52 ${phoneNumber}
+          : +1 ${phoneNumber};
       try {
         setBtnLoading(true);
         
         const response = await fetch(
-          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
+          https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo},
           {
             method: "PATCH",
             headers: {
@@ -163,8 +163,8 @@ const totalTickets = selectedTicketCount;
              <div className="button-container">
   <button 
     onClick={() => sendWhatsAppMessage(
-      `52${phoneNumber}`, 
-      `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
+      52${phoneNumber}, 
+      HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
       
       𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 EN EFECTIVO. DEL DIA 24 DE SEPTIEMBRE DE 2024.
@@ -177,7 +177,7 @@ const totalTickets = selectedTicketCount;
       𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
       
       METODOS DE PAGO AQUÍ PUEDES VERLOS:
-      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`
+      https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago
     )}
     className="dialog-button-whatsapp"
   >
@@ -197,8 +197,8 @@ const totalTickets = selectedTicketCount;
 
       
           const currentDate = new Date();
-          const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-          const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+          const formattedDate = ${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()};
+          const formattedTime = ${currentDate.getHours()}:${currentDate.getMinutes()};
           
 
 
@@ -450,25 +450,27 @@ const totalTickets = selectedTicketCount;
         
       </div>
     ))}
-<div>
-    <div className="ticket-counter" style={{
-      marginTop: '10px',
-      marginBottom: '10px',
-      fontSize: '30px',
-      fontWeight: 'bold',
-      color: '#fff'
-    }}>
-      <span>Cantidad de tickets: {selectedTicketCount}</span>
-    </div>
-    <div className="total-price" style={{
-      marginTop: '10px', // Agregando margen superior
-      fontSize: '30px',
-      fontWeight: 'bold',
-      color: '#fff'
-    }}>
-      <span>Total a pagar: ${totalPrice}</span>
-    </div>
-  </div>
+</div>
+
+      <div className="ticket-counter" style={{
+  marginTop: '10px',
+  marginBottom: '10px',  // Espacio debajo del contador
+  fontSize: '30px',      // Tamaño de fuente
+  fontWeight: 'bold',    // Negrita
+  color: '#fff'          // Color del texto
+}}>
+  <span>CANTIDAD DE BOLETOS: {selectedTicketCount}</span>
+</div>
+
+      <div className="ticket-counter" style={{
+  marginTop: '5px',
+  marginBottom: '10px',  // Espacio debajo del contador
+  fontSize: '30px',      // Tamaño de fuente
+  fontWeight: 'bold',    // Negrita
+  color: '#fff'          // Color del texto
+}}>
+  <span>TOTAL A PAGAR:: ${totalPrice}</span>
+</div>
 
       {/* Search bar with button */}
       <div className="row search-bar">
@@ -500,9 +502,9 @@ const totalTickets = selectedTicketCount;
              {currentItems.map((ticket, index) => (
                 <div
                   key={ticket}
-                  className={`ticket ${
+                  className={ticket ${
                     selectedTickets.includes(ticket) && "selected"
-                  }`}
+                  }}
                   onClick={() =>
                     setSelectedTickets(() => {
                       if (selectedTickets.includes(ticket)) {
@@ -546,4 +548,3 @@ const totalTickets = selectedTicketCount;
 
 export default TicketForm;
 <ToastContainer position="top-center" autoClose={5000} />;
-
