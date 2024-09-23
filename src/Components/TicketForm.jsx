@@ -450,16 +450,25 @@ const totalTickets = selectedTicketCount;
         
       </div>
     ))}
-</div>
-
-      <div className="ticket-counter" style={{
-  marginBottom: '10px',  // Espacio debajo del contador
-  fontSize: '16px',      // Tamaño de fuente
-  fontWeight: 'bold',    // Negrita
-  color: '#333'          // Color del texto
-}}>
-  <span>Cantidad de tickets: {selectedTicketCount}</span>
-</div>
+<div>
+    <div className="ticket-counter" style={{
+      marginTop: '10px',
+      marginBottom: '10px',
+      fontSize: '30px',
+      fontWeight: 'bold',
+      color: '#fff'
+    }}>
+      <span>Cantidad de tickets: {selectedTicketCount}</span>
+    </div>
+    <div className="total-price" style={{
+      marginTop: '10px', // Agregando margen superior
+      fontSize: '30px',
+      fontWeight: 'bold',
+      color: '#fff'
+    }}>
+      <span>Total a pagar: ${totalPrice}</span>
+    </div>
+  </div>
 
       {/* Search bar with button */}
       <div className="row search-bar">
