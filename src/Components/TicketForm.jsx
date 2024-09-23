@@ -452,6 +452,9 @@ const totalTickets = selectedTicketCount;
     ))}
 </div>
 
+      <div className="ticket-counter">
+  <span>Cantidad de tickets: {selectedTicketCount}</span>
+</div>
 
       {/* Search bar with button */}
       <div className="row search-bar">
