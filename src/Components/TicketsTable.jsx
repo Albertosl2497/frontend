@@ -15,6 +15,10 @@ const copyUserName = (userName) => {
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats, updateUserPaymentMethod }) {
+  const [rowData, setRowData] = useState([]);
+  const [gridApi, setGridApi] = useState(null); // Definido aquí
+  const [gridColumnApi, setGridColumnApi] = useState(null); // Definido aquí
+
   const onCellDoubleClicked = (params) => {
     const requestOptions = {
       method: "POST",
@@ -71,8 +75,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats, updateUserPaymentMet
       }
     }
   };
-
-  const [rowData, setRowData] = useState([]);
 
   const onGridReady = (params) => {
     setGridApi(params.api);
