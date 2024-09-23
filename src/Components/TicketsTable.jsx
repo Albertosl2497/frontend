@@ -30,12 +30,8 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       let newStatus, newAvailability;
       if (params.colDef.field === "sold") {
         let value = ticketToUpdate.sold;
-        fetch(
-          https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${
-            ticketToUpdate.ticketNumber
-          }/${!value}
-          requestOptions
-        )
+        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`, requestOptions)
+
           .then((response) => response.json())
           .then((data) => {
             newStatus = ticketToUpdate.sold ? false : true;
