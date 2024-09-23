@@ -33,7 +33,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         fetch(
           https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${
             ticketToUpdate.ticketNumber
-          }/${!value},
+          }/${!value}
           requestOptions
         )
           .then((response) => response.json())
