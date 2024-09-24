@@ -454,7 +454,7 @@ const totalTickets = selectedTicketCount;
       <div className="ticket-counter" style={{
   marginTop: '5px',
   marginBottom: '10px',  // Espacio debajo del contador
-  fontSize: '22px',      // Tamaño de fuente
+  fontSize: '17px',      // Tamaño de fuente
   fontWeight: 'bold',    // Negrita
   color: '#fff'          // Color del texto
 }}>
@@ -463,7 +463,7 @@ const totalTickets = selectedTicketCount;
       <div className="ticket-counter" style={{
   marginTop: '5px',
   marginBottom: '10px',  // Espacio debajo del contador
-  fontSize: '22px',      // Tamaño de fuente
+  fontSize: '17px',      // Tamaño de fuente
   fontWeight: 'bold',    // Negrita
   color: '#fff'          // Color del texto
 }}>
