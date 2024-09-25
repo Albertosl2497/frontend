@@ -46,7 +46,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   const selectedTicketCount = selectedTickets.length;
 const totalTickets = selectedTicketCount;
-  const ticketPrice = 50; // Precio de cada boleto en pesos
+  const ticketPrice = 100; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -151,7 +151,7 @@ const totalTickets = selectedTicketCount;
                 
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $7000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 24 DE SEPTIEMBRE DE 2024.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 29 DE SEPTIEMBRE DE 2024.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 
@@ -167,7 +167,7 @@ const totalTickets = selectedTicketCount;
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
       
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 EN EFECTIVO. DEL DIA 24 DE SEPTIEMBRE DE 2024.
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $7000 EN EFECTIVO. DEL DIA 29 DE SEPTIEMBRE DE 2024.
       
       𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.
@@ -454,7 +454,7 @@ const totalTickets = selectedTicketCount;
       <div className="ticket-counter" style={{
   marginTop: '5px',
   marginBottom: '10px',  // Espacio debajo del contador
-  fontSize: '17px',      // Tamaño de fuente
+  fontSize: '14px',      // Tamaño de fuente
   fontWeight: 'bold',    // Negrita
   color: '#fff'          // Color del texto
 }}>
@@ -463,7 +463,7 @@ const totalTickets = selectedTicketCount;
       <div className="ticket-counter" style={{
   marginTop: '5px',
   marginBottom: '10px',  // Espacio debajo del contador
-  fontSize: '17px',      // Tamaño de fuente
+  fontSize: '14px',      // Tamaño de fuente
   fontWeight: 'bold',    // Negrita
   color: '#fff'          // Color del texto
 }}>
