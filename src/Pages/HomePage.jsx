@@ -8,9 +8,11 @@ function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
       <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 62</p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 06 DE OCTUBRE</p>
-      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $5000 PESOS</p>
-      <p style={{ fontSize: '20px' }}>Costo por Boleto $80.00 MXN</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 31 DE OCTUBRE</p>
+      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $15,000 PESOS</p>
+      <p style={{ fontSize: '20px' }}>(SOLO 250 PARTICIPANTES)</p>
+      <p style={{ fontSize: '20px' }}>Cada boleto con 4 oportunidades</p>
+      <p style={{ fontSize: '20px' }}>Costo por Boleto $100.00 MXN</p>
       <br />
       
       
