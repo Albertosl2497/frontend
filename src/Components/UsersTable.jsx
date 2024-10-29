@@ -151,7 +151,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENOS DIAS SOLO PARA CONFIRMAR SU PARTICIPACION EN LA RIFA DE LOS $15,000 PESOS💸
+  const message = `HOLA BUENAS NOCHES SOLO PARA CONFIRMAR SU PARTICIPACION EN LA RIFA DE LOS $15,000 PESOS💸
   DEL DIA 31 DE OCTUBRE. 𝗟𝗔 𝗙𝗘𝗖𝗛𝗔 𝗟𝗜𝗠𝗜𝗧𝗘 𝗗𝗘 𝗣𝗔𝗚𝗢 𝗘𝗦 𝗘𝗟 𝗗𝗜𝗔 𝗠𝗜𝗘𝗥𝗖𝗢𝗟𝗘𝗦 𝟯𝟬 𝗗𝗘 𝗢𝗖𝗧𝗨𝗕𝗥𝗘. GRACIAS.☺️🌸
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
