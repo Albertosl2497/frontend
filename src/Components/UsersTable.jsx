@@ -176,7 +176,9 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES SOLO PARA INFORMAR QUE LA HORA LIMITE DE PAGO SERA A LAS 5:30PM. Si gusta que esperemos un poco mas nos avisa porfa. GRACIAS😊🌼`
+  const message = `HOLA BUENOS DIAS SOLO PARA INFORMAR QUE LA RIFA DEL LOS $15,000 PESOS ES EL DIA DE MAÑANA. 𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗢𝗬 𝗘𝗡 𝗟𝗔 𝗡𝗢𝗖𝗛𝗘 𝗛𝗔𝗧𝗔𝗦 𝗟𝗔𝗦 𝟵𝗣𝗠.
+  𝗦𝗜 𝗚𝗨𝗦𝗧𝗔 𝗤𝗨𝗘 𝗘𝗦𝗣𝗘𝗥𝗘𝗠𝗢𝗦 𝗨𝗡 𝗣𝗢𝗖𝗢 𝗠𝗔𝗦 𝗡𝗢𝗦 𝗖𝗢𝗡𝗙𝗜𝗥𝗠𝗔 𝗣𝗢𝗥𝗙𝗔.
+  ‼️𝑫𝑬 𝑵𝑶 𝑹𝑬𝑪𝑰𝑩𝑰𝑹 𝑪𝑶𝑵𝑭𝑰𝑹𝑴𝑨𝑪𝑰𝑶𝑵 𝑫𝑬𝑺𝑷𝑼𝑬𝑺 𝑫𝑬 𝑳𝑨𝑺 9𝑷𝑴 𝑬𝑺𝑻𝑨𝑹𝑬𝑴𝑶𝑺 𝑷𝑨𝑺𝑨𝑵𝑫𝑶 𝑳𝑶𝑺 𝑩𝑶𝑳𝑬𝑻𝑶𝑺 𝑨 𝑳𝑨 𝑽𝑬𝑵𝑻𝑨‼️. GRACIAS.😊🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
