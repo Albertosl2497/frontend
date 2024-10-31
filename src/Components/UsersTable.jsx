@@ -151,8 +151,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES A LAS 5PM ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE LOS $15,000 PESOS💸
-  ESTARA EN SU CASA PARA LLEGAR DE PASADITA?.☺️🌸
+  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
+  ESTAREMOS RECIBIENDO LOS PAGOS HASTA LAS 5PM. GRACIAS 🌸
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
   CON UN PRECIO DE: $${totalPrice} PESOS.
