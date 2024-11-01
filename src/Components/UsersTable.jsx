@@ -1,4 +1,4 @@
-  import { AgGridReact } from "ag-grid-react";
+import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 
 function UsersTable() {
