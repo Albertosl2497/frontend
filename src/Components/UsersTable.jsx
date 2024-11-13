@@ -176,14 +176,12 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola, buenos días.
+  const message = `¡Hola! Somos tus amigos de 𝗥𝗜𝗙𝗔𝗦 𝗘𝗙𝗘𝗖𝗧𝗜𝗩𝗢 𝗖𝗔𝗠𝗣𝗢 𝟯𝟬🙋🏻‍♀️🌸
+Te informamos que nuestro número de WhatsApp anterior ya no está en funcionamiento. Este número, desde el cual estás recibiendo este mensaje, será nuestro nuevo número oficial.
 
-Mañana es la rifa de los $15,000 pesos.
-Recibimos pagos hoy hasta las 9 pm.
+Te agradeceríamos que 𝗹𝗼 𝗮𝗴𝗿𝗲𝗴𝘂𝗲𝘀 𝗮 𝘁𝘂𝘀 𝗰𝗼𝗻𝘁𝗮𝗰𝘁𝗼𝘀 para seguir recibiendo noticias, promociones, rifas gratis y para poder visualizar los resultados de las rifas en nuestros estados de WhatsApp.
 
-𝗦𝗶 𝗻𝗲𝗰𝗲𝘀𝗶𝘁𝗮 𝗺𝗮́𝘀 𝘁𝗶𝗲𝗺𝗽𝗼, 𝗽𝗼𝗿 𝗳𝗮𝘃𝗼𝗿 𝗰𝗼𝗻𝗳𝗶́𝗿𝗺𝗲𝗻𝗼𝘀.
-𝗗𝗲 𝗻𝗼 𝗿𝗲𝗰𝗶𝗯𝗶𝗿 𝗿𝗲𝘀𝗽𝘂𝗲𝘀𝘁𝗮 𝗱𝗲𝘀𝗽𝘂𝗲́𝘀 𝗱𝗲 𝗹𝗮𝘀 𝟵 𝗽𝗺, 𝗽𝗼𝗻𝗱𝗿𝗲𝗺𝗼𝘀 𝗹𝗼𝘀 𝗯𝗼𝗹𝗲𝘁𝗼𝘀 𝗮 𝗹𝗮 𝘃𝗲𝗻𝘁𝗮.
-Gracias 😊🌼`
+¡Gracias por tu apoyo!☺️🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
