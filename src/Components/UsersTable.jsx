@@ -151,10 +151,9 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
-  ESTAREMOS RECIBIENDO LOS PAGOS HASTA LAS 5PM. GRACIAS 🌸
+  const message = `HOLA BUENAS NOCHES ENVIAMOS CONFIRMACION DE SUS BOLETOS DENUEVO PARA TENER REGISTRO YA QUE CAMBIAMOS DE NUMERO. GRACIAS 🌸
   
-  TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
+  HAS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
   CON UN PRECIO DE: $${totalPrice} PESOS.
   
   TUS NUMEROS A PARTICIPAR SON:
