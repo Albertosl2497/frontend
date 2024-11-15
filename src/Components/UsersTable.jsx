@@ -154,6 +154,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const message = `HOLA BUENAS NOCHES ENVIAMOS CONFIRMACION DE SUS BOLETOS DENUEVO PARA TENER REGISTRO YA QUE CAMBIAMOS DE NUMERO. GRACIAS 🌸
   
   HAS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 19 NOVIEMBRE 2024.
   CON UN PRECIO DE: $${totalPrice} PESOS.
   
   TUS NUMEROS A PARTICIPAR SON:
