@@ -143,7 +143,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
-  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 333, parseInt(ticket) + 666]); // Obtener números adicionales
+    const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
@@ -151,12 +151,10 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS NOCHES ENVIAMOS CONFIRMACION DE SUS BOLETOS DENUEVO PARA TENER REGISTRO YA QUE CAMBIAMOS DE NUMERO. GRACIAS 🌸
+  const message = `HOLA DISCULPE LAS MOLESTIAS LE ENVIAMOS DE NUEVO SUS NUMEROS A PARTICIPAR YA QUE NOS CONFUNDIMOS. ☺️🌸
   
-  HAS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 19 NOVIEMBRE 2024.
-  CON UN PRECIO DE: $${totalPrice} PESOS.
-  
+  A NOMBRE DE: ${fullName}.
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 19 NOVIEMBRE 2024.  
   TUS NUMEROS A PARTICIPAR SON:
   [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
