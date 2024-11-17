@@ -13,7 +13,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   
   // Copiar al portapapeles
   navigator.clipboard.writeText(cleanedPhoneNumber).then(() => {
-    alert('Número de teléfono copiado: ' + cleanedPhoneNumber);
+    
   });
 };
 
