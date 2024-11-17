@@ -12,10 +12,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const cleanedPhoneNumber = phoneNumber.replace(/\s+/g, '');
   
   // Copiar al portapapeles
-  navigator.clipboard.writeText(cleanedPhoneNumber).then(() => {
-    
-  });
-};
+  navigator.clipboard.writeText(cleanedPhoneNumber);
+  };
 
 
 
