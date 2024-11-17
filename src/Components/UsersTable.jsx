@@ -43,6 +43,35 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     },
     resizable: true,
   },
+    {
+  headerName: "Copiar Teléfono",
+  cellRendererFramework: (params) => {
+    const handleCopy = () => {
+      const phoneNumber = params.data.user.phoneNumber;
+      navigator.clipboard.writeText(phoneNumber).then(() => {
+        alert(`Número copiado: ${phoneNumber}`);
+      }).catch((err) => {
+        console.error("Error al copiar el número:", err);
+      });
+    };
+
+    return (
+      <button
+        onClick={handleCopy}
+        style={{
+          backgroundColor: "orange",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        Copiar Teléfono
+      </button>
+    );
+  },
+},
   {
     headerName: "Mensaje de Cobro",
     cellRendererFramework: (params) => {
