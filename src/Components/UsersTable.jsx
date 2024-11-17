@@ -7,6 +7,16 @@ function UsersTable() {
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
 const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
+  const copyPhoneNumber = (phoneNumber) => {
+  // Eliminar los espacios del número de teléfono
+  const cleanedPhoneNumber = phoneNumber.replace(/\s+/g, '');
+  
+  // Copiar al portapapeles
+  navigator.clipboard.writeText(cleanedPhoneNumber).then(() => {
+    alert('Número de teléfono copiado: ' + cleanedPhoneNumber);
+  });
+};
+
 
 
   const columnsDef = [
@@ -44,22 +54,14 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     resizable: true,
   },
     {
-  headerName: "Copiar Teléfono",
+  headerName: "Copy Phone Number",
   cellRendererFramework: (params) => {
-    const handleCopy = () => {
-      const phoneNumber = params.data.user.phoneNumber;
-      navigator.clipboard.writeText(phoneNumber).then(() => {
-        alert(`Número copiado: ${phoneNumber}`);
-      }).catch((err) => {
-        console.error("Error al copiar el número:", err);
-      });
-    };
-
+    const phoneNumber = params.data.user.phoneNumber;
     return (
       <button
-        onClick={handleCopy}
+        onClick={() => copyPhoneNumber(phoneNumber)}
         style={{
-          backgroundColor: "orange",
+          backgroundColor: "green",
           color: "white",
           border: "none",
           padding: "10px 20px",
@@ -67,11 +69,12 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
           cursor: "pointer",
         }}
       >
-        Copiar Teléfono
+        Copy Phone
       </button>
     );
   },
 },
+
   {
     headerName: "Mensaje de Cobro",
     cellRendererFramework: (params) => {
