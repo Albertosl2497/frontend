@@ -86,11 +86,11 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     },
   },
     {
-    headerName: "Mensaje de Cobro2",
+    headerName: "EFECTIVO",
     cellRendererFramework: (params) => {
       return (
         <button onClick={() => sendWhatsAppMessage2(params.data)}
-          style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
+          style={{ backgroundColor: "red", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
           >
           WhatsApp
         </button>
@@ -208,12 +208,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `¡Hola! Somos tus amigos de 𝗥𝗜𝗙𝗔𝗦 𝗘𝗙𝗘𝗖𝗧𝗜𝗩𝗢 𝗖𝗔𝗠𝗣𝗢 𝟯𝟬🙋🏻‍♀️🌸
-Te informamos que nuestro número de WhatsApp anterior ya no está en funcionamiento. Este número, desde el cual estás recibiendo este mensaje, será nuestro nuevo número oficial.
-
-Te agradeceríamos que 𝗹𝗼 𝗮𝗴𝗿𝗲𝗴𝘂𝗲𝘀 𝗮 𝘁𝘂𝘀 𝗰𝗼𝗻𝘁𝗮𝗰𝘁𝗼𝘀 para seguir recibiendo noticias, promociones, rifas gratis y para poder visualizar los resultados de las rifas en nuestros estados de WhatsApp.
-
-¡Gracias por tu apoyo!☺️🌼`
+  const message = `HOLA BUENAS TARDES A LAS 4:30 ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE $15,000 PESOS. ESTA EN SU CASA PARA LLEGAR DE PASADITA?!☺️🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
