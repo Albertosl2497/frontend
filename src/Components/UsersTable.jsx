@@ -181,10 +181,14 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA DISCULPE LAS MOLESTIAS LE ENVIAMOS DE NUEVO SUS NUMEROS A PARTICIPAR YA QUE NOS CONFUNDIMOS. ☺️🌸
-  
-  A NOMBRE DE: ${fullName}.
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 19 NOVIEMBRE 2024.  
+  const message = `HOLA BUENAS TARDES SOLO PARA INFORMAR QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS.
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 𝟭𝟬𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬. SI NECESITA QUE ESPEREMOS UN POCO MAS NOS CONFIRMA PORFA☺️🌸
+
+  DE NO RECIBIR RESPUESTA DESPUES DE ESA HORA, LOS NUMEROS NO PAGADOS LOS ESTEMOS CONSIDERANDO PARA PONERLOS DISPONIBLES. GRACIAS.☺️🌸
+
+  TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
+  CON UN PRECIO DE: $${totalPrice} PESOS.
+  A NOMBRE DE: ${fullName}.  
   TUS NUMEROS A PARTICIPAR SON:
   [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
