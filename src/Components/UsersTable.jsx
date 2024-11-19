@@ -181,7 +181,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola solo para recordar Mañana es la rifa de $15,000. *Recibimos pagos hasta las 10 PM de hoy*. Si necesita más tiempo, por favor avísenos.
+  const message = `Hola solo para recordar Hoy es la rifa de $15,000. *Recibimos pagos hasta las 3 PM de hoy* . Si necesita más tiempo, por favor avísenos.
   
 Al no recibir respuesta Después de esa hora, los números no pagados quedarán disponibles. GRACIAS.☺️🌸
 
