@@ -183,17 +183,16 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     
   const message = `Hola solo para recordar Hoy es la rifa de $15,000. *Recibimos pagos hasta las 3 PM de hoy* . Si necesita más tiempo, por favor avísenos.
   
-Al no recibir respuesta Después de esa hora, los números no pagados quedarán disponibles. GRACIAS.☺️🌸
-
-  TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
-  CON UN PRECIO DE: $${totalPrice} PESOS.
-  A NOMBRE DE: ${fullName}.  
-  TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
+Al no recibir respuesta Después de esa hora, los números no pagados quedarán disponibles. GRACIAS.☺️🌸`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
 };
+ //TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
+  //CON UN PRECIO DE: $${totalPrice} PESOS.
+  //A NOMBRE DE: ${fullName}.  
+  //TUS NUMEROS A PARTICIPAR SON:
+  //[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
 
   const sendWhatsAppMessage2 = (userData) => {
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
