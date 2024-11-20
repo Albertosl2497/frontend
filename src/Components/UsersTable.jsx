@@ -145,7 +145,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
   const ticketCount = allTickets.length; // Contar la cantidad total de boletos
-  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
+  const ticketPrice = 50; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
@@ -153,15 +153,12 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
 
   const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
-  𝗢𝗣𝗢𝗥𝗧𝗨𝗡𝗜𝗗𝗔𝗗𝗘𝗦 𝗔𝗗𝗜𝗖𝗜𝗢𝗡𝗔𝗟𝗘𝗦: [ ${additionalNumbers} ].
-  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 PESOS 💸💰
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 19 NOVIEMBRE 2024.
+  
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 PESOS 💸💰
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 24 NOVIEMBRE 2024.
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
   𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
-  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
-  
-  METODOS DE PAGO AQUÍ:
-  https://sites.google.com/view/rifasefectivocampotreinta/metodos-de-pago`;
+  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.`;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
   setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
