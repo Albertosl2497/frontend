@@ -7,10 +7,12 @@ import "./styles.css";
 function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
-      <p className="bold" style={{ fontSize: '24px' }}>EDICIÓN EXPRESS ⚡️ </p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 24 DE NOVIEMBRE</p>
-      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $3000 PESOS</p>
-      <p style={{ fontSize: '20px' }}>Costo por Boleto $50.00 MXN</p>
+      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 64</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 03 DE DICIEMBRE</p>
+      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $15,000 PESOS</p>
+      <p style={{ fontSize: '20px' }}>(SOLO 250 PARTICIPANTES)</p>
+      <p style={{ fontSize: '20px' }}>Cada boleto con 4 oportunidades</p>
+      <p style={{ fontSize: '20px' }}>Costo por Boleto $100.00 MXN</p>
       <br />
       
       
