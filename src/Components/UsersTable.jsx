@@ -180,7 +180,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola solo para recordar Hoy es la rifa de $15,000. *Recibimos pagos hasta las 10 PM de hoy* . Si necesita más tiempo, por favor avísenos.
+  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE MAÑANA ES LA RIFA DE LOS $15,000. *Recibiremos pagos hasta las 10 PM del dia de hoy* . Si necesita más tiempo, por favor avísenos.
   
   TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
   CON UN PRECIO DE: $${totalPrice} PESOS.
