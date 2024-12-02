@@ -145,7 +145,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
   const ticketCount = allTickets.length; // Contar la cantidad total de boletos
-  const ticketPrice = 50; // Precio por boleto (¡ajusta según tus necesidades!)
+  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
@@ -180,18 +180,20 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola solo para recordar Hoy es la rifa de $15,000. *Recibimos pagos hasta las 3 PM de hoy* . Si necesita más tiempo, por favor avísenos.
+  const message = `Hola solo para recordar Hoy es la rifa de $15,000. *Recibimos pagos hasta las 10 PM de hoy* . Si necesita más tiempo, por favor avísenos.
+  
+  TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
+  CON UN PRECIO DE: $${totalPrice} PESOS.
+  A NOMBRE DE: ${fullName}.  
+  TUS NUMEROS A PARTICIPAR SON:
+[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
   
 Al no recibir respuesta Después de esa hora, los números no pagados quedarán disponibles. GRACIAS.☺️🌸`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
 };
- //TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
-  //CON UN PRECIO DE: $${totalPrice} PESOS.
-  //A NOMBRE DE: ${fullName}.  
-  //TUS NUMEROS A PARTICIPAR SON:
-  //[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+ 
 
   const sendWhatsAppMessage2 = (userData) => {
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
