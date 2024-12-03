@@ -207,7 +207,8 @@ Al no recibir respuesta Después de esa hora, los números no pagados quedarán 
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUEN DIA, HOY A LAS 5PM ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE $15,000 PESOS.☺️🌼`
+  const message = `HOLA BUEN DIA, HOY A LAS 5PM ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE $15,000 PESOS.
+  SI ACASO SE LE FACILITA REALIZAR EL PAGO POR TRASNFERENCIA O DEPOSITO EN OXXO SERIA DE GRAN AYUDA. GRACIAS☺️🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
