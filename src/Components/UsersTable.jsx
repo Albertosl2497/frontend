@@ -180,7 +180,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE MAÑANA ES LA RIFA DE LOS $15,000. *Recibiremos pagos hasta las 10 PM del dia de hoy* . Si necesita más tiempo, por favor avísenos.
+  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE HOY ES LA RIFA DE LOS $15,000. *Recibiremos pagos hasta las 3 PM del dia de hoy* . Si necesita más tiempo, por favor avísenos.
   
   TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
   CON UN PRECIO DE: $${totalPrice} PESOS.
@@ -207,7 +207,7 @@ Al no recibir respuesta Después de esa hora, los números no pagados quedarán 
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES A LAS 4:00 ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE $15,000 PESOS. ESTA EN SU CASA PARA LLEGAR DE PASADITA?!☺️🌼`
+  const message = `HOLA BUENAS TARDES A LAS 12 ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE $15,000 PESOS. ESTA EN SU CASA PARA LLEGAR DE PASADITA?!☺️🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
