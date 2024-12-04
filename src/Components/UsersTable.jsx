@@ -142,7 +142,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
-  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 666, parseInt(ticket) + 666]); // Obtener números adicionales
   const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
   const ticketCount = allTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
@@ -156,8 +156,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   OPORTUNIDADES ADICIONALES:
   [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
   
-  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 PESOS 💸💰
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 03 DICIEMBRE 2024.
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $20,000 PESOS 💸💰
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 24 DICIEMBRE 2024.
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
   𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.`;
@@ -172,7 +172,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
-    const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
+    const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 333, parseInt(ticket) + 666]); // Obtener números adicionales
   const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
