@@ -130,6 +130,8 @@ const totalTickets = selectedTicketCount;
             }),
           }
         );
+        // OPORTUNIDADES ADICIONALES:
+              //  [ {selectedTicketNumbersWithPairs.join(', ')} ].
 
         if (!response.ok) {
           const data = await response.json();
@@ -148,11 +150,10 @@ const totalTickets = selectedTicketCount;
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
                 >HOLA, HAS RESERVADO {totalTickets} BOLETO(S).
                 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
-                OPORTUNIDADES ADICIONALES:
-                [ {selectedTicketNumbersWithPairs.join(', ')} ].
+        
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $20,000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 24 DE DICIEMBRE DE 2024.< br/>
+                $7000 PESOS EN EFECTIVO.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 31 DE DICIEMBRE DE 2024.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 
@@ -167,9 +168,8 @@ const totalTickets = selectedTicketCount;
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-      OPORTUNIDADES ADICIONALES:
-      [ ${selectedTicketNumbersWithPairs.join(', ')} ].
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $20,000 EN EFECTIVO. DEL DIA 24 DE DICIEMBRE DE 2024.
+      
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $7000 EN EFECTIVO. DEL DIA 31 DE DICIEMBRE DE 2024.
       
       𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.
@@ -447,10 +447,7 @@ const totalTickets = selectedTicketCount;
         }}
       >
         {ticket} <AiOutlineDelete style={{ fontWeight: 1500 }} />
-       {/* Agregar los 3 números adicionales */}
-        {[333, 666].map((additionalNumber) => (
-          <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
-        ))}
+       
       </div>
     ))}
 </div>
