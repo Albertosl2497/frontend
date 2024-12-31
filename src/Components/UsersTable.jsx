@@ -179,14 +179,14 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE MAÑANA ES LA RIFA DE LOS $20,000. *Recibiremos pagos hasta las 9 PM del dia de hoy* . Si necesita más tiempo, por favor avísenos.
+  const message = `HOLA BUENOS DIAS SOLO PARA RECORDAR QUE EL DIA DE HOY ES LA RIFA DE LOS $7000. *Recibiremos pagos hasta las 4 PM del dia de hoy* . Si necesita más tiempo, por favor avísenos.
   Al no recibir respuesta Después de esa hora, los números no pagados quedarán disponibles. GRACIAS.☺️🌸
   
   TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
   CON UN PRECIO DE: $${totalPrice} PESOS.
   A NOMBRE DE: ${fullName}.  
   TUS NUMEROS A PARTICIPAR SON:
-[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
+[ ${bookedTickets.join(", ")} ]`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
