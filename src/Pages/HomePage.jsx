@@ -8,9 +8,9 @@ function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
       <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN EXPRESS⚡️ </p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 31 DE DICIEMBRE</p>
-      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $7000 PESOS</p>
-      <p style={{ fontSize: '20px' }}>Costo por Boleto $100.00 MXN</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 05 DE ENERO</p>
+      <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $5000 PESOS</p>
+      <p style={{ fontSize: '20px' }}>Costo por Boleto $80.00 MXN</p>
       <br />
       
       
