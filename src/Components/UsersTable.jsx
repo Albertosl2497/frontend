@@ -173,13 +173,13 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
     const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 333, parseInt(ticket) + 666]); // Obtener números adicionales
   const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
-  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
+  const ticketPrice = 80; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENOS DIAS SOLO PARA RECORDAR QUE EL DIA DE HOY ES LA RIFA DE LOS $7000. *Recibiremos pagos hasta las 4 PM del dia de hoy* . Si necesita más tiempo, por favor avísenos.
+  const message = `HOLA BUENAS TARDES SOLO PARA RECORDAR QUE EL DIA DE HOY ES LA RIFA DE LOS $5000. *Recibiremos pagos hasta las 5 PM del dia de hoy* . Si necesita más tiempo, por favor avísenos.
   Al no recibir respuesta Después de esa hora, los números no pagados quedarán disponibles. GRACIAS.☺️🌸
   
   TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦.
