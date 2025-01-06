@@ -152,7 +152,7 @@ const totalTickets = selectedTicketCount;
                 [ {selectedTicketNumbersWithPairs.join(', ')} ].
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
                 $15,000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 15 DE ENERO DE 2025.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 14 DE ENERO DE 2025.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 
