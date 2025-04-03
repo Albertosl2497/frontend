@@ -1,100 +1,96 @@
-.cell-value-green {
-  background-color: #a9cc9e;
-}
-
-.cell-value-red {
-  background-color: #e6b8b8;
-}
-
+/* Botón de ticket mejorado */
 .selected-ticket {
-  background-color: orangered;
+  background-color: orangered; /* Color de fondo */
   display: block;
-  width: max-content;
-  padding: 3px 7px;
+  width: max-content; /* Ajuste automático del tamaño */
+  padding: 6px 12px; /* Espaciado más amplio para un mejor aspecto */
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  border-radius: 7px;
+  gap: 8px; /* Mayor espacio entre los iconos o texto */
+  border-radius: 10px; /* Bordes más redondeados */
   color: white;
+  font-weight: 600; /* Texto más destacado */
   cursor: pointer;
+  transition: all 0.3s ease; /* Transición suave para efectos interactivos */
 }
 
+.selected-ticket:hover {
+  background-color: #e77d5e; /* Color más claro cuando el ratón pasa sobre el botón */
+  transform: scale(1.05); /* Efecto de aumentar ligeramente el tamaño al pasar el ratón */
+}
+
+.selected-ticket:active {
+  background-color: #d4643b; /* Color más oscuro al hacer clic */
+  transform: scale(1); /* Evita que se siga ampliando */
+}
+
+/* Estilos adicionales para mejorar la visualización de los tickets */
+.ticket {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f1f1f1; /* Fondo más suave */
+  transition: transform 0.3s ease; /* Transición suave */
+}
+
+.ticket:hover {
+  transform: scale(1.02); /* Aumento del tamaño al pasar el ratón */
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+}
+
+/* Contenedor de tickets */
+.ticket-list-container {
+  background-color: #f9f9f9;
+  border-radius: 30px;
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px; /* Aumenta el relleno para un mejor espaciado */
+  margin-top: 15px;
+  margin-bottom: 15px;
+  height: auto !important; 
+  max-height: none !important;
+  overflow: visible !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Espacio entre los tickets */
+  justify-content: center; /* Alinea los tickets al centro */
+}
+
+/* Estilo para el contenedor de selección de tickets */
 .selected-container {
-  gap: 5px;
+  gap: 10px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   max-width: 1100px;
 }
 
+/* Celda con valor positivo */
+.cell-value-green {
+  background-color: #a9cc9e; /* Verde más suave */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 8px 10px; /* Más relleno */
+  text-align: center;
+}
+
+/* Celda con valor negativo */
+.cell-value-red {
+  background-color: #e6b8b8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+/* Estilo para el error box */
 .error-box {
   background-color: #e6b8b8;
-  padding: 10px;
-  border-radius: 7px;
+  padding: 12px;
+  border-radius: 10px;
   margin: 0px auto;
   color: #9e1c1c;
-  font-weight: 500;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1.2rem;
   max-width: 1100px;
   width: 100%;
+  text-align: center;
 }
-
-.ag-theme-alpine {
-  max-height: 500px; /* set a maximum height for the container */
-}
-
-.selected {
-  background-color: green !important;
-}
-
-.display-tickets {
-   height: auto !important;
-   max-height: none !important;
-   overflow: visible !important;
-}
-
-
-/* Establece el ancho de cada boleto para evitar el scroll horizontal */
-.ticket {
-  width: 100%; /* Ocupa todo el ancho disponible */
-  border-radius: 10px;
-  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-
-/* Agrega estilos adicionales según sea necesario para los boletos 
-
-/* Estilos para el contenedor de la lista de tickets */
-.ticket-list-container {
-  background-color: #f9f9f9;
-  border-radius: 30px;
-  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  height: auto !important;  /* Permite que el contenedor crezca */
-  max-height: none !important; /* Elimina el límite de altura */
-  overflow: visible !important; /* Asegura que el contenido se expanda */
-}
-
-
-.dialog-button-whatsapp {
-  background-color: #25d366; /* Color verde de WhatsApp */
-  color: white; /* Color de texto blanco */
-  padding: 10px 20px; /* Espaciado interno del botón */
-  border: none; /* Quita el borde */
-  border-radius: 5px; /* Borde redondeado */
-  cursor: pointer; /* Cursor al pasar el ratón */
-  transition: background-color 0.3s ease; /* Transición suave del color de fondo */
-}
-
-.dialog-button-whatsapp:hover {
-  background-color: #128c7e; /* Cambia el color de fondo al pasar el ratón */
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-}
-
