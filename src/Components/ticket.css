@@ -41,7 +41,7 @@
 }
 
 .ag-theme-alpine {
-  max-height: 1000px; /* set a maximum height for the container */
+  max-height: 5000px; /* set a maximum height for the container */
 }
 
 .selected {
@@ -50,7 +50,7 @@
 
  Establece un alto máximo para la lista de boletos 
 .display-tickets {
-  max-height: 40vh; /* Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) */
+  max-height: auto; /* Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) */
   overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
 }
 
