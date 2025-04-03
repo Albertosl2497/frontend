@@ -48,11 +48,11 @@
   background-color: green !important;
 }
 
- /* Establece un alto máximo para la lista de boletos 
 .display-tickets {
-  max-height: auto;  Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) 
-  overflow-y: auto;  Agrega una barra de desplazamiento vertical si es necesario
-} */
+   height: auto !important;
+   max-height: none !important;
+   overflow: visible !important;
+}
 
 
 /* Establece el ancho de cada boleto para evitar el scroll horizontal */
@@ -67,13 +67,17 @@
 
 /* Estilos para el contenedor de la lista de tickets */
 .ticket-list-container {
-  background-color: #f9f9f9; /* Color de fondo del contenedor */
-  border-radius: 30px; /* Borde redondeado para dar profundidad */
-  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
-  padding: 10px; /* Espacio interior para crear separación */
-  margin-top: 10px; /* Márgenes superiores para separación desde arriba */
-  margin-bottom: 10px; /* Márgenes inferiores para separación desde abajo */
+  background-color: #f9f9f9;
+  border-radius: 30px;
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: auto !important;  /* Permite que el contenedor crezca */
+  max-height: none !important; /* Elimina el límite de altura */
+  overflow: visible !important; /* Asegura que el contenido se expanda */
 }
+
 
 .dialog-button-whatsapp {
   background-color: #25d366; /* Color verde de WhatsApp */
