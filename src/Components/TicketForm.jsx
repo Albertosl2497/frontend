@@ -46,7 +46,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   const selectedTicketCount = selectedTickets.length;
 const totalTickets = selectedTicketCount;
-  const ticketPrice = 50; // Precio de cada boleto en pesos
+  const ticketPrice = 100; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -142,16 +142,17 @@ const totalTickets = selectedTicketCount;
 
           toast.success(
   <>
-               <div style={{ padding: '20px', backgroundColor: '#f2f2f2', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
+              <div style={{ padding: '20px', backgroundColor: '#f2f2f2', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
               <h3 style={{ color: '#333', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>"REGISTRO EXITOSO"</h3>
               <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
               <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
                 >HOLA, HAS RESERVADO {totalTickets} BOLETO(S).
                 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
-               
+                OPORTUNIDADES ADICIONALES:
+                [ {selectedTicketNumbersWithPairs.join(', ')} ].
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $3000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 02 DE ABRIL DE 2025.< br/>
+                $15,000 PESOS EN EFECTIVO.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 13 DE ABRIL DE 2025.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 
@@ -166,7 +167,9 @@ const totalTickets = selectedTicketCount;
       `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 EN EFECTIVO. DEL DIA 02 DE ABRIL DE 2025.
+      OPORTUNIDADES ADICIONALES:
+      [ ${selectedTicketNumbersWithPairs.join(', ')} ].
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 13 DE ABRIL DE 2025.
       
       𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.
@@ -175,7 +178,6 @@ const totalTickets = selectedTicketCount;
       
       𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
       
-     `
     )}
     className="dialog-button-whatsapp"
   >
@@ -444,7 +446,10 @@ const totalTickets = selectedTicketCount;
         }}
       >
         {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
-        
+        {/* Agregar los 3 números adicionales */}
+        {[250, 500, 750].map((additionalNumber) => (
+          <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
+        ))}
       </div>
     ))}
 </div>
