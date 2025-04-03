@@ -41,18 +41,18 @@
 }
 
 .ag-theme-alpine {
-  max-height: 5000px; /* set a maximum height for the container */
+  max-height: 500px; /* set a maximum height for the container */
 }
 
 .selected {
   background-color: green !important;
 }
 
- Establece un alto máximo para la lista de boletos 
+ /* Establece un alto máximo para la lista de boletos 
 .display-tickets {
-  max-height: auto; /* Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) */
-  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
-}
+  max-height: auto;  Establece un valor máximo de altura (en este caso, el 80% de la altura de la ventana) 
+  overflow-y: auto;  Agrega una barra de desplazamiento vertical si es necesario
+} */
 
 
 /* Establece el ancho de cada boleto para evitar el scroll horizontal */
