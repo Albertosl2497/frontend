@@ -141,7 +141,7 @@ const totalTickets = selectedTicketCount;
           setTickets(newTickets);
 
           toast.success(
-  <>
+<>
               <div style={{ padding: '20px', backgroundColor: '#f2f2f2', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
               <h3 style={{ color: '#333', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>"REGISTRO EXITOSO"</h3>
               <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
@@ -176,8 +176,7 @@ const totalTickets = selectedTicketCount;
       𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎: ${mobNumber}.
       CON DOMICILIO EN: ${state}.
       
-      𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
-      
+      𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas. `
     )}
     className="dialog-button-whatsapp"
   >
