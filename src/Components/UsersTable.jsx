@@ -1,4 +1,4 @@
-import { AgGridReact } from "ag-grid-react";
+  import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 
 function UsersTable() {
@@ -7,14 +7,6 @@ function UsersTable() {
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
 const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
-  const copyPhoneNumber = (phoneNumber) => {
-  // Eliminar los espacios del número de teléfono
-  const cleanedPhoneNumber = phoneNumber.replace(/\s+/g, '');
-  
-  // Copiar al portapapeles
-  navigator.clipboard.writeText(cleanedPhoneNumber);
-  };
-
 
 
   const columnsDef = [
@@ -51,28 +43,6 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     },
     resizable: true,
   },
-    {
-  headerName: "Copy Phone Number",
-  cellRendererFramework: (params) => {
-    const phoneNumber = params.data.user.phoneNumber;
-    return (
-      <button
-        onClick={() => copyPhoneNumber(phoneNumber)}
-        style={{
-          backgroundColor: "green",
-          color: "white",
-          border: "none",
-          padding: "10px 20px",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        Copy Phone
-      </button>
-    );
-  },
-},
-
   {
     headerName: "Mensaje de Cobro",
     cellRendererFramework: (params) => {
@@ -86,11 +56,11 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     },
   },
     {
-    headerName: "EFECTIVO",
+    headerName: "Mensaje de Cobro2",
     cellRendererFramework: (params) => {
       return (
         <button onClick={() => sendWhatsAppMessage2(params.data)}
-          style={{ backgroundColor: "red", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
+          style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
           >
           WhatsApp
         </button>
@@ -138,14 +108,14 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   },
 ];
 
-   const sendWhatsAppMessageConfirmation = (userData) => {
+  const sendWhatsAppMessageConfirmation = (userData) => {
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
   const ticketCount = allTickets.length; // Contar la cantidad total de boletos
-  const ticketPrice = 50; // Precio por boleto (¡ajusta según tus necesidades!)
+  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
@@ -153,20 +123,20 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
 
   const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
-  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $3000 PESOS 💸💰
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 23 DE ABRIL 2025.
+  𝗢𝗣𝗢𝗥𝗧𝗨𝗡𝗜𝗗𝗔𝗗𝗘𝗦 𝗔𝗗𝗜𝗖𝗜𝗢𝗡𝗔𝗟𝗘𝗦: [ ${additionalNumbers} ].
+  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 PESOS 💸💰
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 01 DE MAYO 2025.
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
   𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
   
-  `
+  `;
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
   setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
 
-//OPORTUNIDADES ADICIONALES:
-  //[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+
 
   const sendWhatsAppMessage = (userData) => {
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
@@ -174,25 +144,25 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
-  const ticketPrice = 50; // Precio por boleto (¡ajusta según tus necesidades!)
+  const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENOS DIA LE RECORDAMOS QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $3000 PESOS💸
-  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 4:30:00𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬. Si necesita que esperemos un poco mas nos confirma por favor.☺️
+  const message = `HOLA BUENOS DIAS SOLO PARA RECORDAR QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 8𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
+  si necesita que esperemos un poco mas nos confirma porfavor. Gracias☺️
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
   CON UN PRECIO DE: $${totalPrice} PESOS.
   
   TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ].`
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
 };
- 
 
   const sendWhatsAppMessage2 = (userData) => {
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
@@ -206,7 +176,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola buenas tardes a las 5:00pm estaremos pasando a cobrar. Esta en su casa? para llegar de pasadita.☺️🌸`
+  const message = `HOLA BUENAS TARDES A LAS 5PM ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE LOS $15,000 PESOS. *Estara en su casa para llegar de pasadita?* 😊🌼`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
