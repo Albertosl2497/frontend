@@ -21,7 +21,7 @@ function Footer() {
                 <p className="col bold" style={{ fontSize: '20px' }}>CUENTA: 2242-1707-6033-2708</p>
                 
               
-             
+             </div>
             </div>
           </div>
         </div>
