@@ -122,7 +122,7 @@ const totalTickets = selectedTicketCount;
               ticketNumbers: selectedTickets,
               userInformation: {
                 fullName: fullName,
-                //email: email,
+                email: email,
                 state: state,
                 city: city,
                 phoneNumber: mobNumber,
