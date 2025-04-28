@@ -1,4 +1,4 @@
-  import { AgGridReact } from "ag-grid-react";
+import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 
 function UsersTable() {
@@ -7,6 +7,14 @@ function UsersTable() {
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
 const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
+  const copyPhoneNumber = (phoneNumber) => {
+  // Eliminar los espacios del número de teléfono
+  const cleanedPhoneNumber = phoneNumber.replace(/\s+/g, '');
+  
+  // Copiar al portapapeles
+  navigator.clipboard.writeText(cleanedPhoneNumber);
+  };
+
 
 
   const columnsDef = [
@@ -43,6 +51,28 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     },
     resizable: true,
   },
+    {
+  headerName: "Copy Phone Number",
+  cellRendererFramework: (params) => {
+    const phoneNumber = params.data.user.phoneNumber;
+    return (
+      <button
+        onClick={() => copyPhoneNumber(phoneNumber)}
+        style={{
+          backgroundColor: "green",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        Copy Phone
+      </button>
+    );
+  },
+},
+
   {
     headerName: "Mensaje de Cobro",
     cellRendererFramework: (params) => {
@@ -56,11 +86,11 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
     },
   },
     {
-    headerName: "Mensaje de Cobro2",
+    headerName: "EFECTIVO",
     cellRendererFramework: (params) => {
       return (
         <button onClick={() => sendWhatsAppMessage2(params.data)}
-          style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
+          style={{ backgroundColor: "red", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
           >
           WhatsApp
         </button>
@@ -108,7 +138,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   },
 ];
 
-  const sendWhatsAppMessageConfirmation = (userData) => {
+   const sendWhatsAppMessageConfirmation = (userData) => {
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
@@ -130,13 +160,14 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
   
-  `;
+  `
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
   setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
 
-
+//OPORTUNIDADES ADICIONALES:
+  //[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
 
   const sendWhatsAppMessage = (userData) => {
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
@@ -150,9 +181,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENOS DIAS SOLO PARA RECORDAR QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
-  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 8𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
-  si necesita que esperemos un poco mas nos confirma porfavor. Gracias☺️
+  const message = `HOLA BUENOS DIA LE RECORDAMOS QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 8:30:00𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬. Si necesita que esperemos un poco mas nos confirma por favor.☺️
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
   CON UN PRECIO DE: $${totalPrice} PESOS.
@@ -163,6 +193,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   window.open(whatsappUrl, "_blank");
  
 };
+ 
 
   const sendWhatsAppMessage2 = (userData) => {
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
@@ -176,7 +207,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES A LAS 5PM ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE LOS $15,000 PESOS. *Estara en su casa para llegar de pasadita?* 😊🌼`
+  const message = `Hola buenas tardes a las 4:00pm estaremos pasando a cobrar. Esta en su casa? para llegar de pasadita.☺️🌸`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
