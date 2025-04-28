@@ -164,7 +164,7 @@ const totalTickets = selectedTicketCount;
              <div className="button-container">
   <button 
     onClick={() => sendWhatsAppMessage(
-      `526441227949`, 
+      `52${phoneNumber}`, 
       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
       OPORTUNIDADES ADICIONALES:
