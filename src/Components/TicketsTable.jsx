@@ -6,25 +6,11 @@ import "./ticket.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Función para copiar un solo usuario
 const copyUserName = (userName) => {
   const [name] = userName.split(" (");
   const uppercaseName = name.trim().toUpperCase();
   navigator.clipboard.writeText(uppercaseName);
   toast.success("Nombre de usuario copiado exitosamente");
-};
-
-// Función para copiar todos los usuarios
-const copyAllUsers = (users) => {
-  const processedUsers = users
-    .map((user) => {
-      const [name] = user.split(" (");
-      return name.trim().toUpperCase();
-    })
-    .join("\n");
-
-  navigator.clipboard.writeText(processedUsers);
-  toast.success("Todos los nombres de usuario copiados exitosamente");
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
@@ -41,6 +27,31 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     gridApi.setQuickFilter(document.getElementById("quickFilter").value);
   };
 
+  const downloadUserList = () => {
+    const allUsers = rowData
+      .map((ticket) => ticket.user)
+      .filter((user) => user && user.trim() !== "")
+      .map((user) => {
+        const [name] = user.split(" (");
+        return name.trim().toUpperCase();
+      });
+
+    if (allUsers.length === 0) {
+      toast.warning("No hay usuarios para descargar");
+      return;
+    }
+
+    const blob = new Blob([allUsers.join("\n")], {
+      type: "text/plain;charset=utf-8",
+    });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "usuarios.txt";
+    link.click();
+
+    toast.success("Archivo de usuarios descargado exitosamente");
+  };
+
   const onCellDoubleClicked = (params) => {
     const requestOptions = {
       method: "POST",
@@ -55,66 +66,95 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       const ticketToUpdate = params.data;
       let newStatus, newAvailability;
 
-      const updateURL = `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!ticketToUpdate[params.colDef.field]}`;
-
-      fetch(updateURL, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.message === "Sold Tickets can not be made available") {
-            toast.error(data.message);
-            return;
-          }
-
-          if (params.colDef.field === "sold") {
-            newStatus = !ticketToUpdate.sold;
+      if (params.colDef.field === "sold") {
+        const value = ticketToUpdate.sold;
+        fetch(
+          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            newStatus = ticketToUpdate.sold ? false : true;
             newAvailability = ticketToUpdate.availability;
-          } else {
-            newStatus = ticketToUpdate.sold;
-            newAvailability = !ticketToUpdate.availability;
-          }
+            isChanged = true;
 
-          isChanged = true;
+            if (isChanged) {
+              const updatedData = [...rowData];
+              const updatedTicket = {
+                ...ticketToUpdate,
+                sold: newStatus,
+                availability: !newStatus,
+              };
+              const rowIndex = updatedData.findIndex(
+                (row) => row.ticketNumber === ticketToUpdate.ticketNumber
+              );
 
-          if (isChanged) {
-            const updatedData = [...rowData];
-            const updatedTicket = {
-              ...ticketToUpdate,
-              sold:
-                params.colDef.field === "availability"
-                  ? newAvailability
-                    ? false
-                    : newStatus
-                  : newStatus,
-              availability: newAvailability,
-            };
+              let soldCount = newStatus ? 1 : -1;
 
-            const rowIndex = updatedData.findIndex(
-              (row) => row.ticketNumber === ticketToUpdate.ticketNumber
-            );
+              setStats({
+                soldCount: stats.soldCount + soldCount,
+                bookedCount: stats.bookedCount,
+              });
 
-            let soldCount = 0;
-            let bookedCount = 0;
-
-            if (params.colDef.field === "sold") {
-              soldCount = newStatus ? 1 : -1;
-            } else {
-              bookedCount = !newAvailability ? 1 : -1;
+              updatedData[rowIndex] = updatedTicket;
+              setRowData(updatedData);
             }
 
-            setStats({
-              soldCount: stats.soldCount + soldCount,
-              bookedCount: stats.bookedCount + bookedCount,
-            });
-
-            updatedData[rowIndex] = updatedTicket;
-            setRowData(updatedData);
             toast.success("Estado del boleto actualizado exitosamente");
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          toast.error("Error al actualizar el estado del boleto");
-        });
+          })
+          .catch((error) => {
+            console.error(error);
+            toast.error("Error al actualizar el estado del boleto");
+          });
+      } else {
+        const value = ticketToUpdate.availability;
+        fetch(
+          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (
+              data.message === "Sold Tickets can not be made available"
+            ) {
+              toast.error(data.message);
+              return;
+            }
+
+            newStatus = ticketToUpdate.sold;
+            newAvailability = !ticketToUpdate.availability;
+            isChanged = true;
+
+            if (isChanged) {
+              const updatedData = [...rowData];
+              const updatedTicket = {
+                ...ticketToUpdate,
+                sold: newAvailability ? false : newStatus,
+                availability: newAvailability,
+              };
+
+              let bookedCount = !newAvailability ? 1 : -1;
+
+              setStats({
+                soldCount: stats.soldCount,
+                bookedCount: stats.bookedCount + bookedCount,
+              });
+
+              const rowIndex = updatedData.findIndex(
+                (row) => row.ticketNumber === ticketToUpdate.ticketNumber
+              );
+
+              updatedData[rowIndex] = updatedTicket;
+              setRowData(updatedData);
+            }
+
+            toast.success("Ticket availability updated successfully");
+          })
+          .catch((error) => {
+            console.error(error);
+            toast.error("Error updating ticket availability");
+          });
+      }
     }
   };
 
@@ -133,6 +173,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       resizable: true,
       sortable: true,
       width: 110,
+      cellRenderer: (params) => params.value,
     },
     {
       headerName: "Estado",
@@ -189,32 +230,35 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   return (
     <div style={{ width: "100%", marginTop: 20, height: "100%" }}>
-      <input
-        type="text"
-        id="quickFilter"
-        placeholder="Search..."
-        onChange={onQuickFilterChanged}
-        style={{
-          backgroundColor: "black",
-          color: "white",
-          border: "none",
-        }}
-      />
-
-      <button
-        onClick={() => copyAllUsers(rowData.map((row) => row.user))}
-        style={{
-          backgroundColor: "green",
-          color: "white",
-          border: "none",
-          padding: "10px 20px",
-          borderRadius: "5px",
-          margin: "10px 0",
-          cursor: "pointer",
-        }}
-      >
-        Copiar Todos los Usuarios
-      </button>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
+        <input
+          type="text"
+          id="quickFilter"
+          placeholder="Search..."
+          onChange={onQuickFilterChanged}
+          style={{
+            backgroundColor: "black",
+            color: "white",
+            border: "none",
+            padding: "10px",
+            flex: 1,
+          }}
+        />
+        <button
+          onClick={downloadUserList}
+          style={{
+            backgroundColor: "green",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            cursor: "pointer",
+            marginLeft: "10px",
+          }}
+        >
+          Descargar lista de usuarios
+        </button>
+      </div>
 
       <div className="ag-theme-alpine-dark">
         <AgGridReact
