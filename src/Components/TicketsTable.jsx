@@ -17,7 +17,8 @@ const downloadUserListAsHTML = (rowData) => {
 
   // Procesamos los datos y generamos las filas
   sortedRowData.forEach((ticket) => {
-    const user = ticket.user && ticket.user.trim() !== "" ? ticket.user : "(VACÍO)";
+    // Si el campo user está vacío, mostramos "(VACÍO)", y si no, lo mostramos en mayúsculas
+    const user = ticket.user && ticket.user.trim() !== "" ? ticket.user.toUpperCase() : "(VACÍO)";
     const status = ticket.sold ? "Pagado" : "No Pagado";
     const availability = ticket.availability ? "Disponible" : "No Disponible";
     
