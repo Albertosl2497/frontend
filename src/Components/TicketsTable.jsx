@@ -1,83 +1,60 @@
 import { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "./ticket.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const copyUserName = (userName) => {
-  const [name] = userName.split(" (");
-  const uppercaseName = name.trim().toUpperCase();
-  navigator.clipboard.writeText(uppercaseName);
-  toast.success("Nombre de usuario copiado exitosamente");
+// Definimos la función para descargar la lista de usuarios
+const downloadUserList = (rowData) => {
+  // Primero, ordenamos los datos por ticketNumber (de menor a mayor)
+  const sortedRowData = [...rowData].sort((a, b) => a.ticketNumber - b.ticketNumber);
+
+  // Ahora, procesamos los usuarios, manteniendo los vacíos como "(VACÍO)"
+  const allUsers = sortedRowData.map((ticket) => {
+    if (!ticket.user || ticket.user.trim() === "") return "(VACÍO)";
+    const [name] = ticket.user.split(" (");
+    return name.trim().toUpperCase();
+  });
+
+  // Creamos un Blob con los datos de los usuarios
+  const blob = new Blob([allUsers.join("\n")], {
+    type: "text/plain;charset=utf-8",
+  });
+
+  // Creamos un enlace para la descarga del archivo
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "usuarios.txt";
+  link.click();
+
+  // Mostramos un mensaje de éxito
+  toast.success("Archivo de usuarios descargado con vacíos incluidos y ordenado");
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
-  const [rowData, setRowData] = useState([]);
-  const [gridApi, setGridApi] = useState(null);
-  const [gridColumnApi, setGridColumnApi] = useState(null);
-
-  const onGridReady = (params) => {
-    setGridApi(params.api);
-    setGridColumnApi(params.columnApi);
-  };
-
-  const onQuickFilterChanged = () => {
-    gridApi.setQuickFilter(document.getElementById("quickFilter").value);
-  };
-
-  const downloadUserList = () => {
-    const allUsers = rowData
-      .map((ticket) => ticket.user)
-      .filter((user) => user && user.trim() !== "")
-      .map((user) => {
-        const [name] = user.split(" (");
-        return name.trim().toUpperCase();
-      });
-
-    if (allUsers.length === 0) {
-      toast.warning("No hay usuarios para descargar");
-      return;
-    }
-
-    const blob = new Blob([allUsers.join("\n")], {
-      type: "text/plain;charset=utf-8",
-    });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "usuarios.txt";
-    link.click();
-
-    toast.success("Archivo de usuarios descargado exitosamente");
-  };
-
   const onCellDoubleClicked = (params) => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
     let isChanged = false;
-
     if (
       params.colDef.field === "sold" ||
       params.colDef.field === "availability"
     ) {
       const ticketToUpdate = params.data;
       let newStatus, newAvailability;
-
       if (params.colDef.field === "sold") {
-        const value = ticketToUpdate.sold;
-        fetch(
-          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`,
-          requestOptions
-        )
+        let value = ticketToUpdate.sold;
+        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`, requestOptions)
+
           .then((response) => response.json())
           .then((data) => {
             newStatus = ticketToUpdate.sold ? false : true;
             newAvailability = ticketToUpdate.availability;
             isChanged = true;
-
             if (isChanged) {
               const updatedData = [...rowData];
               const updatedTicket = {
@@ -85,9 +62,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
                 sold: newStatus,
                 availability: !newStatus,
               };
-              const rowIndex = updatedData.findIndex(
-                (row) => row.ticketNumber === ticketToUpdate.ticketNumber
-              );
+              const rowIndex = updatedData.findIndex((row) => {
+                return row.ticketNumber === ticketToUpdate.ticketNumber;
+              });
 
               let soldCount = newStatus ? 1 : -1;
 
@@ -99,7 +76,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               updatedData[rowIndex] = updatedTicket;
               setRowData(updatedData);
             }
-
             toast.success("Estado del boleto actualizado exitosamente");
           })
           .catch((error) => {
@@ -108,23 +84,17 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           });
       } else {
         const value = ticketToUpdate.availability;
-        fetch(
-          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`,
-          requestOptions
-        )
+        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`, requestOptions)
           .then((response) => response.json())
           .then((data) => {
-            if (
-              data.message === "Sold Tickets can not be made available"
-            ) {
+            if (data.message === "Sold Tickets can not be made available") {
               toast.error(data.message);
               return;
             }
 
             newStatus = ticketToUpdate.sold;
-            newAvailability = !ticketToUpdate.availability;
+            newAvailability = ticketToUpdate.availability ? false : true;
             isChanged = true;
-
             if (isChanged) {
               const updatedData = [...rowData];
               const updatedTicket = {
@@ -140,14 +110,13 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
                 bookedCount: stats.bookedCount + bookedCount,
               });
 
-              const rowIndex = updatedData.findIndex(
-                (row) => row.ticketNumber === ticketToUpdate.ticketNumber
-              );
+              const rowIndex = updatedData.findIndex((row) => {
+                return row.ticketNumber === ticketToUpdate.ticketNumber;
+              });
 
               updatedData[rowIndex] = updatedTicket;
               setRowData(updatedData);
             }
-
             toast.success("Ticket availability updated successfully");
           })
           .catch((error) => {
@@ -156,6 +125,20 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           });
       }
     }
+  };
+
+  const [rowData, setRowData] = useState([]);
+
+  const [gridApi, setGridApi] = useState(null);
+  const [gridColumnApi, setGridColumnApi] = useState(null);
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+    setGridColumnApi(params.columnApi);
+  };
+
+  const onQuickFilterChanged = () => {
+    gridApi.setQuickFilter(document.getElementById("quickFilter").value);
   };
 
   const columnDefs = [
@@ -173,7 +156,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       resizable: true,
       sortable: true,
       width: 110,
-      cellRenderer: (params) => params.value,
+      cellRenderer: function (params) {
+        return params.value;
+      },
     },
     {
       headerName: "Estado",
@@ -183,10 +168,16 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       resizable: true,
       width: 130,
       cellClassRules: {
-        "cell-value-green": (params) => !params.value,
-        "cell-value-red": (params) => params.value,
+        "cell-value-green": function (params) {
+          return !params.value;
+        },
+        "cell-value-red": function (params) {
+          return params.value;
+        },
       },
-      cellRenderer: (params) => (params.value ? "Pagado" : "No Pagado"),
+      cellRenderer: function (params) {
+        return params.value ? "Pagado" : "No Pagado";
+      },
     },
     {
       headerName: "Disponibilidad",
@@ -196,21 +187,26 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       resizable: true,
       width: 130,
       cellClassRules: {
-        "cell-value-green": (params) => !params.value,
-        "cell-value-red": (params) => params.value,
+        "cell-value-green": function (params) {
+          return !params.value;
+        },
+        "cell-value-red": function (params) {
+          return params.value;
+        },
       },
-      cellRenderer: (params) =>
-        params.value ? "Disponible" : "No Disponible",
+      cellRenderer: function (params) {
+        return params.value ? "Disponible" : "No Disponible";
+      },
     },
     {
-      headerName: "Copiar Usuario",
-      field: "user",
-      width: 110,
+      headerName: "Acción",
+      field: "action",
+      width: 180,
       cellRendererFramework: (params) => (
         <button
-          onClick={() => copyUserName(params.value)}
+          onClick={() => downloadUserList(rowData)}
           style={{
-            backgroundColor: "blue",
+            backgroundColor: "green",
             color: "white",
             border: "none",
             padding: "10px 20px",
@@ -218,7 +214,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             cursor: "pointer",
           }}
         >
-          Copiar
+          Descargar Usuarios
         </button>
       ),
     },
@@ -230,42 +226,23 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   return (
     <div style={{ width: "100%", marginTop: 20, height: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
-        <input
-          type="text"
-          id="quickFilter"
-          placeholder="Search..."
-          onChange={onQuickFilterChanged}
-          style={{
-            backgroundColor: "black",
-            color: "white",
-            border: "none",
-            padding: "10px",
-            flex: 1,
-          }}
-        />
-        <button
-          onClick={downloadUserList}
-          style={{
-            backgroundColor: "green",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            borderRadius: "5px",
-            cursor: "pointer",
-            marginLeft: "10px",
-          }}
-        >
-          Descargar lista de usuarios
-        </button>
-      </div>
-
+      <input
+        type="text"
+        id="quickFilter"
+        placeholder="Search..."
+        onChange={onQuickFilterChanged}
+        style={{
+          backgroundColor: "black",
+          color: "white",
+          border: "none",
+        }}
+      />
       <div className="ag-theme-alpine-dark">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
-          onCellDoubleClicked={onCellDoubleClicked}
+          onCellDoubleClicked={onCellDoubleClicked} // add
           pagination={true}
           paginationPageSize={1000}
           rowSelection={"single"}
