@@ -5,9 +5,19 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import { toast } from "react-toastify";
 import "./ticket.css";
 
-// Función para exportar los boletos a HTML formateado
-const exportTicketsToHTML = (tickets) => {
-  const sortedTickets = [...tickets].sort((a, b) => a.ticketNumber - b.ticketNumber);
+// Genera tabla HTML con formato 000/250/500/750 + columna de nombre
+const exportVerticalPatternWithNameHTML = (tickets) => {
+  const ticketMap = new Map();
+
+  // Mapeamos los nombres por número
+  tickets.forEach((ticket) => {
+    const number = String(ticket.ticketNumber).padStart(3, "0");
+    const name =
+      ticket.user && ticket.user.trim() !== ""
+        ? ticket.user.split(" (")[0].toUpperCase()
+        : "";
+    ticketMap.set(number, name);
+  });
 
   let tableHtml = `
     <html>
@@ -15,39 +25,47 @@ const exportTicketsToHTML = (tickets) => {
         <meta charset="UTF-8" />
         <style>
           table { border-collapse: collapse; width: 100%; }
-          th, td { border: 1px solid black; padding: 8px; text-align: center; font-family: Arial; font-size: 14px; }
-          th { background-color: #f2f2f2; font-weight: bold; }
+          th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+          }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
         </style>
       </head>
       <body>
         <table>
           <thead>
             <tr>
-              <th>NÚMEROS</th>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th>000</th>
+              <th>250</th>
+              <th>500</th>
+              <th>750</th>
+              <th>NOMBRE</th>
             </tr>
           </thead>
           <tbody>
   `;
 
-  for (let i = 0; i < sortedTickets.length; i += 4) {
-    tableHtml += "<tr>";
-    for (let j = 0; j < 4; j++) {
-      const ticket = sortedTickets[i + j];
-      if (ticket) {
-        const number = String(ticket.ticketNumber).padStart(3, "0");
-        const name =
-          ticket.user && ticket.user.trim() !== ""
-            ? ticket.user.split(" (")[0].toUpperCase()
-            : "(VACÍO)";
-        tableHtml += `<td><strong>${number}</strong><br/>${name}</td>`;
-      } else {
-        tableHtml += "<td></td>";
-      }
+  for (let i = 0; i <= 249; i++) {
+    const row = [];
+    const baseNumbers = [];
+    for (let offset = 0; offset <= 750; offset += 250) {
+      const num = i + offset;
+      const numberStr = String(num).padStart(3, "0");
+      baseNumbers.push(numberStr);
+      row.push(`<td>${numberStr}</td>`);
     }
-    tableHtml += "</tr>";
+
+    // Buscamos el nombre del primer número (ej. 000)
+    const name = ticketMap.get(baseNumbers[0]) || "";
+
+    tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
   }
 
   tableHtml += `
@@ -60,10 +78,10 @@ const exportTicketsToHTML = (tickets) => {
   const blob = new Blob([tableHtml], { type: "text/html;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "boletos.html";
+  link.download = "boletos_formato_tabla.html";
   link.click();
 
-  toast.success("Tabla HTML descargada correctamente");
+  toast.success("Tabla HTML con nombres descargada correctamente");
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
@@ -117,18 +135,18 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           style={{ backgroundColor: "black", color: "white", border: "none" }}
         />
         <button
-          onClick={() => exportTicketsToHTML(rowData)}
+          onClick={() => exportVerticalPatternWithNameHTML(rowData)}
           style={{
             marginLeft: 10,
             padding: "10px 20px",
-            backgroundColor: "blue",
+            backgroundColor: "purple",
             color: "white",
             border: "none",
             borderRadius: 5,
             cursor: "pointer",
           }}
         >
-          Descargar Tabla HTML
+          Descargar Tabla HTML (Con Nombres)
         </button>
       </div>
 
