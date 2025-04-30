@@ -6,31 +6,47 @@ import "./ticket.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Definimos la función para descargar la lista de usuarios
-const downloadUserList = (rowData) => {
+// Definimos la función para descargar la tabla de usuarios en formato HTML
+const downloadUserListAsHTML = (rowData) => {
   // Primero, ordenamos los datos por ticketNumber (de menor a mayor)
   const sortedRowData = [...rowData].sort((a, b) => a.ticketNumber - b.ticketNumber);
 
-  // Ahora, procesamos los usuarios, manteniendo los vacíos como "(VACÍO)"
-  const allUsers = sortedRowData.map((ticket) => {
-    if (!ticket.user || ticket.user.trim() === "") return "(VACÍO)";
-    const [name] = ticket.user.split(" (");
-    return name.trim().toUpperCase();
+  // Creamos el encabezado de la tabla
+  let tableHtml = "<table border='1' cellpadding='5' cellspacing='0'>";
+  tableHtml += "<thead><tr><th>Boletos #</th><th>Propietario</th><th>Estado</th><th>Disponibilidad</th></tr></thead><tbody>";
+
+  // Procesamos los datos y generamos las filas
+  sortedRowData.forEach((ticket) => {
+    const user = ticket.user && ticket.user.trim() !== "" ? ticket.user : "(VACÍO)";
+    const status = ticket.sold ? "Pagado" : "No Pagado";
+    const availability = ticket.availability ? "Disponible" : "No Disponible";
+    
+    tableHtml += `
+      <tr>
+        <td>${ticket.ticketNumber}</td>
+        <td>${user}</td>
+        <td>${status}</td>
+        <td>${availability}</td>
+      </tr>
+    `;
   });
 
-  // Creamos un Blob con los datos de los usuarios
-  const blob = new Blob([allUsers.join("\n")], {
-    type: "text/plain;charset=utf-8",
+  // Cerramos la tabla
+  tableHtml += "</tbody></table>";
+
+  // Creamos un Blob con el contenido HTML
+  const blob = new Blob([tableHtml], {
+    type: "application/html;charset=utf-8",
   });
 
   // Creamos un enlace para la descarga del archivo
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "usuarios.txt";
+  link.download = "usuarios.html";
   link.click();
 
   // Mostramos un mensaje de éxito
-  toast.success("Archivo de usuarios descargado con vacíos incluidos y ordenado");
+  toast.success("Tabla de usuarios descargada en formato HTML");
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
@@ -204,7 +220,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       width: 180,
       cellRendererFramework: (params) => (
         <button
-          onClick={() => downloadUserList(rowData)}
+          onClick={() => downloadUserListAsHTML(rowData)}
           style={{
             backgroundColor: "green",
             color: "white",
@@ -214,7 +230,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             cursor: "pointer",
           }}
         >
-          Descargar Usuarios
+          Descargar Tabla HTML
         </button>
       ),
     },
