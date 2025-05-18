@@ -210,7 +210,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola buenas tardes a las 4:00pm estaremos pasando a cobrar lo de la rifa de los $15,000 pesos . Esta en su casa? para llegar de pasadita.☺️🌸
+  const message = `Hola buenas noches, el dia de mañana desde las 10 am estaremos pasando a cobrar lo de la rifa de los $15,000 pesos. Esta en su casa? para llegar de pasadita.☺️🌸
   
   TUS NUMEROS A PARTICIPAR SON:
   [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
