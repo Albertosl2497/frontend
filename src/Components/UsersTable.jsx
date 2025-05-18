@@ -213,7 +213,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const message = `Hola buenas noches, el dia de mañana desde las 10 am estaremos pasando a cobrar lo de la rifa de los $15,000 pesos. Esta en su casa? para llegar de pasadita.☺️🌸
   
   TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].`
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+  CON UN PRECIO DE: $${totalPrice} PESOS.`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
