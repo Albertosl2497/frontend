@@ -5,11 +5,9 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import { toast } from "react-toastify";
 import "./ticket.css";
 
-// Genera tabla Word con formato 000/250/500/750 + columna de nombre
 const exportVerticalPatternAsDoc = (tickets) => {
   const ticketMap = new Map();
 
-  // Mapeamos nombres por número
   tickets.forEach((ticket) => {
     const number = String(ticket.ticketNumber).padStart(3, "0");
     const name =
@@ -19,75 +17,117 @@ const exportVerticalPatternAsDoc = (tickets) => {
     ticketMap.set(number, name);
   });
 
-  let tableHtml = `
+  const generateTable = (start, end) => {
+    let rows = "";
+    for (let i = start; i <= end; i++) {
+      const row = [];
+      const baseNumbers = [];
+
+      for (let offset = 0; offset <= 750; offset += 250) {
+        const num = i + offset;
+        const numberStr = String(num).padStart(3, "0");
+        baseNumbers.push(numberStr);
+        row.push(`<td>${numberStr}</td>`);
+      }
+
+      const name = ticketMap.get(baseNumbers[0]) || "";
+      rows += `<tr>${row.join("")}<td>${name}</td></tr>`;
+    }
+    return `
+      <table class="boletos">
+        <thead>
+          <tr>
+            <th>000</th>
+            <th>250</th>
+            <th>500</th>
+            <th>750</th>
+            <th>NOMBRE</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+      <br/>
+    `;
+  };
+
+  let allTables = "";
+  for (let group = 0; group < 250; group += 50) {
+    allTables += generateTable(group, group + 49);
+    if (group + 50 < 250) {
+      allTables += `<div class="page-break"></div>`;
+    }
+  }
+
+  const docContent = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office'
           xmlns:w='urn:schemas-microsoft-com:office:word'
           xmlns='http://www.w3.org/TR/REC-html40'>
       <head>
         <meta charset="UTF-8">
-        <title>Boletos</title>
+        <title>Boletos Formato Legal</title>
         <style>
-          table { border-collapse: collapse; width: 100%; }
-          th, td {
-            border: 1px solid black;
-            padding: 6px;
-            text-align: center;
-            font-family: Arial, sans-serif;
+          @page {
+            size: 14in 8.5in;
+            margin: 20px;
+          }
+          body {
+            font-family: 'Segoe UI', Arial, sans-serif;
             font-size: 13px;
+            color: #222;
+            margin: 0;
+            padding: 0;
+          }
+          h2 {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+          }
+          table.boletos {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
           }
           th {
-            background-color: #f2f2f2;
+            background-color: #004aad;
+            color: white;
+            padding: 6px;
+            border: 1px solid #ccc;
             font-weight: bold;
+            text-align: center;
+          }
+          td {
+            border: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+            height: 25px;
+          }
+          tr:nth-child(even) {
+            background-color: #f9f9f9;
+          }
+          .page-break {
+            page-break-after: always;
           }
         </style>
       </head>
       <body>
-        <h2 style="text-align:center">Lista de Boletos</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>000</th>
-              <th>250</th>
-              <th>500</th>
-              <th>750</th>
-              <th>NOMBRE</th>
-            </tr>
-          </thead>
-          <tbody>
-  `;
-
-  for (let i = 0; i <= 249; i++) {
-    const row = [];
-    const baseNumbers = [];
-    for (let offset = 0; offset <= 750; offset += 250) {
-      const num = i + offset;
-      const numberStr = String(num).padStart(3, "0");
-      baseNumbers.push(numberStr);
-      row.push(`<td>${numberStr}</td>`);
-    }
-
-    // Usamos el nombre del ticket base (ej. 000)
-    const name = ticketMap.get(baseNumbers[0]) || "";
-
-    tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
-  }
-
-  tableHtml += `
-          </tbody>
-        </table>
+        <h2>LISTA DE BOLETOS</h2>
+        ${allTables}
       </body>
     </html>
   `;
 
-  const blob = new Blob([tableHtml], {
+  const blob = new Blob([docContent], {
     type: "application/msword;charset=utf-8;",
   });
+
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "boletos_formato_tabla.doc";
+  link.download = "boletos_formato_legal.doc";
   link.click();
 
-  toast.success("Archivo .doc descargado correctamente");
+  toast.success("Documento Word descargado correctamente");
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
@@ -138,7 +178,12 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           id="quickFilter"
           placeholder="Buscar..."
           onChange={onQuickFilterChanged}
-          style={{ backgroundColor: "black", color: "white", border: "none" }}
+          style={{
+            backgroundColor: "black",
+            color: "white",
+            border: "none",
+            padding: "5px",
+          }}
         />
         <button
           onClick={() => exportVerticalPatternAsDoc(rowData)}
@@ -152,7 +197,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             cursor: "pointer",
           }}
         >
-          Descargar Tabla en Word (.doc)
+          Descargar en Word (.doc)
         </button>
       </div>
 
