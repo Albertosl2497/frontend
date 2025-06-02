@@ -52,7 +52,7 @@ const totalTickets = selectedTicketCount;
 
   const selectedTicketNumbersWithPairs = selectedTickets.flatMap(ticket => {
     const original = parseInt(ticket);
-    const pairs = [original + 250, original + 500, original + 750];
+    const pairs = [original + 333, original + 666];
     return pairs.map(num => num.toString().padStart(3, '0')); // Añadir ceros a la izquierda si es necesario
 });
 
@@ -446,7 +446,7 @@ const totalTickets = selectedTicketCount;
       >
         {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
         {/* Agregar los 3 números adicionales */}
-        {[250, 500, 750].map((additionalNumber) => (
+        {[333, 666].map((additionalNumber) => (
           <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
         ))}
       </div>
