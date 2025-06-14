@@ -183,7 +183,16 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = ` Buenas tardes a las 4pm estaremos pasando a cobrar denuevo. *Estara en su casa? para llegar de pasadita?* 🌸`
+  const message = `HOLA BUENAS TARDES LE RECORDAMOS QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $20,000 PESOS💸
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 10:00𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
+Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
+
+SUS NUMEROS A PARTICIPAR SON: [ ${allTickets.join(", ")} ][ ${additionalNumbers} ].
+𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
+
+METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas
+
+`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
