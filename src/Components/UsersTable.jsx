@@ -183,17 +183,16 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES LE RECORDAMOS QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $20,000 PESOS💸
+  const message = `HOLA BUENAS TARDES LE RECORDAMOS QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
   𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 10:00𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
 Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
-
-SUS NUMEROS A PARTICIPAR SON:  [ ${allTickets.join(", ")} ].
-  𝗢𝗣𝗢𝗥𝗧𝗨𝗡𝗜𝗗𝗔𝗗𝗘𝗦 𝗔𝗗𝗜𝗖𝗜𝗢𝗡𝗔𝗟𝗘𝗦: [ ${additionalNumbers} ].
-𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
-
-METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas
-
-`
+  
+  TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
+  CON UN PRECIO DE: $${totalPrice} PESOS.
+  
+  TUS NUMEROS A PARTICIPAR SON:
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+  METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
@@ -204,7 +203,7 @@ METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
-  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 333, parseInt(ticket) + 666]); // Obtener números adicionales
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
@@ -212,11 +211,12 @@ METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES LE RECORDAMOS QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
-  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 03:00𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
-Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
-
-`
+  const message = `Hola buenas noches, el dia de mañana desde las 10 am estaremos pasando a cobrar lo de la rifa de los $15,000 pesos. Esta en su casa? para llegar de pasadita.☺️🌸
+  
+  TUS NUMEROS A PARTICIPAR SON:
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+  A NOMBRE DE: ${fullName}.
+  CON UN PRECIO DE: $${totalPrice} PESOS.`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
