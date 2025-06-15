@@ -211,12 +211,7 @@ Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
   const estado = userData.user.state;
 
     
-  const message = `Hola buen dia *a las 11am* estaresmos pasando a cobrar lo de la rifa de los $20,000 pesos. Estara en su casa? para llegar de pasadita.☺️🌸
-  
-  TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
-  A NOMBRE DE: ${fullName}.
-  CON UN PRECIO DE: $${totalPrice} PESOS.`
+  const message = `Hola buen dia *a las 11am* estaresmos pasando a cobrar lo de la rifa de los $20,000 pesos. Estara en su casa? para llegar de pasadita.☺️🌸`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
