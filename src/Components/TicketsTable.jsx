@@ -1,122 +1,105 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
+import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import "./ticket.css";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "./ticket.css";
 
-// Definimos la función copyUserName fuera del componente
-const copyUserName = (userName) => {
-  // Dividir el nombre de usuario y el correo electrónico
-  const [name, email] = userName.split(' (');
-  const uppercaseName = name.trim().toUpperCase(); // Convertir el nombre a mayúsculas
-  navigator.clipboard.writeText(uppercaseName); // Copiar el nombre de usuario en mayúsculas
-  toast.success("Nombre de usuario copiado exitosamente");
+// Genera tabla Word con formato 000/250/500/750 + columna de nombre
+const exportVerticalPatternAsDoc = (tickets) => {
+  const ticketMap = new Map();
+
+  // Mapeamos nombres por número
+  tickets.forEach((ticket) => {
+    const number = String(ticket.ticketNumber).padStart(3, "0");
+    const name =
+      ticket.user && ticket.user.trim() !== ""
+        ? ticket.user.split(" (")[0].toUpperCase()
+        : "";
+    ticketMap.set(number, name);
+  });
+
+  let tableHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+          xmlns:w='urn:schemas-microsoft-com:office:word'
+          xmlns='http://www.w3.org/TR/REC-html40'>
+      <head>
+        <meta charset="UTF-8">
+        <title>Boletos</title>
+        <style>
+          table { border-collapse: collapse; width: 100%; }
+          th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+          }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <h2 style="text-align:center">Lista de Boletos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>000</th>
+              <th>250</th>
+              <th>500</th>
+              <th>750</th>
+              <th>NOMBRE</th>
+            </tr>
+          </thead>
+          <tbody>
+  `;
+
+  for (let i = 0; i <= 249; i++) {
+    const row = [];
+    const baseNumbers = [];
+    for (let offset = 0; offset <= 750; offset += 250) {
+      const num = i + offset;
+      const numberStr = String(num).padStart(3, "0");
+      baseNumbers.push(numberStr);
+      row.push(`<td>${numberStr}</td>`);
+    }
+
+    // Usamos el nombre del ticket base (ej. 000)
+    const name = ticketMap.get(baseNumbers[0]) || "";
+
+    tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
+  }
+
+  tableHtml += `
+          </tbody>
+        </table>
+      </body>
+    </html>
+  `;
+
+  const blob = new Blob([tableHtml], {
+    type: "application/msword;charset=utf-8;",
+  });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "boletos_formato_tabla.doc";
+  link.click();
+
+  toast.success("Archivo .doc descargado correctamente");
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
-  const onCellDoubleClicked = (params) => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    };
-    let isChanged = false;
-    if (
-      params.colDef.field === "sold" ||
-      params.colDef.field === "availability"
-    ) {
-      const ticketToUpdate = params.data;
-      let newStatus, newAvailability;
-      if (params.colDef.field === "sold") {
-        let value = ticketToUpdate.sold;
-        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`, requestOptions)
-
-          .then((response) => response.json())
-          .then((data) => {
-            newStatus = ticketToUpdate.sold ? false : true;
-            newAvailability = ticketToUpdate.availability;
-            isChanged = true;
-            if (isChanged) {
-              const updatedData = [...rowData];
-              const updatedTicket = {
-                ...ticketToUpdate,
-                sold: newStatus,
-                availability: !newStatus,
-              };
-              const rowIndex = updatedData.findIndex((row) => {
-                return row.ticketNumber === ticketToUpdate.ticketNumber;
-              });
-
-              let soldCount = newStatus ? 1 : -1;
-
-              setStats({
-                soldCount: stats.soldCount + soldCount,
-                bookedCount: stats.bookedCount,
-              });
-
-              updatedData[rowIndex] = updatedTicket;
-              setRowData(updatedData);
-            }
-            toast.success("Estado del boleto actualizado exitosamente");
-          })
-          .catch((error) => {
-            console.error(error);
-            toast.error("Error al actualizar el estado del boleto");
-          });
-      } else {
-        const value = ticketToUpdate.availability;
-        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`, requestOptions)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.message === "Sold Tickets can not be made available") {
-              toast.error(data.message);
-              return;
-            }
-
-            newStatus = ticketToUpdate.sold;
-            newAvailability = ticketToUpdate.availability ? false : true;
-            isChanged = true;
-            if (isChanged) {
-              const updatedData = [...rowData];
-              const updatedTicket = {
-                ...ticketToUpdate,
-                sold: newAvailability ? false : newStatus,
-                availability: newAvailability,
-              };
-
-              let bookedCount = !newAvailability ? 1 : -1;
-
-              setStats({
-                soldCount: stats.soldCount,
-                bookedCount: stats.bookedCount + bookedCount,
-              });
-
-              const rowIndex = updatedData.findIndex((row) => {
-                return row.ticketNumber === ticketToUpdate.ticketNumber;
-              });
-
-              updatedData[rowIndex] = updatedTicket;
-              setRowData(updatedData);
-            }
-            toast.success("Ticket availability updated successfully");
-          })
-          .catch((error) => {
-            console.error(error);
-            toast.error("Error updating ticket availability");
-          });
-      }
-    }
-  };
-
   const [rowData, setRowData] = useState([]);
-
   const [gridApi, setGridApi] = useState(null);
-  const [gridColumnApi, setGridColumnApi] = useState(null);
+
+  useEffect(() => {
+    setRowData(tickets || []);
+  }, [tickets]);
 
   const onGridReady = (params) => {
     setGridApi(params.api);
-    setGridColumnApi(params.columnApi);
   };
 
   const onQuickFilterChanged = () => {
@@ -124,104 +107,63 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   };
 
   const columnDefs = [
-    {
-  headerName: "Boletos #",
-      field: "ticketNumber",
-      sortable: true,
-      resizable: true,
-      width: 80,
-       },
+    { headerName: "Boleto", field: "ticketNumber", width: 100 },
     {
       headerName: "Propietario",
       field: "user",
       flex: 1,
-      resizable: true,
-      sortable: true,
-      width: 110,
-      cellRenderer: function (params) {
-        return params.value;
-      },
+      cellRenderer: (params) =>
+        params.value?.split(" (")[0]?.toUpperCase() || "(VACÍO)",
     },
     {
       headerName: "Estado",
       field: "sold",
-      editable: true,
-      sortable: true,
-      resizable: true,
       width: 130,
-      cellClassRules: {
-        "cell-value-green": function (params) {
-          return !params.value;
-        },
-        "cell-value-red": function (params) {
-          return params.value;
-        },
-      },
-      cellRenderer: function (params) {
-        return params.value ? "Pagado" : "No Pagado";
-      },
+      cellRenderer: (params) => (params.value ? "Pagado" : "No Pagado"),
     },
     {
       headerName: "Disponibilidad",
       field: "availability",
-      editable: true,
-      sortable: true,
-      resizable: true,
-      width: 130,
-      cellClassRules: {
-        "cell-value-green": function (params) {
-          return !params.value;
-        },
-        "cell-value-red": function (params) {
-          return params.value;
-        },
-      },
-      cellRenderer: function (params) {
-        return params.value ? "Disponible" : "No Disponible";
-      },
+      width: 150,
+      cellRenderer: (params) =>
+        params.value ? "Disponible" : "No Disponible",
     },
-
-    {
-      headerName: "Copiar Usuario",
-      field: "user",
-      width: 110,
-      cellRendererFramework: (params) => (
-        <button onClick={() => copyUserName(params.value)}
-        style={{ backgroundColor: "blue", color: "white", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }}
-          >Copiar</button>
-      ),
-    },
-    
   ];
-
-  useEffect(() => {
-    setRowData(tickets || []);
-  }, [tickets]);
 
   return (
     <div style={{ width: "100%", marginTop: 20, height: "100%" }}>
-      <input
-        type="text"
-        id="quickFilter"
-        placeholder="Search..."
-        onChange={onQuickFilterChanged}
-        style={{
-          backgroundColor: "black",
-          color: "white",
-          border: "none",
-        }}
-      />
+      <div style={{ marginBottom: 10 }}>
+        <input
+          type="text"
+          id="quickFilter"
+          placeholder="Buscar..."
+          onChange={onQuickFilterChanged}
+          style={{ backgroundColor: "black", color: "white", border: "none" }}
+        />
+        <button
+          onClick={() => exportVerticalPatternAsDoc(rowData)}
+          style={{
+            marginLeft: 10,
+            padding: "10px 20px",
+            backgroundColor: "#004aad",
+            color: "white",
+            border: "none",
+            borderRadius: 5,
+            cursor: "pointer",
+          }}
+        >
+          Descargar Tabla en Word (.doc)
+        </button>
+      </div>
+
       <div className="ag-theme-alpine-dark">
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
-          onCellDoubleClicked={onCellDoubleClicked} // add
           pagination={true}
           paginationPageSize={1000}
           rowSelection={"single"}
-          editType={"fullRow"}
-          detailRowAutoHeight={true}
           domLayout="autoHeight"
         />
       </div>
