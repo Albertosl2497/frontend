@@ -142,7 +142,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
-  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 333, parseInt(ticket) + 666]); // Obtener números adicionales
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
   const ticketCount = allTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
@@ -175,7 +175,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
-  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 333, parseInt(ticket) + 666]); // Obtener números adicionales
+  const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
   const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
