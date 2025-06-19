@@ -52,7 +52,7 @@ const totalTickets = selectedTicketCount;
 
   const selectedTicketNumbersWithPairs = selectedTickets.flatMap(ticket => {
     const original = parseInt(ticket);
-    const pairs = [original + 333, original + 666];
+    const pairs = [original + 250, original + 500, original + 750];
     return pairs.map(num => num.toString().padStart(3, '0')); // Añadir ceros a la izquierda si es necesario
 });
 
@@ -151,8 +151,8 @@ const totalTickets = selectedTicketCount;
                 OPORTUNIDADES ADICIONALES:
                 [ {selectedTicketNumbersWithPairs.join(', ')} ].
                 𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $20,000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 15 DE JUNIO DE 2025.< br/>
+                $15,000 PESOS EN EFECTIVO.< br/>
+                𝗗𝗘𝗟 𝗗𝗜𝗔: 01 DE JULIO DE 2025.< br/>
                 𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
                 {fullName}.< br/>
                 
@@ -169,7 +169,7 @@ const totalTickets = selectedTicketCount;
       𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
       OPORTUNIDADES ADICIONALES:
       [ ${selectedTicketNumbersWithPairs.join(', ')} ].
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $20,000 EN EFECTIVO. DEL DIA 15 DE JUNIO DE 2025.
+      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 01 DE JULIO DE 2025.
       
       𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
       𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.
@@ -446,7 +446,7 @@ const totalTickets = selectedTicketCount;
       >
         {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
         {/* Agregar los 3 números adicionales */}
-        {[333, 666].map((additionalNumber) => (
+        {[250, 500, 750].map((additionalNumber) => (
           <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
         ))}
       </div>
