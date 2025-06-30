@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./ticket.css";
 
-// Copiar nombre en mayúsculas
 const copyUserName = (userName) => {
   const [name] = userName.split(" (");
   const uppercaseName = name.trim().toUpperCase();
@@ -14,9 +13,7 @@ const copyUserName = (userName) => {
   toast.success("Nombre de usuario copiado exitosamente");
 };
 
-// Exportar todos los boletos con nombre (aunque esté vacío)
 const exportVerticalPatternAsDoc = (tickets) => {
-  // Clonar profundo para evitar mutaciones
   const safeTickets = JSON.parse(JSON.stringify(tickets));
 
   const ticketMap = new Map();
@@ -37,7 +34,10 @@ const exportVerticalPatternAsDoc = (tickets) => {
         <meta charset="UTF-8">
         <title>Boletos</title>
         <style>
-          table { border-collapse: collapse; width: 100%; }
+          table {
+            border-collapse: collapse;
+            width: 100%;
+          }
           th, td {
             border: 1px solid black;
             padding: 6px;
@@ -45,7 +45,10 @@ const exportVerticalPatternAsDoc = (tickets) => {
             font-family: Arial, sans-serif;
             font-size: 13px;
           }
-          th { background-color: #f2f2f2; font-weight: bold; }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
         </style>
       </head>
       <body>
@@ -84,16 +87,13 @@ const exportVerticalPatternAsDoc = (tickets) => {
   toast.success("Archivo .doc con todos los boletos descargado");
 };
 
-// Exportar solo boletos no vendidos y sin nombre
 const exportOnlyAvailableTicketsAsDoc = (tickets) => {
-  // Clonar profundo para evitar mutaciones
   const safeTickets = JSON.parse(JSON.stringify(tickets));
 
   const ticketMap = new Map();
 
   safeTickets.forEach((ticket) => {
     const isEmptyName = !ticket.user || ticket.user.trim() === "";
-    // aseguramos booleano con === false
     if (ticket.sold === false && isEmptyName) {
       const number = ticket.ticketNumber.toString().padStart(3, "0");
       ticketMap.set(number, "");
@@ -108,7 +108,15 @@ const exportOnlyAvailableTicketsAsDoc = (tickets) => {
         <meta charset="UTF-8">
         <title>Boletos No Vendidos Sin Nombre</title>
         <style>
-          table { border-collapse: collapse; width: 100%; }
+          table {
+            border-collapse: collapse;
+            width: 100%;
+            page-break-inside: avoid;
+          }
+          tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+          }
           th, td {
             border: 1px solid black;
             padding: 6px;
@@ -116,7 +124,10 @@ const exportOnlyAvailableTicketsAsDoc = (tickets) => {
             font-family: Arial, sans-serif;
             font-size: 13px;
           }
-          th { background-color: #f2f2f2; font-weight: bold; }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
         </style>
       </head>
       <body>
@@ -139,8 +150,8 @@ const exportOnlyAvailableTicketsAsDoc = (tickets) => {
       baseNumbers.push(numberStr);
       row.push(`<td>${numberStr}</td>`);
     }
-    const name = ticketMap.get(baseNumbers[0]) || "";
     if (ticketMap.has(baseNumbers[0])) {
+      const name = ticketMap.get(baseNumbers[0]) || "";
       tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
     }
   }
