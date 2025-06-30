@@ -6,7 +6,7 @@ import "./ticket.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Función para copiar el nombre
+// Función para copiar el nombre del usuario en mayúsculas
 const copyUserName = (userName) => {
   const [name] = userName.split(" (");
   const uppercaseName = name.trim().toUpperCase();
@@ -14,7 +14,7 @@ const copyUserName = (userName) => {
   toast.success("Nombre de usuario copiado exitosamente");
 };
 
-// ✅ Función para exportar archivo Word
+// 🔽 FUNCIONALIDAD AGREGADA: Exportar tabla a Word
 const exportVerticalPatternAsDoc = (tickets) => {
   const ticketMap = new Map();
 
@@ -75,6 +75,7 @@ const exportVerticalPatternAsDoc = (tickets) => {
     }
 
     const name = ticketMap.get(baseNumbers[0]) || "";
+
     tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
   }
 
@@ -100,6 +101,10 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
 
+  useEffect(() => {
+    setRowData(tickets || []);
+  }, [tickets]);
+
   const onGridReady = (params) => {
     setGridApi(params.api);
   };
@@ -108,105 +113,76 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     gridApi.setQuickFilter(document.getElementById("quickFilter").value);
   };
 
-  useEffect(() => {
-    setRowData(tickets || []);
-  }, [tickets]);
-
   const onCellDoubleClicked = (params) => {
+    const ticketToUpdate = params.data;
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
-    let isChanged = false;
-    if (
-      params.colDef.field === "sold" ||
-      params.colDef.field === "availability"
-    ) {
-      const ticketToUpdate = params.data;
-      let newStatus, newAvailability;
-      if (params.colDef.field === "sold") {
-        const value = ticketToUpdate.sold;
-        fetch(
-          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`,
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then(() => {
-            newStatus = !value;
-            newAvailability = ticketToUpdate.availability;
-            isChanged = true;
-            if (isChanged) {
-              const updatedData = [...rowData];
-              const updatedTicket = {
-                ...ticketToUpdate,
-                sold: newStatus,
-                availability: !newStatus,
-              };
-              const rowIndex = updatedData.findIndex(
-                (row) => row.ticketNumber === ticketToUpdate.ticketNumber
-              );
 
-              let soldCount = newStatus ? 1 : -1;
+    if (params.colDef.field === "sold") {
+      const newSold = !ticketToUpdate.sold;
+      fetch(
+        `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${newSold}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then(() => {
+          const updatedData = [...rowData];
+          const index = updatedData.findIndex(
+            (row) => row.ticketNumber === ticketToUpdate.ticketNumber
+          );
 
-              setStats({
-                soldCount: stats.soldCount + soldCount,
-                bookedCount: stats.bookedCount,
-              });
+          updatedData[index] = {
+            ...ticketToUpdate,
+            sold: newSold,
+            availability: !newSold,
+          };
 
-              updatedData[rowIndex] = updatedTicket;
-              setRowData(updatedData);
-            }
-            toast.success("Estado del boleto actualizado exitosamente");
-          })
-          .catch((error) => {
-            console.error(error);
-            toast.error("Error al actualizar el estado del boleto");
+          setRowData(updatedData);
+          setStats({
+            ...stats,
+            soldCount: stats.soldCount + (newSold ? 1 : -1),
           });
-      } else {
-        const value = ticketToUpdate.availability;
-        fetch(
-          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!value}`,
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.message === "Sold Tickets can not be made available") {
-              toast.error(data.message);
-              return;
-            }
 
-            newStatus = ticketToUpdate.sold;
-            newAvailability = !value;
-            isChanged = true;
-            if (isChanged) {
-              const updatedData = [...rowData];
-              const updatedTicket = {
-                ...ticketToUpdate,
-                sold: !newAvailability ? true : newStatus,
-                availability: newAvailability,
-              };
+          toast.success("Estado del boleto actualizado exitosamente");
+        })
+        .catch(() => toast.error("Error al actualizar el estado del boleto"));
+    }
 
-              let bookedCount = !newAvailability ? 1 : -1;
+    if (params.colDef.field === "availability") {
+      const newAvailability = !ticketToUpdate.availability;
+      fetch(
+        `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${newAvailability}`,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message === "Sold Tickets can not be made available") {
+            toast.error(data.message);
+            return;
+          }
 
-              setStats({
-                soldCount: stats.soldCount,
-                bookedCount: stats.bookedCount + bookedCount,
-              });
+          const updatedData = [...rowData];
+          const index = updatedData.findIndex(
+            (row) => row.ticketNumber === ticketToUpdate.ticketNumber
+          );
 
-              const rowIndex = updatedData.findIndex(
-                (row) => row.ticketNumber === ticketToUpdate.ticketNumber
-              );
+          updatedData[index] = {
+            ...ticketToUpdate,
+            availability: newAvailability,
+            sold: newAvailability ? false : ticketToUpdate.sold,
+          };
 
-              updatedData[rowIndex] = updatedTicket;
-              setRowData(updatedData);
-            }
-            toast.success("Disponibilidad del boleto actualizada");
-          })
-          .catch((error) => {
-            console.error(error);
-            toast.error("Error al actualizar disponibilidad del boleto");
+          setRowData(updatedData);
+          setStats({
+            ...stats,
+            bookedCount: stats.bookedCount + (newAvailability ? -1 : 1),
           });
-      }
+
+          toast.success("Disponibilidad actualizada exitosamente");
+        })
+        .catch(() => toast.error("Error al actualizar disponibilidad"));
     }
   };
 
@@ -264,7 +240,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             backgroundColor: "blue",
             color: "white",
             border: "none",
-            padding: "10px 20px",
+            padding: "6px 10px",
             borderRadius: "5px",
             cursor: "pointer",
           }}
@@ -287,12 +263,13 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             backgroundColor: "black",
             color: "white",
             border: "none",
-            marginRight: 10,
+            padding: "6px",
           }}
         />
         <button
           onClick={() => exportVerticalPatternAsDoc(rowData)}
           style={{
+            marginLeft: 10,
             padding: "10px 20px",
             backgroundColor: "#004aad",
             color: "white",
@@ -315,7 +292,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           paginationPageSize={1000}
           rowSelection={"single"}
           editType={"fullRow"}
-          detailRowAutoHeight={true}
           domLayout="autoHeight"
         />
       </div>
