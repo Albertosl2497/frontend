@@ -155,7 +155,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
   𝗢𝗣𝗢𝗥𝗧𝗨𝗡𝗜𝗗𝗔𝗗𝗘𝗦 𝗔𝗗𝗜𝗖𝗜𝗢𝗡𝗔𝗟𝗘𝗦: [ ${additionalNumbers} ].
   𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 PESOS 💸💰
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 01 DE JULIO 2025.
+  𝘿𝙀𝙇 𝘿𝙄𝘼: 01 DE JUNIO 2025.
   𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
   𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
   𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
@@ -171,27 +171,28 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 //OPORTUNIDADES ADICIONALES:
   //[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
 
-  const sendWhatsAppMessageConfirmation2 = (userData) => {
-  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
+  const sendWhatsAppMessage = (userData) => {
+ const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
   const fullName = userData.user.fullName;
   const bookedTickets = userData.bookedTickets.flatMap((ticket) => ticket.ticketNumbers); // Obtener números de boleto planos
   const additionalNumbers = bookedTickets.flatMap(ticket => [parseInt(ticket) + 250, parseInt(ticket) + 500, parseInt(ticket) + 750]); // Obtener números adicionales
-  const allTickets = [...bookedTickets]; // Agrupar todos los números de boletos, incluidos los adicionales
-  const ticketCount = allTickets.length; // Contar la cantidad total de boletos
+  const ticketCount = bookedTickets.length; // Contar la cantidad total de boletos
   const ticketPrice = 100; // Precio por boleto (¡ajusta según tus necesidades!)
   const totalPrice = ticketCount * ticketPrice; // Calcular el precio total
   const ciudad = userData.user.city;
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES LE INFORMAMOS QUE EL DIA DE MAÑANA ES LA RIFA DE LOS $15,000 PESOS.
-𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 9:30𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
+  const message = `HOLA BUENAS TARDES LE RECORDAMOS QUE EL DIA DE MAÑANA SE LLEVARA ACABO LA RIFA DE LOS $15,000 PESOS💸
+  𝗘𝗦𝗧𝗔𝗥𝗘𝗠𝗢𝗦 𝗥𝗘𝗖𝗜𝗕𝗜𝗘𝗡𝗗𝗢 𝗟𝗢𝗦 𝗣𝗔𝗚𝗢𝗦 𝗛𝗔𝗦𝗧𝗔 𝗟𝗔𝗦 11:00𝗣𝗠 𝗗𝗘𝗟 𝗗𝗜𝗔 𝗗𝗘 𝗛𝗢𝗬.
 Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
-
-𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
-SUS 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦) A PARTICIPAR SON: [ ${allTickets.join(", ")} ] [ ${additionalNumbers} ].
   
-METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas `
+  TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
+  CON UN PRECIO DE: $${totalPrice} PESOS.
+  
+  TUS NUMEROS A PARTICIPAR SON:
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+  METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
@@ -210,7 +211,12 @@ METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas `
   const estado = userData.user.state;
 
     
-  const message = ` HOLA BUENAS NOCHES, PARA INFORMAR QUE EL DIA DE MAÑANA A LAS☺️🌸`
+  const message = `Hola buenas noches, el dia de mañana desde las 10 am estaremos pasando a cobrar lo de la rifa de los $15,000 pesos. Esta en su casa? para llegar de pasadita.☺️🌸
+  
+  TUS NUMEROS A PARTICIPAR SON:
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+  A NOMBRE DE: ${fullName}.
+  CON UN PRECIO DE: $${totalPrice} PESOS.`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
