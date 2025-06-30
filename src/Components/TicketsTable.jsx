@@ -16,9 +16,12 @@ const copyUserName = (userName) => {
 
 // Exportar todos los boletos con nombre (aunque esté vacío)
 const exportVerticalPatternAsDoc = (tickets) => {
+  // Clonar profundo para evitar mutaciones
+  const safeTickets = JSON.parse(JSON.stringify(tickets));
+
   const ticketMap = new Map();
-  tickets.forEach((ticket) => {
-    const number = String(ticket.ticketNumber).padStart(3, "0");
+  safeTickets.forEach((ticket) => {
+    const number = ticket.ticketNumber.toString().padStart(3, "0");
     const name =
       ticket.user && ticket.user.trim() !== ""
         ? ticket.user.split(" (")[0].toUpperCase()
@@ -61,7 +64,7 @@ const exportVerticalPatternAsDoc = (tickets) => {
     const baseNumbers = [];
     for (let offset = 0; offset <= 750; offset += 250) {
       const num = i + offset;
-      const numberStr = String(num).padStart(3, "0");
+      const numberStr = num.toString().padStart(3, "0");
       baseNumbers.push(numberStr);
       row.push(`<td>${numberStr}</td>`);
     }
@@ -83,12 +86,16 @@ const exportVerticalPatternAsDoc = (tickets) => {
 
 // Exportar solo boletos no vendidos y sin nombre
 const exportOnlyAvailableTicketsAsDoc = (tickets) => {
+  // Clonar profundo para evitar mutaciones
+  const safeTickets = JSON.parse(JSON.stringify(tickets));
+
   const ticketMap = new Map();
 
-  tickets.forEach((ticket) => {
+  safeTickets.forEach((ticket) => {
     const isEmptyName = !ticket.user || ticket.user.trim() === "";
-    if (!ticket.sold && isEmptyName) {
-      const number = String(ticket.ticketNumber).padStart(3, "0");
+    // aseguramos booleano con === false
+    if (ticket.sold === false && isEmptyName) {
+      const number = ticket.ticketNumber.toString().padStart(3, "0");
       ticketMap.set(number, "");
     }
   });
@@ -128,7 +135,7 @@ const exportOnlyAvailableTicketsAsDoc = (tickets) => {
     const baseNumbers = [];
     for (let offset = 0; offset <= 750; offset += 250) {
       const num = i + offset;
-      const numberStr = String(num).padStart(3, "0");
+      const numberStr = num.toString().padStart(3, "0");
       baseNumbers.push(numberStr);
       row.push(`<td>${numberStr}</td>`);
     }
@@ -163,45 +170,54 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   };
 
   const onQuickFilterChanged = () => {
-    gridApi.setQuickFilter(document.getElementById("quickFilter").value);
+    if (gridApi) {
+      gridApi.setQuickFilter(document.getElementById("quickFilter").value);
+    }
   };
 
   const onCellDoubleClicked = (params) => {
     const ticketToUpdate = params.data;
+    const field = params.colDef.field;
+    if (field !== "sold" && field !== "availability") return;
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
-    if (params.colDef.field === "sold" || params.colDef.field === "availability") {
-      let url = `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!ticketToUpdate[params.colDef.field]}`;
-      fetch(url, requestOptions)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "Sold Tickets can not be made available") {
-            toast.error(data.message);
-            return;
-          }
-          const updatedData = [...rowData];
-          const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticketToUpdate.ticketNumber);
-          const updatedTicket = { ...ticketToUpdate };
-          updatedTicket[params.colDef.field] = !updatedTicket[params.colDef.field];
 
-          if (params.colDef.field === "sold") {
-            updatedTicket.availability = !updatedTicket.sold;
-            const soldCount = updatedTicket.sold ? 1 : -1;
-            setStats({ ...stats, soldCount: stats.soldCount + soldCount });
-          } else {
-            if (updatedTicket.availability) updatedTicket.sold = false;
-            const bookedCount = updatedTicket.availability ? -1 : 1;
-            setStats({ ...stats, bookedCount: stats.bookedCount + bookedCount });
-          }
+    fetch(
+      `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!ticketToUpdate[field]}`,
+      requestOptions
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Sold Tickets can not be made available") {
+          toast.error(data.message);
+          return;
+        }
 
-          updatedData[rowIndex] = updatedTicket;
-          setRowData(updatedData);
-          toast.success("Estado actualizado exitosamente");
-        })
-        .catch(() => toast.error("Error al actualizar estado"));
-    }
+        const updatedData = [...rowData];
+        const rowIndex = updatedData.findIndex(
+          (row) => row.ticketNumber === ticketToUpdate.ticketNumber
+        );
+        const updatedTicket = { ...ticketToUpdate };
+        updatedTicket[field] = !updatedTicket[field];
+
+        if (field === "sold") {
+          updatedTicket.availability = !updatedTicket.sold;
+          const soldCount = updatedTicket.sold ? 1 : -1;
+          setStats({ ...stats, soldCount: stats.soldCount + soldCount });
+        } else {
+          if (updatedTicket.availability) updatedTicket.sold = false;
+          const bookedCount = updatedTicket.availability ? -1 : 1;
+          setStats({ ...stats, bookedCount: stats.bookedCount + bookedCount });
+        }
+
+        updatedData[rowIndex] = updatedTicket;
+        setRowData(updatedData);
+        toast.success("Estado actualizado exitosamente");
+      })
+      .catch(() => toast.error("Error al actualizar estado"));
   };
 
   const columnDefs = [
@@ -275,7 +291,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           id="quickFilter"
           placeholder="Buscar..."
           onChange={onQuickFilterChanged}
-          style={{ backgroundColor: "black", color: "white", border: "none" }}
+          style={{
+            backgroundColor: "black",
+            color: "white",
+            border: "none",
+          }}
         />
         <button
           onClick={() => exportVerticalPatternAsDoc(rowData)}
@@ -289,25 +309,26 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             cursor: "pointer",
           }}
         >
-          Descargar Todos (.doc)
+          Descargar Tabla (Todos)
         </button>
+
         <button
           onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)}
           style={{
             marginLeft: 10,
             padding: "10px 20px",
-            backgroundColor: "#009688",
+            backgroundColor: "#009933",
             color: "white",
             border: "none",
             borderRadius: 5,
             cursor: "pointer",
           }}
         >
-          Descargar No Vendidos (.doc)
+          Descargar Tabla (No vendidos sin nombre)
         </button>
       </div>
 
-      <div className="ag-theme-alpine-dark">
+      <div className="ag-theme-alpine-dark" style={{ width: "100%" }}>
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
