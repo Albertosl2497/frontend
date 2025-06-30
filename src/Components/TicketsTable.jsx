@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./ticket.css";
+
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const copyUserName = (userName) => {
   const [name] = userName.split(" (");
@@ -13,159 +16,71 @@ const copyUserName = (userName) => {
   toast.success("Nombre de usuario copiado exitosamente");
 };
 
-const exportVerticalPatternAsDoc = (tickets) => {
-  const safeTickets = JSON.parse(JSON.stringify(tickets));
+const PDF_PAGE_WIDTH = 612;  // 8.5 inch * 72
+const PDF_PAGE_HEIGHT = 936; // 13 inch * 72
 
-  const ticketMap = new Map();
-  safeTickets.forEach((ticket) => {
-    const number = ticket.ticketNumber.toString().padStart(3, "0");
-    const name =
-      ticket.user && ticket.user.trim() !== ""
-        ? ticket.user.split(" (")[0].toUpperCase()
-        : "";
-    ticketMap.set(number, name);
+const generatePDF = (tickets, fileName, filterFn, title) => {
+  const doc = new jsPDF({
+    unit: "pt",
+    format: [PDF_PAGE_WIDTH, PDF_PAGE_HEIGHT],
   });
 
-  let tableHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office'
-          xmlns:w='urn:schemas-microsoft-com:office:word'
-          xmlns='http://www.w3.org/TR/REC-html40'>
-      <head>
-        <meta charset="UTF-8">
-        <title>Boletos</title>
-        <style>
-          table {
-            border-collapse: collapse;
-            width: 100%;
-          }
-          th, td {
-            border: 1px solid black;
-            padding: 6px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            font-size: 13px;
-          }
-          th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-          }
-        </style>
-      </head>
-      <body>
-        <h2 style="text-align:center">Lista de Boletos</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th>
-            </tr>
-          </thead>
-          <tbody>
-  `;
+  doc.setFontSize(18);
+  doc.text(title, PDF_PAGE_WIDTH / 2, 40, { align: "center" });
 
+  // Filtrar tickets si filterFn definido
+  const filteredTickets = filterFn
+    ? tickets.filter(filterFn)
+    : tickets;
+
+  // Construir filas para la tabla, cada fila es:
+  // [ "000", "250", "500", "750", "NOMBRE" ]
+  // Como antes, agrupamos por bloques de 250 pero solo filas donde el base '000' exista en la lista filtrada
+
+  // Crear mapa número -> usuario (solo mayúsculas para nombre)
+  const ticketMap = new Map();
+  filteredTickets.forEach((t) => {
+    const numStr = t.ticketNumber.toString().padStart(3, "0");
+    const userName = t.user ? t.user.split(" (")[0].toUpperCase() : "";
+    ticketMap.set(numStr, userName);
+  });
+
+  // Crear filas para la tabla
+  const rows = [];
   for (let i = 0; i <= 249; i++) {
-    const row = [];
-    const baseNumbers = [];
+    const rowNumbers = [];
+    let includeRow = false;
     for (let offset = 0; offset <= 750; offset += 250) {
       const num = i + offset;
-      const numberStr = num.toString().padStart(3, "0");
-      baseNumbers.push(numberStr);
-      row.push(`<td>${numberStr}</td>`);
+      const numStr = num.toString().padStart(3, "0");
+      rowNumbers.push(numStr);
+      if (ticketMap.has(numStr)) includeRow = true;
     }
-    const name = ticketMap.get(baseNumbers[0]) || "";
-    tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
-  }
-
-  tableHtml += `</tbody></table></body></html>`;
-
-  const blob = new Blob([tableHtml], {
-    type: "application/msword;charset=utf-8;",
-  });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "boletos_formato_tabla.doc";
-  link.click();
-  toast.success("Archivo .doc con todos los boletos descargado");
-};
-
-const exportOnlyAvailableTicketsAsDoc = (tickets) => {
-  const safeTickets = JSON.parse(JSON.stringify(tickets));
-
-  const ticketMap = new Map();
-
-  safeTickets.forEach((ticket) => {
-    const isEmptyName = !ticket.user || ticket.user.trim() === "";
-    if (ticket.sold === false && isEmptyName) {
-      const number = ticket.ticketNumber.toString().padStart(3, "0");
-      ticketMap.set(number, "");
-    }
-  });
-
-  let tableHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office'
-          xmlns:w='urn:schemas-microsoft-com:office:word'
-          xmlns='http://www.w3.org/TR/REC-html40'>
-      <head>
-        <meta charset="UTF-8">
-        <title>Boletos No Vendidos Sin Nombre</title>
-        <style>
-          table {
-            border-collapse: collapse;
-            width: 100%;
-            page-break-inside: avoid;
-          }
-          tr {
-            page-break-inside: avoid;
-            page-break-after: auto;
-          }
-          th, td {
-            border: 1px solid black;
-            padding: 6px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            font-size: 13px;
-          }
-          th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-          }
-        </style>
-      </head>
-      <body>
-        <h2 style="text-align:center">Boletos No Vendidos Sin Nombre</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th>
-            </tr>
-          </thead>
-          <tbody>
-  `;
-
-  for (let i = 0; i <= 249; i++) {
-    const row = [];
-    const baseNumbers = [];
-    for (let offset = 0; offset <= 750; offset += 250) {
-      const num = i + offset;
-      const numberStr = num.toString().padStart(3, "0");
-      baseNumbers.push(numberStr);
-      row.push(`<td>${numberStr}</td>`);
-    }
-    if (ticketMap.has(baseNumbers[0])) {
-      const name = ticketMap.get(baseNumbers[0]) || "";
-      tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
+    if (includeRow) {
+      const name = ticketMap.get(rowNumbers[0]) || "";
+      rows.push([...rowNumbers, name]);
     }
   }
 
-  tableHtml += `</tbody></table></body></html>`;
+  // Encabezados
+  const headers = ["000", "250", "500", "750", "NOMBRE"];
 
-  const blob = new Blob([tableHtml], {
-    type: "application/msword;charset=utf-8;",
+  // Agregar tabla con autotable
+  doc.autoTable({
+    head: [headers],
+    body: rows,
+    startY: 60,
+    styles: { fontSize: 11, cellPadding: 4 },
+    headStyles: { fillColor: [242, 242, 242], textColor: 20, fontStyle: "bold" },
+    theme: "grid",
+    margin: { top: 50, left: 40, right: 40 },
+    columnStyles: {
+      4: { cellWidth: 120 }, // Columna NOMBRE más ancha
+    },
   });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "boletos_no_vendidos_sin_nombre.doc";
-  link.click();
-  toast.success("Archivo .doc solo con boletos sin nombre descargado");
+
+  doc.save(fileName);
+  toast.success(`Archivo ${fileName} descargado correctamente`);
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
@@ -309,7 +224,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           }}
         />
         <button
-          onClick={() => exportVerticalPatternAsDoc(rowData)}
+          onClick={() => generatePDF(rowData, "boletos_oficio.pdf", null, "Lista de Boletos")}
           style={{
             marginLeft: 10,
             padding: "10px 20px",
@@ -320,11 +235,18 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             cursor: "pointer",
           }}
         >
-          Descargar Tabla (Todos)
+          Descargar PDF (Todos)
         </button>
 
         <button
-          onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)}
+          onClick={() =>
+            generatePDF(
+              rowData,
+              "boletos_no_vendidos_sin_nombre_oficio.pdf",
+              (t) => t.sold === false && (!t.user || t.user.trim() === ""),
+              "Boletos No Vendidos Sin Nombre"
+            )
+          }
           style={{
             marginLeft: 10,
             padding: "10px 20px",
@@ -335,7 +257,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             cursor: "pointer",
           }}
         >
-          Descargar Tabla (No vendidos sin nombre)
+          Descargar PDF (No vendidos sin nombre)
         </button>
       </div>
 
