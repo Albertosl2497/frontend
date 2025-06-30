@@ -6,7 +6,7 @@ import "./ticket.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Función para copiar el nombre del usuario en mayúsculas
+// Copiar nombre en mayúsculas
 const copyUserName = (userName) => {
   const [name] = userName.split(" (");
   const uppercaseName = name.trim().toUpperCase();
@@ -14,7 +14,7 @@ const copyUserName = (userName) => {
   toast.success("Nombre de usuario copiado exitosamente");
 };
 
-// 🔽 FUNCIONALIDAD AGREGADA: Exportar tabla a Word
+// Exportar todos los boletos
 const exportVerticalPatternAsDoc = (tickets) => {
   const ticketMap = new Map();
 
@@ -97,7 +97,95 @@ const exportVerticalPatternAsDoc = (tickets) => {
   toast.success("Archivo .doc descargado correctamente");
 };
 
-function TicketTable({ tickets, lotteryNo, setStats, stats }) {
+// Exportar boletos no vendidos
+const exportOnlyAvailableTicketsAsDoc = (tickets) => {
+  const ticketMap = new Map();
+
+  tickets.forEach((ticket) => {
+    if (ticket.sold) return;
+
+    const number = String(ticket.ticketNumber).padStart(3, "0");
+    const name =
+      ticket.user && ticket.user.trim() !== ""
+        ? ticket.user.split(" (")[0].toUpperCase()
+        : "";
+    ticketMap.set(number, name);
+  });
+
+  let tableHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+          xmlns:w='urn:schemas-microsoft-com:office:word'
+          xmlns='http://www.w3.org/TR/REC-html40'>
+      <head>
+        <meta charset="UTF-8">
+        <title>Boletos No Vendidos</title>
+        <style>
+          table { border-collapse: collapse; width: 100%; }
+          th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+          }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <h2 style="text-align:center">Lista de Boletos No Vendidos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>000</th>
+              <th>250</th>
+              <th>500</th>
+              <th>750</th>
+              <th>NOMBRE</th>
+            </tr>
+          </thead>
+          <tbody>
+  `;
+
+  for (let i = 0; i <= 249; i++) {
+    const row = [];
+    const baseNumbers = [];
+    for (let offset = 0; offset <= 750; offset += 250) {
+      const num = i + offset;
+      const numberStr = String(num).padStart(3, "0");
+      baseNumbers.push(numberStr);
+      row.push(`<td>${numberStr}</td>`);
+    }
+
+    const name = ticketMap.get(baseNumbers[0]) || "";
+
+    if (ticketMap.has(baseNumbers[0])) {
+      tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
+    }
+  }
+
+  tableHtml += `
+          </tbody>
+        </table>
+      </body>
+    </html>
+  `;
+
+  const blob = new Blob([tableHtml], {
+    type: "application/msword;charset=utf-8;",
+  });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "boletos_no_vendidos.doc";
+  link.click();
+
+  toast.success("Archivo de boletos no vendidos descargado correctamente");
+};
+
+// COMPONENTE PRINCIPAL
+function TicketTable({ tickets }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
 
@@ -111,79 +199,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   const onQuickFilterChanged = () => {
     gridApi.setQuickFilter(document.getElementById("quickFilter").value);
-  };
-
-  const onCellDoubleClicked = (params) => {
-    const ticketToUpdate = params.data;
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    };
-
-    if (params.colDef.field === "sold") {
-      const newSold = !ticketToUpdate.sold;
-      fetch(
-        `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${newSold}`,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then(() => {
-          const updatedData = [...rowData];
-          const index = updatedData.findIndex(
-            (row) => row.ticketNumber === ticketToUpdate.ticketNumber
-          );
-
-          updatedData[index] = {
-            ...ticketToUpdate,
-            sold: newSold,
-            availability: !newSold,
-          };
-
-          setRowData(updatedData);
-          setStats({
-            ...stats,
-            soldCount: stats.soldCount + (newSold ? 1 : -1),
-          });
-
-          toast.success("Estado del boleto actualizado exitosamente");
-        })
-        .catch(() => toast.error("Error al actualizar el estado del boleto"));
-    }
-
-    if (params.colDef.field === "availability") {
-      const newAvailability = !ticketToUpdate.availability;
-      fetch(
-        `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${newAvailability}`,
-        requestOptions
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.message === "Sold Tickets can not be made available") {
-            toast.error(data.message);
-            return;
-          }
-
-          const updatedData = [...rowData];
-          const index = updatedData.findIndex(
-            (row) => row.ticketNumber === ticketToUpdate.ticketNumber
-          );
-
-          updatedData[index] = {
-            ...ticketToUpdate,
-            availability: newAvailability,
-            sold: newAvailability ? false : ticketToUpdate.sold,
-          };
-
-          setRowData(updatedData);
-          setStats({
-            ...stats,
-            bookedCount: stats.bookedCount + (newAvailability ? -1 : 1),
-          });
-
-          toast.success("Disponibilidad actualizada exitosamente");
-        })
-        .catch(() => toast.error("Error al actualizar disponibilidad"));
-    }
   };
 
   const columnDefs = [
@@ -201,11 +216,13 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       resizable: true,
       sortable: true,
       width: 110,
+      cellRenderer: function (params) {
+        return params.value;
+      },
     },
     {
       headerName: "Estado",
       field: "sold",
-      editable: true,
       sortable: true,
       resizable: true,
       width: 130,
@@ -218,7 +235,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     {
       headerName: "Disponibilidad",
       field: "availability",
-      editable: true,
       sortable: true,
       resizable: true,
       width: 130,
@@ -240,7 +256,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             backgroundColor: "blue",
             color: "white",
             border: "none",
-            padding: "6px 10px",
+            padding: "10px 20px",
             borderRadius: "5px",
             cursor: "pointer",
           }}
@@ -280,6 +296,20 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         >
           Descargar Tabla en Word (.doc)
         </button>
+        <button
+          onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)}
+          style={{
+            marginLeft: 10,
+            padding: "10px 20px",
+            backgroundColor: "#00b894",
+            color: "white",
+            border: "none",
+            borderRadius: 5,
+            cursor: "pointer",
+          }}
+        >
+          Descargar No Vendidos (.doc)
+        </button>
       </div>
 
       <div className="ag-theme-alpine-dark">
@@ -287,11 +317,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           rowData={rowData}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
-          onCellDoubleClicked={onCellDoubleClicked}
           pagination={true}
           paginationPageSize={1000}
           rowSelection={"single"}
-          editType={"fullRow"}
           domLayout="autoHeight"
         />
       </div>
