@@ -211,7 +211,7 @@ Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
   const estado = userData.user.state;
 
     
-  const message = `Hola buenas noches, el dia de hoy desde las 11 am estaremos pasando a cobrar lo de la rifa de los $15,000 pesos. Esta en su casa? para llegar de pasadita.☺️🌸
+  const message = `Hola buenas noches, el dia de hoy desde las 11:30 am estaremos pasando a cobrar lo de la rifa de los $15,000 pesos. Esta en su casa? para llegar de pasadita.☺️🌸
   
   TUS NUMEROS A PARTICIPAR SON:
   [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
