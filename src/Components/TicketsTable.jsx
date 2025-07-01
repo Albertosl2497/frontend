@@ -3,9 +3,9 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./ticket.css";
 
-// Copiar nombre del usuario
 const copyUserName = (userName) => {
   const [name] = userName.split(" (");
   const uppercaseName = name.trim().toUpperCase();
@@ -13,11 +13,12 @@ const copyUserName = (userName) => {
   toast.success("Nombre de usuario copiado exitosamente");
 };
 
-// Exportar lista completa como .doc
-const exportAllTicketsAsDoc = (tickets) => {
+const exportVerticalPatternAsDoc = (tickets) => {
+  const safeTickets = JSON.parse(JSON.stringify(tickets));
+
   const ticketMap = new Map();
-  tickets.forEach((ticket) => {
-    const number = String(ticket.ticketNumber).padStart(3, "0");
+  safeTickets.forEach((ticket) => {
+    const number = ticket.ticketNumber.toString().padStart(3, "0");
     const name =
       ticket.user && ticket.user.trim() !== ""
         ? ticket.user.split(" (")[0].toUpperCase()
@@ -33,7 +34,10 @@ const exportAllTicketsAsDoc = (tickets) => {
         <meta charset="UTF-8">
         <title>Boletos</title>
         <style>
-          table { border-collapse: collapse; width: 100%; }
+          table {
+            border-collapse: collapse;
+            width: 100%;
+          }
           th, td {
             border: 1px solid black;
             padding: 6px;
@@ -41,14 +45,19 @@ const exportAllTicketsAsDoc = (tickets) => {
             font-family: Arial, sans-serif;
             font-size: 13px;
           }
-          th { background-color: #f2f2f2; font-weight: bold; }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
         </style>
       </head>
       <body>
         <h2 style="text-align:center">Lista de Boletos</h2>
         <table>
           <thead>
-            <tr><th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th></tr>
+            <tr>
+              <th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th>
+            </tr>
           </thead>
           <tbody>
   `;
@@ -58,7 +67,7 @@ const exportAllTicketsAsDoc = (tickets) => {
     const baseNumbers = [];
     for (let offset = 0; offset <= 750; offset += 250) {
       const num = i + offset;
-      const numberStr = String(num).padStart(3, "0");
+      const numberStr = num.toString().padStart(3, "0");
       baseNumbers.push(numberStr);
       row.push(`<td>${numberStr}</td>`);
     }
@@ -73,46 +82,61 @@ const exportAllTicketsAsDoc = (tickets) => {
   });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "boletos_completos.doc";
+  link.download = "boletos_formato_tabla.doc";
   link.click();
-  toast.success("Archivo .doc descargado correctamente");
+  toast.success("Archivo .doc con todos los boletos descargado");
 };
 
-// Exportar solo los boletos no vendidos y sin nombre como .html
-const exportOnlyAvailableTicketsAsHtml = (tickets) => {
+const exportOnlyAvailableTicketsAsDoc = (tickets) => {
+  const safeTickets = JSON.parse(JSON.stringify(tickets));
+
   const ticketMap = new Map();
 
-  tickets.forEach((ticket) => {
-    const number = String(ticket.ticketNumber).padStart(3, "0");
-    const isUnsold = ticket.sold === false;
-    const hasNoName = !ticket.user || ticket.user.trim() === "";
-    if (isUnsold && hasNoName) {
+  safeTickets.forEach((ticket) => {
+    const isEmptyName = !ticket.user || ticket.user.trim() === "";
+    if (ticket.sold === false && isEmptyName) {
+      const number = ticket.ticketNumber.toString().padStart(3, "0");
       ticketMap.set(number, "");
     }
   });
 
   let tableHtml = `
-    <html>
+    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+          xmlns:w='urn:schemas-microsoft-com:office:word'
+          xmlns='http://www.w3.org/TR/REC-html40'>
       <head>
         <meta charset="UTF-8">
-        <title>Boletos No Vendidos</title>
+        <title>Boletos No Vendidos Sin Nombre</title>
         <style>
-          body { font-family: Arial, sans-serif; padding: 20px; }
-          table { border-collapse: collapse; width: 100%; }
+          table {
+            border-collapse: collapse;
+            width: 100%;
+            page-break-inside: avoid;
+          }
+          tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+          }
           th, td {
             border: 1px solid black;
             padding: 6px;
             text-align: center;
+            font-family: Arial, sans-serif;
             font-size: 13px;
           }
-          th { background-color: #f2f2f2; font-weight: bold; }
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
         </style>
       </head>
       <body>
         <h2 style="text-align:center">Boletos No Vendidos Sin Nombre</h2>
         <table>
           <thead>
-            <tr><th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th></tr>
+            <tr>
+              <th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th>
+            </tr>
           </thead>
           <tbody>
   `;
@@ -122,25 +146,26 @@ const exportOnlyAvailableTicketsAsHtml = (tickets) => {
     const baseNumbers = [];
     for (let offset = 0; offset <= 750; offset += 250) {
       const num = i + offset;
-      const numberStr = String(num).padStart(3, "0");
+      const numberStr = num.toString().padStart(3, "0");
       baseNumbers.push(numberStr);
       row.push(`<td>${numberStr}</td>`);
     }
     if (ticketMap.has(baseNumbers[0])) {
-      tableHtml += `<tr>${row.join("")}<td></td></tr>`;
+      const name = ticketMap.get(baseNumbers[0]) || "";
+      tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
     }
   }
 
   tableHtml += `</tbody></table></body></html>`;
 
   const blob = new Blob([tableHtml], {
-    type: "text/html;charset=utf-8;",
+    type: "application/msword;charset=utf-8;",
   });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "boletos_no_vendidos.html";
+  link.download = "boletos_no_vendidos_sin_nombre.doc";
   link.click();
-  toast.success("Archivo .html descargado correctamente");
+  toast.success("Archivo .doc solo con boletos sin nombre descargado");
 };
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
@@ -156,21 +181,25 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   };
 
   const onQuickFilterChanged = () => {
-    gridApi.setQuickFilter(document.getElementById("quickFilter").value);
+    if (gridApi) {
+      gridApi.setQuickFilter(document.getElementById("quickFilter").value);
+    }
   };
 
   const onCellDoubleClicked = (params) => {
     const ticketToUpdate = params.data;
     const field = params.colDef.field;
-
     if (field !== "sold" && field !== "availability") return;
 
-    const updateUrl = `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!ticketToUpdate[field]}`;
-
-    fetch(updateUrl, {
+    const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-    })
+    };
+
+    fetch(
+      `https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!ticketToUpdate[field]}`,
+      requestOptions
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Sold Tickets can not be made available") {
@@ -178,63 +207,75 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           return;
         }
 
+        const updatedData = [...rowData];
+        const rowIndex = updatedData.findIndex(
+          (row) => row.ticketNumber === ticketToUpdate.ticketNumber
+        );
         const updatedTicket = { ...ticketToUpdate };
+        updatedTicket[field] = !updatedTicket[field];
 
         if (field === "sold") {
-          updatedTicket.sold = !ticketToUpdate.sold;
           updatedTicket.availability = !updatedTicket.sold;
-          setStats({
-            ...stats,
-            soldCount: stats.soldCount + (updatedTicket.sold ? 1 : -1),
-          });
-        } else if (field === "availability") {
-          updatedTicket.availability = !ticketToUpdate.availability;
-          updatedTicket.sold = !updatedTicket.availability;
-          setStats({
-            ...stats,
-            bookedCount: stats.bookedCount + (updatedTicket.availability ? -1 : 1),
-          });
+          const soldCount = updatedTicket.sold ? 1 : -1;
+          setStats({ ...stats, soldCount: stats.soldCount + soldCount });
+        } else {
+          if (updatedTicket.availability) updatedTicket.sold = false;
+          const bookedCount = updatedTicket.availability ? -1 : 1;
+          setStats({ ...stats, bookedCount: stats.bookedCount + bookedCount });
         }
 
-        const updatedData = rowData.map((row) =>
-          row.ticketNumber === updatedTicket.ticketNumber ? updatedTicket : row
-        );
+        updatedData[rowIndex] = updatedTicket;
         setRowData(updatedData);
-
-        toast.success("Estado actualizado correctamente");
+        toast.success("Estado actualizado exitosamente");
       })
-      .catch(() => toast.error("Error al actualizar"));
+      .catch(() => toast.error("Error al actualizar estado"));
   };
 
   const columnDefs = [
     {
-      headerName: "Boleto",
+      headerName: "Boletos #",
       field: "ticketNumber",
       sortable: true,
+      resizable: true,
       width: 80,
     },
     {
       headerName: "Propietario",
       field: "user",
       flex: 1,
-      cellRenderer: (params) => params.value || "(VACÍO)",
+      sortable: true,
+      resizable: true,
     },
     {
       headerName: "Estado",
       field: "sold",
+      editable: true,
+      sortable: true,
+      resizable: true,
       width: 130,
+      cellClassRules: {
+        "cell-value-green": (params) => !params.value,
+        "cell-value-red": (params) => params.value,
+      },
       cellRenderer: (params) => (params.value ? "Pagado" : "No Pagado"),
     },
     {
       headerName: "Disponibilidad",
       field: "availability",
-      width: 150,
+      editable: true,
+      sortable: true,
+      resizable: true,
+      width: 130,
+      cellClassRules: {
+        "cell-value-green": (params) => !params.value,
+        "cell-value-red": (params) => params.value,
+      },
       cellRenderer: (params) => (params.value ? "Disponible" : "No Disponible"),
     },
     {
       headerName: "Copiar Usuario",
       field: "user",
-      width: 120,
+      width: 110,
       cellRendererFramework: (params) => (
         <button
           onClick={() => copyUserName(params.value)}
@@ -242,7 +283,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             backgroundColor: "blue",
             color: "white",
             border: "none",
-            padding: "6px 10px",
+            padding: "10px 10px",
             borderRadius: "5px",
             cursor: "pointer",
           }}
@@ -261,11 +302,14 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           id="quickFilter"
           placeholder="Buscar..."
           onChange={onQuickFilterChanged}
-          style={{ backgroundColor: "black", color: "white", border: "none" }}
+          style={{
+            backgroundColor: "black",
+            color: "white",
+            border: "none",
+          }}
         />
-
         <button
-          onClick={() => exportAllTicketsAsDoc(rowData)}
+          onClick={() => exportVerticalPatternAsDoc(rowData)}
           style={{
             marginLeft: 10,
             padding: "10px 20px",
@@ -280,22 +324,22 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         </button>
 
         <button
-          onClick={() => exportOnlyAvailableTicketsAsHtml(rowData)}
+          onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)}
           style={{
             marginLeft: 10,
             padding: "10px 20px",
-            backgroundColor: "#ff9900",
+            backgroundColor: "#009933",
             color: "white",
             border: "none",
             borderRadius: 5,
             cursor: "pointer",
           }}
         >
-          Descargar HTML (No vendidos)
+          Descargar Tabla (No vendidos sin nombre)
         </button>
       </div>
 
-      <div className="ag-theme-alpine-dark">
+      <div className="ag-theme-alpine-dark" style={{ width: "100%" }}>
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
