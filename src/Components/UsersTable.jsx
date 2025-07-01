@@ -211,12 +211,7 @@ Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
   const estado = userData.user.state;
 
     
-  const message = `Hola buen dia solo para ver si aun le interesan sus boletos para la rifa del dia de hoy ☺️🌸
-  
-  TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
-  A NOMBRE DE: ${fullName}.
-  CON UN PRECIO DE: $${totalPrice} PESOS.`
+  const message = `como no recibimos respuesta a nuestros mensajes, vamos a cancelar tus boletos. Si aún los necesitas, avísanos lo antes posible.`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
