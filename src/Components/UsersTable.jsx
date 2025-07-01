@@ -211,7 +211,7 @@ Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
   const estado = userData.user.state;
 
     
-  const message = `Hola Buenas Tardes, solo para ver si aun le interesan sus boletos para al rifa del dia de hoy.🌻😊`
+  const message = `Hola Buenas Tardes a las 4:30 estaremos pasando a cobrar denuevo. *Estara en su casa?* .🌻😊`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
