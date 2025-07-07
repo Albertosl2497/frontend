@@ -337,6 +337,92 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         >
           Descargar Tabla (No vendidos sin nombre)
         </button>
+<button
+  onClick={() => {
+    const safeTickets = JSON.parse(JSON.stringify(rowData));
+
+    const ticketMap = new Map();
+    safeTickets.forEach((ticket) => {
+      const number = ticket.ticketNumber.toString().padStart(3, "0");
+      const name =
+        ticket.user && ticket.user.trim() !== ""
+          ? ticket.user.split(" (")[0].toUpperCase()
+          : "";
+      ticketMap.set(number, name);
+    });
+
+    let tableHtml = `
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>Boletos</title>
+          <style>
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            th, td {
+              border: 1px solid black;
+              padding: 6px;
+              text-align: center;
+              font-family: Arial, sans-serif;
+              font-size: 13px;
+            }
+            th {
+              background-color: #f2f2f2;
+              font-weight: bold;
+            }
+          </style>
+        </head>
+        <body>
+          <h2 style="text-align:center">Lista de Boletos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+
+    for (let i = 0; i <= 249; i++) {
+      const row = [];
+      const baseNumbers = [];
+      for (let offset = 0; offset <= 750; offset += 250) {
+        const num = i + offset;
+        const numberStr = num.toString().padStart(3, "0");
+        baseNumbers.push(numberStr);
+        row.push(`<td>${numberStr}</td>`);
+      }
+      const name = ticketMap.get(baseNumbers[0]) || "";
+      tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
+    }
+
+    tableHtml += `</tbody></table></body></html>`;
+
+    const newWindow = window.open();
+    if (newWindow) {
+      newWindow.document.open();
+      newWindow.document.write(tableHtml);
+      newWindow.document.close();
+      toast.success("Tabla abierta en una nueva pestaña");
+    } else {
+      toast.error("No se pudo abrir la nueva pestaña");
+    }
+  }}
+  style={{
+    marginLeft: 10,
+    padding: "10px 20px",
+    backgroundColor: "#e68a00",
+    color: "white",
+    border: "none",
+    borderRadius: 5,
+    cursor: "pointer",
+  }}
+>
+  Ver Tabla (.html)
+</button>
+
       </div>
 
       <div className="ag-theme-alpine-dark" style={{ width: "100%" }}>
