@@ -211,8 +211,14 @@ Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
   const estado = userData.user.state;
 
     
-  const message = `Buenas tardes para informar que nuestra otra cuenta de whatsapp no esta funcionando, si envia su pago porfavor enviarlo a esta numero.
-*Estaremos recibiendo los pagos hasta las 6:40pm* .🌻😊`
+  const message = `Hola Buenas Noches, Somos sus amigos de Rifas Campo 30.
+Le informamos que nuestra cuenta anterior de WhatsApp *ya no está en funcionamiento* .
+Si realizó un pago o envió algún mensaje recientemente, *por favor envíelo nuevamente a este número* .
+
+📌 *A partir de hoy, esta será nuestra cuenta principal de Whatsapp* .
+Le agradeceríamos mucho que guardara este nuevo número en su teléfono.
+
+¡Muchas gracias por su comprensión y apoyo! 😊🌻`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
