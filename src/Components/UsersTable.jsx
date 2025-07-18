@@ -211,14 +211,16 @@ Si gusta que esperemos un poco mas nos confirma por favor. Gracias ☺️✨️
   const estado = userData.user.state;
 
     
-  const message = `Hola Buenas Noches, Somos sus amigos de Rifas Campo 30.
-Le informamos que nuestra cuenta anterior de WhatsApp *ya no está en funcionamiento* .
-Si realizó un pago o envió algún mensaje recientemente, *por favor envíelo nuevamente a este número* .
+  const message = `HOLA BUENAS TARDES A LAS 4PM ESTAREMOS PASANDO A COBRAR COBRAR LO DE LA RIFA DE LOS $15,000 PESOS.
+ESTARA EN SU CASA? PARA LLEGAR DE PASADITA😊🌻
 
-📌 *A partir de hoy, esta será nuestra cuenta principal de Whatsapp* .
-Le agradeceríamos mucho que guardara este nuevo número en su teléfono.
+TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
+  CON UN PRECIO DE: $${totalPrice} PESOS.
+  
+  TUS NUMEROS A PARTICIPAR SON:
+  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
 
-¡Muchas gracias por su comprensión y apoyo! 😊🌻`
+`
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
  
