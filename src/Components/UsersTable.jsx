@@ -206,9 +206,9 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Te invitamos a unirte a nuestro grupo de whatsapp, en el cual podras ver los resultados, promociones, dinamicas de premios gratis, noticias y mas. 
-*UNETE EN ESTE AQUÍ* 👇🏻:
-https://chat.whatsapp.com/D7AxcREhjojJXHo54XdIax?mode=r_c
+  const message = `*MAÑANA GANA $3000 PESOS* 🍀🤩
+●PARTICIPA POR $50 PESOS.
+ULTIMOS DISPONIBLES☝️
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
