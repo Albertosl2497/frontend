@@ -206,15 +206,9 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENAS TARDES A LAS 4PM ESTAREMOS PASANDO A COBRAR COBRAR LO DE LA RIFA DE LOS $15,000 PESOS.
-ESTARA EN SU CASA? PARA LLEGAR DE PASADITA😊🌻
-
-TENEMOS APARTADO ${ticketCount} BOLETO(S) A NOMBRE DE: ${fullName}.
-  CON UN PRECIO DE: $${totalPrice} PESOS.
-  
-  TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
-
+  const message = `Te invitamos a unirte a nuestro grupo de whatsapp, en el cual podras ver los resultados, promociones, dinamicas de premios gratis, noticias y mas. 
+*UNETE EN ESTE AQUÍ* 👇🏻:
+https://chat.whatsapp.com/D7AxcREhjojJXHo54XdIax?mode=r_c
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
