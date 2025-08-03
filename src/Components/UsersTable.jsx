@@ -212,7 +212,7 @@ A NOMBRE DE: ${fullName}.
   const estado = userData.user.state;
 
     
-  const message = `BUEN DIA, PARA INFORMAR QUE *A LAS 3PM* ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DE LOS $15,000 PESOS.😊🌼
+  const message = `BUEN DIA, SOLO PARA VER SI AUN LE INTERESAN SUS BOLETOS PARA LA RIFA DE LOS $15,000 PESOS? NOS CONFIRMA PORFAVOR😊🌼
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
