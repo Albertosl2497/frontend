@@ -184,7 +184,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
     
   const message = `Hola buen día 🌻 *hoy se llevará a cabo la rifa de $15,000 pesos* 💸
- estaremos recibiendo pagos *hasta hoy a las 4:00 pm* , si desea que le esperemos un poco más por favor confírmenos. Gracias🌸
+ estaremos recibiendo pagos *hasta las 4:00 pm* , si desea que le esperemos un poco más por favor confírmenos. Gracias🌸
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S).
 A NOMBRE DE: ${fullName}.
@@ -211,7 +211,7 @@ A NOMBRE DE: ${fullName}.
   const estado = userData.user.state;
 
     
-  const message = `HOLA BUENOS DIAS PARA INFORMAR QUE A LAS *11:30AM* ESTAREMOS PASANDO A COBRAR LO DE LA RIFA DEL DIA DE HOY 😊🌼
+  const message = `Buenos días 🌞 hoy es la rifa de los $15,000 pesos 💸 ¿aun le interesan sus boletos? ✨
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
