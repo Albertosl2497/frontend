@@ -211,7 +211,7 @@ A NOMBRE DE: ${fullName}.
   const estado = userData.user.state;
 
     
-  const message = `Buenas tardes 🌞 solo para ver si aun le interesan sus boletos para la rifa de *los $15mil* pesos del dia de hoy✨
+  const message = `Hola buenas tardes al no obtener respuesta sus boletos estan a unos minutos de pasar a disponible. Si aun le interesan porfavor envienos un mensaje lo antes posible. Gracias✨☺️
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
