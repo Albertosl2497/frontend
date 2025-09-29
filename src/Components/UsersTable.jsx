@@ -183,8 +183,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola buen día 🌻 *hoy se llevará a cabo la rifa de $15,000 pesos* 💸
- estaremos recibiendo los pagos *hasta las 4:00 pm* del día de hoy , si desea que le esperemos un poco más por favor nos confirma. Gracias🌸
+  const message = `Hola buen día 🌻 *mañana se llevará a cabo la rifa de $15,000 pesos* 💸
+ estaremos recibiendo los pagos *hasta las 11:00 pm* del día de hoy, si desea que le esperemos para mañana favor nos confirma. Gracias🌸
   
   TENEMOS APARTADO ${ticketCount} BOLETO(S).
 A NOMBRE DE: ${fullName}.
