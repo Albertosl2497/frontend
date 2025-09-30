@@ -211,7 +211,7 @@ A NOMBRE DE: ${fullName}.
   const estado = userData.user.state;
 
     
-  const message = `Hola buenas tardes al no obtener respuesta sus boletos estan a unos minutos de pasar a disponible. Si aun le interesan porfavor envienos un mensaje lo antes posible. Gracias✨☺️
+  const message = `Hola buenas noches, nuestro otro *Whatsapp dejo de funcionar* si acaso envio un pago o algun mensaje no hemos logramos verlo. *Si fue así, seria de gran ayuda que nos lo envie aquí tambien* por ahora nos estaremos comunicando por aquí. Gracias✨☺️
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
