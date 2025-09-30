@@ -211,7 +211,7 @@ A NOMBRE DE: ${fullName}.
   const estado = userData.user.state;
 
     
-  const message = `Hola buen dia a las 12:30 estaremos pasado a cobrar lo de la rifa del dia hoy. *Estara en su casa? para llegar de pasadita* ✨☺️
+  const message = `Hola buen dia a las 1:00 estaremos pasado a cobrar lo de la rifa del dia hoy. *Estara en su casa? para llegar de pasadita* ✨☺️
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
