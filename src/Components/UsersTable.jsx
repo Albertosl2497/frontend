@@ -183,14 +183,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola buen día 🌻 *mañana se llevará a cabo la rifa de $15,000 pesos* 💸
- estaremos recibiendo los pagos *hasta las 11:00 pm* del día de hoy, si desea que le esperemos poco mas porfavor favor nos confirma. Gracias🌸
-  
-  TENEMOS APARTADO ${ticketCount} BOLETO(S).
-  CON UN PRECIO DE: $${totalPrice} PESOS.
-  𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
-  TUS NUMEROS A PARTICIPAR SON:
-  [ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
+  const message = `Hola buen día 🌻 *hoy se llevará a cabo la rifa de $15,000 pesos* 💸
+ estaremos recibiendo los pagos *hasta las 4:00 pm* del día de hoy, si desea que le esperemos poco mas porfavor nos confirma. Gracias🌸
  
   METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
