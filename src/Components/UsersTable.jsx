@@ -205,7 +205,7 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const estado = userData.user.state;
 
     
-  const message = `Hola buen dia, *hoy a las 10am* estaremos pasando a cobrar lo de la rifa del dia de hoy. estara en su casa?✨☺️
+  const message = `Hola buenas tardes,solo para ver si aun le interesan sus boletos para la rifa de los $15,000 pesos?✨☺️
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
