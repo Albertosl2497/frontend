@@ -110,6 +110,39 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
       );
     },
   },
+    {
+  headerName: "Copiar Mensaje",
+  cellRendererFramework: (params) => {
+    const isConfirmationSent = confirmationSentEmails.includes(params.data.user.email);
+    const buttonStyle = isConfirmationSent
+      ? {
+          backgroundColor: "gray",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          cursor: "not-allowed",
+        }
+      : {
+          backgroundColor: "orange",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "5px",
+          cursor: "pointer",
+        };
+
+    return (
+      <button
+        onClick={() => copyConfirmationMessage(params.data)}
+        style={buttonStyle}
+      >
+        Copiar
+      </button>
+    );
+  },
+},
+
   // Las columnas restantes pueden ir aquí según el orden deseado
   // Por ejemplo:
   {
@@ -168,6 +201,8 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   setConfirmationSentEmails(prevState => [...prevState, userData.user.email]);
 };
 
+  
+
 //OPORTUNIDADES ADICIONALES:
   //[ ${bookedTickets.join(", ")} ][ ${additionalNumbers} ].
 
@@ -191,6 +226,41 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   window.open(whatsappUrl, "_blank");
  
 };
+  const copyConfirmationMessage = (userData) => {
+  const phoneNumber = userData.user.phoneNumber.replace(/\s/g, "");
+  const fullName = userData.user.fullName;
+  const bookedTickets = userData.bookedTickets.flatMap(
+    (ticket) => ticket.ticketNumbers
+  );
+  const additionalNumbers = bookedTickets.flatMap((ticket) => [
+    parseInt(ticket) + 250,
+    parseInt(ticket) + 500,
+    parseInt(ticket) + 750,
+  ]);
+  const allTickets = [...bookedTickets];
+  const ticketCount = allTickets.length;
+  const ticketPrice = 100;
+  const totalPrice = ticketCount * ticketPrice;
+  const estado = userData.user.state;
+
+  const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(
+    ", "
+  )} ].
+𝗢𝗣𝗢𝗥𝗧𝗨𝗡𝗜𝗗𝗔𝗗𝗘𝗦 𝗔𝗗𝗜𝗖𝗜𝗢𝗡𝗔𝗟𝗘𝗦: [ ${additionalNumbers} ].
+𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 PESOS 💸💰
+𝘿𝙀𝙇 𝘿𝙄𝘼: 09 DE NOVIEMBRE 2025.
+𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
+𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
+𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
+
+METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas`;
+
+  navigator.clipboard
+    .writeText(message)
+    .then(() => alert("Mensaje copiado al portapapeles ✅"))
+    .catch((err) => console.error("Error al copiar el mensaje:", err));
+};
+
  
 
   const sendWhatsAppMessage2 = (userData) => {
