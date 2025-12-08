@@ -132,6 +132,8 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           const remaining = selectedTickets.filter((t) => !unavailable.includes(t));
           setSelectedTickets(remaining);
+          setTickets((prev) => prev.filter((t) => !unavailable.includes(t)));
+
 
           setBtnLoading(false);
           return;
@@ -180,6 +182,8 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
             const remaining = selectedTickets.filter((t) => !unavailable.includes(t));
             setSelectedTickets(remaining);
+            setTickets((prev) => prev.filter((t) => !unavailable.includes(t)));
+
 
             // If server sent updated available list, update tickets state
             if (Array.isArray(resData.availableTickets)) {
