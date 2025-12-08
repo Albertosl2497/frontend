@@ -14,11 +14,10 @@ function sendWhatsAppMessage(phoneNumber, message) {
   window.open(url, "_blank");
 }
 
-
-
-
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
-  const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
+  const [randomNumber, setRandomNumber] = useState(() =>
+    Math.floor(Math.random() * 1000000000)
+  );
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
 
@@ -31,33 +30,28 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [email, setEmail] = useState(""); // Declaración del estado para el correo electrónico
-  
+  const [email, setEmail] = useState(""); // correo autogenerado oculto
+
   useEffect(() => {
     const randomEmail = `rifasefectivocampotreinta${randomNumber}@gmail.com`;
     setEmail(randomEmail);
     setCity(" ");
   }, [randomNumber]);
 
-   
-  
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
   const selectedTicketCount = selectedTickets.length;
-const totalTickets = selectedTicketCount;
+  const totalTickets = selectedTicketCount;
   const ticketPrice = 100; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
-  const selectedTicketNumbersWithPairs = selectedTickets.flatMap(ticket => {
+  const selectedTicketNumbersWithPairs = selectedTickets.flatMap((ticket) => {
     const original = parseInt(ticket);
     const pairs = [original + 250, original + 500, original + 750];
-    return pairs.map(num => num.toString().padStart(3, '0')); // Añadir ceros a la izquierda si es necesario
-});
-
-
-
+    return pairs.map((num) => num.toString().padStart(3, "0"));
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -94,23 +88,65 @@ const totalTickets = selectedTicketCount;
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
-    } else {
-      // submit the form data
-      console.log({
-        phoneNumber,
-        fullName,
-        state,
-        city,
-        email,
-      });
+      return;
+    }
 
-      let mobNumber =
-        phoneNumberCountryCode === "MX"
-          ? `+52 ${phoneNumber}`
-          : `+1 ${phoneNumber}`;
+    // Build mobile number format for storage and WhatsApp
+    const mobNumber =
+      phoneNumberCountryCode === "MX" ? `+52 ${phoneNumber}` : `+1 ${phoneNumber}`;
+
+    // Calculate formatted date/time for WhatsApp message (you requested only WhatsApp)
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate()}/${
+      currentDate.getMonth() + 1
+    }/${currentDate.getFullYear()}`;
+    const formattedTime = `${String(currentDate.getHours()).padStart(2, "0")}:${String(
+      currentDate.getMinutes()
+    ).padStart(2, "0")}`;
+
+    try {
+      setBtnLoading(true);
+
+      // 1) CHECK AVAILABILITY endpoint BEFORE trying to reserve
       try {
-        setBtnLoading(true);
-        
+        const checkResp = await fetch(
+          `https://rifasefectivocampotreinta.onrender.com/api/tickets/check-availability/${lotteryNo}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ticketNumbers: selectedTickets }),
+          }
+        );
+
+        const checkData = await checkResp.json();
+
+        if (!checkResp.ok) {
+          // If some tickets are unavailable, notify user and remove them from selection
+          const unavailable = Array.isArray(checkData.unavailable) ? checkData.unavailable : [];
+          toast.error(
+            `Lo siento — los siguientes boletos ya no están disponibles: ${unavailable.join(", ")}`,
+            { position: toast.POSITION.TOP_CENTER }
+          );
+
+          const remaining = selectedTickets.filter((t) => !unavailable.includes(t));
+          setSelectedTickets(remaining);
+
+          setBtnLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.error("Error checking availability:", err);
+        toast.error("No fue posible verificar disponibilidad. Intente de nuevo.", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setBtnLoading(false);
+        return;
+      }
+
+      // 2) If availability OK, proceed to PATCH sell-tickets (server will also validate atomically)
+      try {
         const response = await fetch(
           `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
           {
@@ -131,101 +167,156 @@ const totalTickets = selectedTicketCount;
           }
         );
 
+        const resData = await response.json().catch(() => ({}));
+
         if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.message);
+          // If sell-tickets responds with unavailable items (concurrent race), handle similarly
+          const unavailable = Array.isArray(resData.unavailable) ? resData.unavailable : [];
+          if (unavailable.length > 0) {
+            toast.error(
+              `Algunos boletos ya se reservaron: ${unavailable.join(", ")}`,
+              { position: toast.POSITION.TOP_CENTER }
+            );
+
+            const remaining = selectedTickets.filter((t) => !unavailable.includes(t));
+            setSelectedTickets(remaining);
+
+            // If server sent updated available list, update tickets state
+            if (Array.isArray(resData.availableTickets)) {
+              setTickets(resData.availableTickets);
+            }
+
+            setBtnLoading(false);
+            return;
+          }
+
+          // Generic error
+          throw new Error(resData.message || "Error reservando boletos");
         } else {
-          const newTickets = tickets.filter(
-            (ticket) => !selectedTickets.includes(ticket)
-          );
-          setTickets(newTickets);
+          // Success: update UI tickets list
+          // Prefer updated availableTickets from response if present
+          if (resData && Array.isArray(resData.availableTickets)) {
+            setTickets(resData.availableTickets);
+          } else {
+            const newTickets = tickets.filter((ticket) => !selectedTickets.includes(ticket));
+            setTickets(newTickets);
+          }
 
+          // Show success toast with WhatsApp button
           toast.success(
-<>
-              <div style={{ padding: '20px', backgroundColor: '#f2f2f2', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
-              <h3 style={{ color: '#333', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>"REGISTRO EXITOSO"</h3>
-              <hr style={{ border: '1px solid #ccc', marginBottom: '20px' }} />
-              <p style={{ color: '#555', marginBottom: '3px', fontSize: '14px',fontWeight: 'bold'}}
-                >HOLA, HAS RESERVADO {totalTickets} BOLETO(S).
-                𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
-                OPORTUNIDADES ADICIONALES:
-                [ {selectedTicketNumbersWithPairs.join(', ')} ].
-                𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:< br/>
-                $15,000 PESOS EN EFECTIVO.< br/>
-                𝗗𝗘𝗟 𝗗𝗜𝗔: 07 DE DICIEMBRE DE 2025.< br/>
-                𝗡𝗢𝗠𝗕𝗥𝗘:< br/>
-                {fullName}.< br/>
-                
-                𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS. < br/></p>
+            <>
+              <div
+                style={{
+                  padding: "20px",
+                  backgroundColor: "#f2f2f2",
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                }}
+              >
+                <h3
+                  style={{
+                    color: "#333",
+                    marginBottom: "10px",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  "REGISTRO EXITOSO"
+                </h3>
+                <hr style={{ border: "1px solid #ccc", marginBottom: "20px" }} />
+                <p
+                  style={{
+                    color: "#555",
+                    marginBottom: "3px",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  HOLA, HAS RESERVADO {totalTickets} BOLETO(S).
+                  𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
+                  OPORTUNIDADES ADICIONALES:
+                  [ {selectedTicketNumbersWithPairs.join(", ")} ].
+                  𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:
+                  <br />
+                  $15,000 PESOS EN EFECTIVO.
+                  <br />
+                  𝗗𝗘𝗟 𝗗𝗜𝗔: 07 DE DICIEMBRE DE 2025.
+                  <br />
+                  𝗡𝗢𝗠𝗕𝗥𝗘:
+                  <br />
+                  {fullName}.
+                  <br />
+                  𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.
+                  <br />
+                </p>
 
-               <p style={{ color: '#555', marginBottom: '3px', fontSize: '10px',fontWeight: 'bold'}}>
-                Gracias por participar.🍀😊 Estaras recibiendo confirmacion por Whatsapp en unos momentos.</p>
-            </div>
-             <div className="button-container">
-  <button 
-    onClick={() => sendWhatsAppMessage(
-      `52${phoneNumber}`, 
-      `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
-      𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-      OPORTUNIDADES ADICIONALES:
-      [ ${selectedTicketNumbersWithPairs.join(', ')} ].
-      𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL DIA 17 DE DICIEMBRE DE 2025.
-      
-      𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
-      𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.
-      𝙏𝙐 𝙉𝙐𝙈𝙀𝙍𝙊 𝘿𝙀 𝙏𝙀𝙇𝙀𝙁𝙊𝙉𝙊 𝙀𝙎: ${mobNumber}.      
-      𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.
-      
-      METODOS DE PAGO AQUÌ 👉🏼: https://60s.my.canva.site/cuentas `
-    )}
-    className="dialog-button-whatsapp"
-  >
-    Enviar a WhatsApp
-  </button>
-</div> 
-    
-             
+                <p
+                  style={{
+                    color: "#555",
+                    marginBottom: "3px",
+                    fontSize: "10px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Gracias por participar.🍀😊 Estarás recibiendo confirmación por WhatsApp en
+                  unos momentos.
+                </p>
+              </div>
 
-  </>,
-  {
-    position: toast.POSITION.TOP_CENTER,
-    autoClose: false,
-    hideProgressBar: true,
-  }
-);
+              <div className="button-container" style={{ marginTop: 12 }}>
+                <button
+                  onClick={() =>
+                    sendWhatsAppMessage(
+                      `52${phoneNumber}`,
+                      `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
+𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
+OPORTUNIDADES ADICIONALES:
+[ ${selectedTicketNumbersWithPairs.join(", ")} ].
+PARA EL SORTEO DE: $15,000 EN EFECTIVO. DEL DIA 17 DE DICIEMBRE DE 2025.
 
-      
-          const currentDate = new Date();
-          const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-          const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-          
+A NOMBRE DE: ${fullName}.
+EL PRECIO A PAGAR ES: $${totalPrice} PESOS.
+TU NUMERO DE TELEFONO ES: ${mobNumber}.
+FECHA DE REGISTRO DEL BOLETO: ${formattedDate} ${formattedTime} Horas.
 
+METODOS DE PAGO AQUÍ 👉🏼: https://60s.my.canva.site/cuentas`
+                    )
+                  }
+                  className="dialog-button-whatsapp"
+                >
+                  Enviar a WhatsApp
+                </button>
+              </div>
+            </>,
+            {
+              position: toast.POSITION.TOP_CENTER,
+              autoClose: false,
+              hideProgressBar: true,
+            }
+          );
 
-
-
-
-
-
+          // compute formatted date/time (already computed above)
         }
-        
-   
-        
-
-        // clear the form data
-        setPhoneNumber("");
-        setFullName("");
-        setState("");
-        setCity(" ");
-        setRandomNumber(Math.floor(Math.random() * 1000000000)); // Genera un nuevo número aleatorio
-        setSelectedTickets([]);
-
-        // clear the errors
-        setErrors({});
       } catch (error) {
-        setErrors({ submit: error.message });
+        setErrors({ submit: error.message || "Error procesando reserva" });
         setBtnLoading(false);
       }
 
+      // clear the form data
+      setPhoneNumber("");
+      setFullName("");
+      setState("");
+      setCity(" ");
+      setRandomNumber(Math.floor(Math.random() * 1000000000)); // Genera un nuevo número aleatorio
+      setSelectedTickets([]);
+
+      // clear the errors
+      setErrors({});
+    } catch (error) {
+      setErrors({ submit: error.message });
+      setBtnLoading(false);
+    } finally {
       setBtnLoading(false);
     }
   };
@@ -233,7 +324,6 @@ const totalTickets = selectedTicketCount;
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    // Update individual state variables instead of formData
     switch (name) {
       case "phoneNumber":
         setPhoneNumber(value);
@@ -254,7 +344,6 @@ const totalTickets = selectedTicketCount;
         break;
     }
 
-    // Remove error if user has fixed it
     if (errors.hasOwnProperty(name)) {
       const newErrors = { ...errors };
       delete newErrors[name];
@@ -301,6 +390,7 @@ const totalTickets = selectedTicketCount;
 
   return (
     <>
+      <ToastContainer position="top-center" autoClose={5000} />
       {Object.keys(errors).length !== 0 && (
         <div className="error-box">
           {Object.keys(errors).length > 0 && (
@@ -320,23 +410,21 @@ const totalTickets = selectedTicketCount;
               countries={["MX", "US"]}
             ></ReactFlagsSelect>
             <input
-  type="tel"
-  name="phoneNumber"
-  placeholder="Numero de telefono"
-  value={phoneNumber}
-  onChange={(e) => {
-    const value = e.target.value.replace(/\s/g, ''); // Eliminar espacios en blanco
-    setPhoneNumber(value);
-    // Remove error if user has fixed it
-    if (errors.hasOwnProperty("phoneNumber")) {
-      const newErrors = { ...errors };
-      delete newErrors["phoneNumber"];
-      setErrors(newErrors);
-    }
-  }}
-  style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
-/>
-
+              type="tel"
+              name="phoneNumber"
+              placeholder="Numero de telefono"
+              value={phoneNumber}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\s/g, "");
+                setPhoneNumber(value);
+                if (errors.hasOwnProperty("phoneNumber")) {
+                  const newErrors = { ...errors };
+                  delete newErrors["phoneNumber"];
+                  setErrors(newErrors);
+                }
+              }}
+              style={{ fontSize: "14px", fontWeight: "normal", color: "gray" }}
+            />
           </div>
 
           {/* Full field */}
@@ -350,14 +438,13 @@ const totalTickets = selectedTicketCount;
               onChange={(e) => {
                 const value = e.target.value;
                 setFullName(value);
-                // Remove error if user has fixed it
                 if (errors.hasOwnProperty("fullName")) {
                   const newErrors = { ...errors };
                   delete newErrors["fullName"];
                   setErrors(newErrors);
                 }
               }}
-                style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
+              style={{ fontSize: "14px", fontWeight: "normal", color: "gray" }}
             />
           </div>
 
@@ -372,19 +459,17 @@ const totalTickets = selectedTicketCount;
               onChange={(e) => {
                 const value = e.target.value;
                 setState(value);
-                // Remove error if user has fixed it
                 if (errors.hasOwnProperty("state")) {
                   const newErrors = { ...errors };
                   delete newErrors["state"];
                   setErrors(newErrors);
                 }
               }}
-              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
+              style={{ fontSize: "14px", fontWeight: "normal", color: "gray" }}
             />
           </div>
 
           {/* Ciudad */}
-          
           <div className="form-row">
             <input
               type="hidden"
@@ -394,14 +479,13 @@ const totalTickets = selectedTicketCount;
               onChange={(e) => {
                 const value = e.target.value;
                 setCity(value);
-                // Remove error if user has fixed it
                 if (errors.hasOwnProperty("city")) {
                   const newErrors = { ...errors };
                   delete newErrors["city"];
                   setErrors(newErrors);
                 }
               }}
-              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
+              style={{ fontSize: "14px", fontWeight: "normal", color: "gray" }}
             />
           </div>
 
@@ -415,14 +499,13 @@ const totalTickets = selectedTicketCount;
               onChange={(e) => {
                 const value = e.target.value;
                 setEmail(value);
-                // Remove error if user has fixed it
                 if (errors.hasOwnProperty("email")) {
                   const newErrors = { ...errors };
                   delete newErrors["email"];
                   setErrors(newErrors);
                 }
               }}
-              style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
+              style={{ fontSize: "14px", fontWeight: "normal", color: "gray" }}
             />
           </div>
 
@@ -433,26 +516,25 @@ const totalTickets = selectedTicketCount;
         </div>
       </form>
 
-<div className="search-bar selected-container">
-  {selectedTickets.length > 0 &&
-    selectedTickets.map((ticket, index) => (
-      <div
-        className="selected-ticket"
-        onClick={() => {
-          const updatedTickets = [...selectedTickets];
-          updatedTickets.splice(index, 1);
-          setSelectedTickets(updatedTickets);
-        }}
-      >
-        {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
-        {/* Agregar los 3 números adicionales */}
-        {[250, 500, 750].map((additionalNumber) => (
-          <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
-        ))}
+      <div className="search-bar selected-container">
+        {selectedTickets.length > 0 &&
+          selectedTickets.map((ticket, index) => (
+            <div
+              className="selected-ticket"
+              onClick={() => {
+                const updatedTickets = [...selectedTickets];
+                updatedTickets.splice(index, 1);
+                setSelectedTickets(updatedTickets);
+              }}
+            >
+              {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
+              {/* Agregar los 3 números adicionales */}
+              {[250, 500, 750].map((additionalNumber) => (
+                <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
+              ))}
+            </div>
+          ))}
       </div>
-    ))}
-</div>
-
 
       {/* Search bar with button */}
       <div className="row search-bar">
@@ -461,7 +543,7 @@ const totalTickets = selectedTicketCount;
           placeholder="Buscar tu boleto"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
-          style={{ fontSize: '14px', fontWeight: 'normal', color: 'gray' }}
+          style={{ fontSize: "14px", fontWeight: "normal", color: "gray" }}
         />
       </div>
 
@@ -481,12 +563,10 @@ const totalTickets = selectedTicketCount;
         <>
           <div className="ticket-list-container">
             <div className="display-tickets">
-             {currentItems.map((ticket, index) => (
+              {currentItems.map((ticket, index) => (
                 <div
                   key={ticket}
-                  className={`ticket ${
-                    selectedTickets.includes(ticket) && "selected"
-                  }`}
+                  className={`ticket ${selectedTickets.includes(ticket) && "selected"}`}
                   onClick={() =>
                     setSelectedTickets(() => {
                       if (selectedTickets.includes(ticket)) {
@@ -498,8 +578,6 @@ const totalTickets = selectedTicketCount;
                   {ticket}
                 </div>
               ))}
-
-
             </div>
           </div>
 
@@ -524,7 +602,6 @@ const totalTickets = selectedTicketCount;
         </>
       )}
     </>
-    
   );
 }
 
