@@ -43,7 +43,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   const selectedTicketCount = selectedTickets.length;
   const totalTickets = selectedTicketCount;
-  const ticketPrice = 100; // Precio de cada boleto en pesos
+  const ticketPrice = 35; // Precio de cada boleto en pesos
   const totalPrice = selectedTicketCount * ticketPrice; // Precio total en pesos
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -239,13 +239,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 >
                   HOLA, HAS RESERVADO {totalTickets} BOLETO(S).
                   𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
-                  OPORTUNIDADES ADICIONALES:
-                  [ {selectedTicketNumbersWithPairs.join(", ")} ].
+                  
                   𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:
                   <br />
-                  $15,000 PESOS EN EFECTIVO.
+                  $20,000 PESOS EN EFECTIVO.
                   <br />
-                  𝗗𝗘𝗟 𝗗𝗜𝗔: 07 DE DICIEMBRE DE 2025.
+                  𝗗𝗘𝗟 𝗗𝗜𝗔: 23 DE DICIEMBRE DE 2025.
                   <br />
                   𝗡𝗢𝗠𝗕𝗥𝗘:
                   <br />
@@ -272,19 +271,16 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
                 <button
                   onClick={() =>
                     sendWhatsAppMessage(
-                      `52${phoneNumber}`,
+                      `526441227949`,
                       `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-OPORTUNIDADES ADICIONALES:
-[ ${selectedTicketNumbersWithPairs.join(", ")} ].
-PARA EL SORTEO DE: $15,000 EN EFECTIVO. DEL DIA 17 DE DICIEMBRE DE 2025.
+PARA EL SORTEO DE: $20,000 EN EFECTIVO. DEL DIA 23 DE DICIEMBRE DE 2025.
 
 A NOMBRE DE: ${fullName}.
 EL PRECIO A PAGAR ES: $${totalPrice} PESOS.
 TU NUMERO DE TELEFONO ES: ${mobNumber}.
 FECHA DE REGISTRO DEL BOLETO: ${formattedDate} ${formattedTime} Horas.
-
-METODOS DE PAGO AQUÍ 👉🏼: https://60s.my.canva.site/cuentas`
+`
                     )
                   }
                   className="dialog-button-whatsapp"
@@ -532,10 +528,7 @@ METODOS DE PAGO AQUÍ 👉🏼: https://60s.my.canva.site/cuentas`
               }}
             >
               {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
-              {/* Agregar los 3 números adicionales */}
-              {[250, 500, 750].map((additionalNumber) => (
-                <span key={additionalNumber}>{parseInt(ticket) + additionalNumber}</span>
-              ))}
+             
             </div>
           ))}
       </div>
