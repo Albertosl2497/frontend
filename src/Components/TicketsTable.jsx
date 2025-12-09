@@ -62,7 +62,7 @@ const exportVerticalPatternAsDoc = (tickets) => {
           <tbody>
   `;
 
-  for (let i = 0; i <= 249; i++) {
+  for (let i = 0; i <= 999; i++) {
     const row = [];
     const baseNumbers = [];
     for (let offset = 0; offset <= 750; offset += 250) {
