@@ -185,12 +185,13 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
 
 
-  const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(", ")} ].
-  𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $20,000 PESOS 💸💰
-  𝘿𝙀𝙇 𝘿𝙄𝘼: 23 DE DICIEMBRE 2025.
-  𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
-  𝘾𝙊𝙉 𝘿𝙊𝙈𝙄𝘾𝙄𝙇𝙄𝙊 𝙀𝙉: ${estado}.
-  𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
+  const message = `BUEN DIA PARA RECORDAR QJE EL DIA MARTES SE LLEVARA ACABO LA RIFA DE LOS $20MIL PESOS💰 *ESTAREMOS RECIBIENDO LOS PAGOS  HASTA EL DIA DE MAÑANA A LAS 11PM*.
+
+TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(
+    ", "
+  )} ].
+𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
+𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
   
   `
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
@@ -237,11 +238,11 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
   const totalPrice = ticketCount * ticketPrice;
   const estado = userData.user.state;
 
-  const message = `𝗛𝗢𝗟𝗔 𝗛𝗔𝗦 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(
+  const message = `BUEN DIA PARA RECORDAR QJE EL DIA MARTES SE LLEVARA ACABO LA RIFA DE LOS $20MIL PESOS💰 *ESTAREMOS RECIBIENDO LOS PAGOS  HASTA EL DIA DE MAÑANA A LAS 11PM*.
+
+TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(
     ", "
   )} ].
-𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $20,000 PESOS 💸💰
-𝘿𝙀𝙇 𝘿𝙄𝘼: 23 DE DICIEMBRE 2025.
 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
 𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.`;
 
