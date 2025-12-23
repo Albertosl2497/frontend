@@ -185,13 +185,21 @@ const [confirmationSentEmails, setConfirmationSentEmails] = useState([]);
 
 
 
-  const message = `BUEN DIA PARA RECORDAR QJE EL DIA MARTES SE LLEVARA ACABO LA RIFA DE LOS $20MIL PESOS💰 *ESTAREMOS RECIBIENDO LOS PAGOS  HASTA EL DIA DE MAÑANA A LAS 11PM*.
+  const message = `BUEN DIA PARA RECORDAR QUE EL DIA DE HOY SE LLEVARA ACABO LA RIFA DE LOS $20MIL PESOS💰 *ESTAREMOS RECIBIENDO LOS PAGOS  HASTA LAS 4:30PM*, si necesita que esperemos un poco mas nos confirma porfavor.
 
 TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 𝗡𝗨𝗠𝗘𝗥𝗢(𝗦): [ ${allTickets.join(
     ", "
   )} ].
 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
 𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
+
+METODOS DE PAGO:
+728969000083297389
+Nombre: Maria Ruiz
+Banco: Spin by Oxxo
+
+Deposito en Oxxo:
+2242 1707 6024 2905
   
   `
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
