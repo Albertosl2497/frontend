@@ -274,8 +274,7 @@ TENEMOS APARTADOS ${ticketCount} 𝗕𝗢𝗟𝗘𝗧𝗢𝗦 CON 𝗟𝗢𝗦 �
   const estado = userData.user.state;
 
     
-  const message = `Buenas dia para informar que estaremos pasando a cobrar lo de la rifa de los $20mil pesos el día de hoy, después de las 3pm.✨️ 
-*en esta ocasión no podremos pasar nosotros pero pasará alguien más, es mi hermano* Gracias ☺️
+  const message = `Hola buenas tardes solo para ver si aun le interesan sus boletos para la rifa de los $20mil pesos.☺️✨️
 `
  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
