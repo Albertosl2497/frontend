@@ -197,9 +197,9 @@ OPORTUNIDADES ADICIONALES:
 𝙋𝙍𝙀𝘾𝙄𝙊 𝙏𝙊𝙏𝘼𝙇: $${totalPrice} PESOS.
 
 METODOS DE PAGO:
-728969000066553833
-Banco: Spin by oxxo
-NOMBRE: Martin Alberto Sanchez.
+728969000083297389
+Banco: Spin Oxxo
+Nombre: Maria Ruiz Borquez.
 
 Deposito en Oxxo:
 2242-1707-6033-2708
