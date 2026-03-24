@@ -210,7 +210,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">FOLIOS 000 AL 099</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 29 DE MARZO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(0, 49)}</div>
               <div class="col">${renderBlock(50, 99)}</div>
@@ -218,7 +218,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">FOLIOS 100 AL 199</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 29 DE MARZO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(100, 149)}</div>
               <div class="col">${renderBlock(150, 199)}</div>
@@ -226,7 +226,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">FOLIOS 200 AL 249</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 29 DE MARZO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div style="max-width: 500px; margin: auto;">
               ${renderBlock(200, 249)}
             </div>
