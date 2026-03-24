@@ -157,7 +157,89 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- LÓGICA DE LA TABLA HTML MEJORADA (PANTALLA DIVIDIDA) ---
+  // --- LÓGICA DE LA TABLA HTML PARA PUBLICACIÓN (ESTILO PDF DIVIDIDA) ---
+  const handleViewPublicTable = () => {
+    const ticketMap = new Map();
+    rowData.forEach((t) => {
+      const num = t.ticketNumber.toString().padStart(3, "0");
+      const name = t.user && t.user.trim() !== "" ? t.user.split(" (")[0].toUpperCase() : "";
+      ticketMap.set(num, name);
+    });
+
+    const renderBlock = (start, end) => {
+      let html = `<table><thead><tr><th>NUM.</th><th>+250</th><th>+500</th><th>+750</th><th>NOMBRES:</th></tr></thead><tbody>`;
+      for (let i = start; i <= end; i++) {
+        const b = i.toString().padStart(3, "0");
+        const name = ticketMap.get(b) || "";
+        const rowClass = name ? 'sold-row' : '';
+        html += `<tr class="${rowClass}">
+          <td class="base-num">${b}</td>
+          <td>${i + 250}</td><td>${i + 500}</td><td>${i + 750}</td>
+          <td class="name-td">${name}</td>
+        </tr>`;
+      }
+      return html + `</tbody></table>`;
+    };
+
+    const finalHtml = `
+      <html>
+        <head>
+          <title>Tablas para Publicar - Campo 30</title>
+          <style>
+            body { font-family: 'Arial Narrow', Arial, sans-serif; background: #fff; padding: 10px; }
+            .page { border: 3px solid #be123c; padding: 15px; margin-bottom: 30px; border-radius: 10px; page-break-after: always; max-width: 1000px; margin-left: auto; margin-right: auto; }
+            .header { text-align: center; color: #be123c; margin-bottom: 15px; }
+            .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
+            .header p { margin: 2px 0; font-weight: bold; font-size: 14px; }
+            .split { display: flex; gap: 15px; }
+            .col { flex: 1; }
+            table { border-collapse: collapse; width: 100%; font-size: 11px; }
+            th, td { border: 1px solid #000; padding: 3px; text-align: center; }
+            th { background: #f2f2f2; font-size: 10px; }
+            .base-num { font-weight: bold; background: #f9f9f9; }
+            .name-td { text-align: left; padding-left: 5px; min-width: 120px; font-weight: bold; font-size: 10px; }
+            .sold-row { background-color: #fff9c4; } /* Amarillo suave para vendidos */
+            h2.table-title { background: #be123c; color: white; text-align: center; font-size: 16px; margin: 0; padding: 5px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>RIFAS EFECTIVO CAMPO TREINTA</h1>
+            <p>WHATSAPP: 6441382876</p>
+            <p>RIFA DE $15,000 PESOS ESTE 29 DE MARZO 2026</p>
+          </div>
+
+          <div class="page">
+            <h2 class="table-title">FOLIOS 000 AL 099</h2>
+            <div class="split">
+              <div class="col">${renderBlock(0, 49)}</div>
+              <div class="col">${renderBlock(50, 99)}</div>
+            </div>
+          </div>
+
+          <div class="page">
+            <h2 class="table-title">FOLIOS 100 AL 199</h2>
+            <div class="split">
+              <div class="col">${renderBlock(100, 149)}</div>
+              <div class="col">${renderBlock(150, 199)}</div>
+            </div>
+          </div>
+
+          <div class="page">
+            <h2 class="table-title">FOLIOS 200 AL 249</h2>
+            <div style="max-width: 500px; margin: auto;">
+              ${renderBlock(200, 249)}
+            </div>
+          </div>
+        </body>
+      </html>`;
+
+    const win = window.open();
+    win.document.write(finalHtml);
+    win.document.close();
+  };
+
+  // Mantenemos tu función anterior por si la necesitas para control interno
   const handleViewHtmlTable = () => {
     const safeTickets = JSON.parse(JSON.stringify(rowData));
     const ticketMap = new Map();
@@ -173,50 +255,13 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         const baseNum = i.toString().padStart(3, "0");
         const name = ticketMap.get(baseNum) || "";
         const rowClass = name ? 'occupied' : 'empty';
-        html += `
-          <tr class="${rowClass}">
-            <td class="num">${baseNum}</td>
-            <td class="num">${i + 250}</td>
-            <td class="num">${i + 500}</td>
-            <td class="num">${i + 750}</td>
-            <td class="name">${name}</td>
-          </tr>`;
+        html += `<tr class="${rowClass}"><td class="num">${baseNum}</td><td class="num">${i+250}</td><td class="num">${i+500}</td><td class="num">${i+750}</td><td class="name">${name}</td></tr>`;
       }
       return html + `</tbody></table>`;
     };
 
-    const finalHtml = `
-      <html>
-        <head>
-          <meta charset="UTF-8">
-          <title>Control Visual Campo 30</title>
-          <style>
-            body { font-family: 'Segoe UI', Arial; background: #f0f2f5; margin: 0; padding: 20px; }
-            .header { text-align: center; background: #1a202c; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
-            .split-container { display: flex; gap: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-            .column { flex: 1; }
-            table { border-collapse: collapse; width: 100%; font-size: 11px; table-layout: fixed; }
-            th { background: #edf2f7; border: 1px solid #cbd5e0; padding: 5px; position: sticky; top: 0; }
-            td { border: 1px solid #cbd5e0; padding: 3px; }
-            .num { width: 32px; text-align: center; background: #f8fafc; font-weight: bold; color: #4a5568; }
-            .name { padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .occupied { background: #ebf8ff; color: #2c5282; font-weight: 500; }
-            .empty { color: #cbd5e0; }
-            tr:hover { background: #fffaf0; }
-            @media print { .header { background: white; color: black; border: 1px solid #000; } }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h2 style="margin:0">SORTEO CAMPO 30 - CONTROL DE FOLIOS</h2>
-            <small>Fecha de consulta: ${new Date().toLocaleString()}</small>
-          </div>
-          <div class="split-container">
-            <div class="column">${generateTableRange(0, 124)}</div>
-            <div class="column">${generateTableRange(125, 249)}</div>
-          </div>
-        </body>
-      </html>`;
+    const finalHtml = `<html><head><style>body{font-family:Arial;padding:20px;}.split-container{display:flex;gap:20px;}table{border-collapse:collapse;width:100%;font-size:11px;}th,td{border:1px solid #ccc;padding:3px;}.occupied{background:#ebf8ff;}</style></head>
+    <body><h2>Control Interno</h2><div class="split-container"><div>${generateTableRange(0, 124)}</div><div>${generateTableRange(125, 249)}</div></div></body></html>`;
 
     const win = window.open();
     win.document.write(finalHtml);
@@ -244,8 +289,12 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           Word (Libres)
         </button>
         
-        <button onClick={handleViewHtmlTable} style={{ padding: "10px 15px", backgroundColor: "#e68a00", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          📺 Ver Tabla Dividida (HTML)
+        <button onClick={handleViewHtmlTable} style={{ padding: "10px 15px", backgroundColor: "#e68a00", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
+          📺 Vista Admin
+        </button>
+
+        <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
+          📸 Generar Tablas para Fotos
         </button>
       </div>
 
