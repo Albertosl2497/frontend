@@ -2,18 +2,24 @@ import { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AiOutlineCopy } from "react-icons/ai";
 import "./ticket.css";
 
+// Función para copiar el nombre del usuario al portapapeles
 const copyUserName = (userName) => {
-  if (!userName) return;
+  if (!userName) {
+    toast.warning("No hay un nombre para copiar");
+    return;
+  }
   const [name] = userName.split(" (");
   const uppercaseName = name.trim().toUpperCase();
   navigator.clipboard.writeText(uppercaseName);
-  toast.success("Nombre de usuario copiado exitosamente");
+  toast.success(`Copiado: ${uppercaseName}`);
 };
 
+// --- EXPORTACIÓN A WORD (TODOS) ---
 const exportVerticalPatternAsDoc = (tickets) => {
   const safeTickets = JSON.parse(JSON.stringify(tickets));
   const ticketMap = new Map();
@@ -26,31 +32,28 @@ const exportVerticalPatternAsDoc = (tickets) => {
   let tableHtml = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head><meta charset="UTF-8"><style>
-          table { border-collapse: collapse; width: 100%; }
-          th, td { border: 1px solid black; padding: 6px; text-align: center; font-family: Arial; font-size: 13px; }
-          th { background-color: #f2f2f2; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 5px; text-align: center; font-family: Arial; font-size: 11px; }
+        th { background-color: #f2f2f2; font-weight: bold; }
       </style></head>
-      <body><h2 style="text-align:center">Lista de Boletos</h2><table>
-          <thead><tr><th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th></tr></thead>
-          <tbody>`;
+      <body><h2 style="text-align:center">LISTA COMPLETA DE BOLETOS</h2>
+      <table><thead><tr><th>BASE</th><th>+250</th><th>+500</th><th>+750</th><th>NOMBRE</th></tr></thead><tbody>`;
 
   for (let i = 0; i <= 249; i++) {
-    const row = [];
-    for (let offset = 0; offset <= 750; offset += 250) {
-      row.push(`<td>${(i + offset).toString().padStart(3, "0")}</td>`);
-    }
-    const name = ticketMap.get(i.toString().padStart(3, "0")) || "";
-    tableHtml += `<tr>${row.join("")}<td>${name}</td></tr>`;
+    const baseStr = i.toString().padStart(3, "0");
+    const name = ticketMap.get(baseStr) || "";
+    tableHtml += `<tr><td>${baseStr}</td><td>${i + 250}</td><td>${i + 500}</td><td>${i + 750}</td><td>${name}</td></tr>`;
   }
   tableHtml += `</tbody></table></body></html>`;
 
   const blob = new Blob([tableHtml], { type: "application/msword;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "boletos_formato_tabla.doc";
+  link.download = "lista_completa_boletos.doc";
   link.click();
 };
 
+// --- EXPORTACIÓN A WORD (SOLO DISPONIBLES) ---
 const exportOnlyAvailableTicketsAsDoc = (tickets) => {
   const safeTickets = JSON.parse(JSON.stringify(tickets));
   const ticketMap = new Map();
@@ -61,25 +64,20 @@ const exportOnlyAvailableTicketsAsDoc = (tickets) => {
   });
 
   let tableHtml = `<html><head><meta charset="UTF-8"><style>
-    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-    th, td { border: 1px solid black; padding: 4px; text-align: center; font-family: Arial; font-size: 11px; }
-  </style></head><body><h2 style="text-align:center">Disponibles</h2><table><tbody>`;
+    table { border-collapse: collapse; width: 100%; }
+    td { border: 1px solid black; padding: 4px; text-align: center; font-family: Arial; font-size: 10px; }
+  </style></head><body><h2 style="text-align:center">BOLETOS DISPONIBLES</h2><table><tbody>`;
 
   for (let i = 0; i <= 249; i++) {
-    const numStr = i.toString().padStart(3, "0");
-    if (ticketMap.has(numStr)) {
-      let row = "";
-      for (let offset = 0; offset <= 750; offset += 250) {
-        row += `<td>${(i + offset).toString().padStart(3, "0")}</td>`;
-      }
-      tableHtml += `<tr>${row}<td></td></tr>`;
+    if (ticketMap.has(i.toString().padStart(3, "0"))) {
+      tableHtml += `<tr><td>${i.toString().padStart(3,"0")}</td><td>${i+250}</td><td>${i+500}</td><td>${i+750}</td><td></td></tr>`;
     }
   }
   tableHtml += `</tbody></table></body></html>`;
   const blob = new Blob([tableHtml], { type: "application/msword;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "disponibles.doc";
+  link.download = "boletos_disponibles.doc";
   link.click();
 };
 
@@ -87,12 +85,18 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
 
-  useEffect(() => { setRowData(tickets || []); }, [tickets]);
+  useEffect(() => {
+    setRowData(tickets || []);
+  }, [tickets]);
 
-  const onGridReady = (params) => { setGridApi(params.api); };
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
 
   const onQuickFilterChanged = () => {
-    if (gridApi) gridApi.setQuickFilter(document.getElementById("quickFilter").value);
+    if (gridApi) {
+      gridApi.setQuickFilter(document.getElementById("quickFilter").value);
+    }
   };
 
   const onCellDoubleClicked = (params) => {
@@ -124,31 +128,36 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         }
         updatedData[rowIndex] = updatedTicket;
         setRowData(updatedData);
-        toast.success("Estado actualizado");
-      });
+        toast.success("Estado actualizado con éxito");
+      })
+      .catch(() => toast.error("Error al conectar con el servidor"));
   };
 
   const columnDefs = [
-    { headerName: "Boletos #", field: "ticketNumber", width: 80 },
-    { headerName: "Propietario", field: "user", flex: 1 },
+    { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
+    { headerName: "Propietario", field: "user", flex: 1, sortable: true, filter: true },
     { 
-        headerName: "Estado", 
-        field: "sold", 
-        width: 130,
-        cellRenderer: (p) => p.value ? "Pagado" : "No Pagado",
-        cellClassRules: { "cell-value-red": (p) => p.value, "cell-value-green": (p) => !p.value }
+      headerName: "Estado", 
+      field: "sold", 
+      width: 120,
+      cellRenderer: (p) => p.value ? "✅ Pagado" : "⏳ Pendiente",
+      cellClassRules: { "cell-value-red": (p) => p.value, "cell-value-green": (p) => !p.value }
     },
-    { 
-        headerName: "Copiar", 
-        field: "user", 
-        width: 100,
-        cellRendererFramework: (p) => (
-            <button onClick={() => copyUserName(p.value)} style={{ background: "blue", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>Copiar</button>
-        ) 
-    },
+    {
+      headerName: "Acción",
+      width: 110,
+      cellRendererFramework: (params) => (
+        <button 
+          onClick={() => copyUserName(params.data.user)}
+          style={{ backgroundColor: "#004aad", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
+        >
+          <AiOutlineCopy /> Copiar
+        </button>
+      )
+    }
   ];
 
-  // --- LÓGICA DE LA TABLA HTML DIVIDIDA ---
+  // --- LÓGICA DE LA TABLA HTML MEJORADA (PANTALLA DIVIDIDA) ---
   const handleViewHtmlTable = () => {
     const safeTickets = JSON.parse(JSON.stringify(rowData));
     const ticketMap = new Map();
@@ -158,20 +167,20 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       ticketMap.set(num, name);
     });
 
-    // Función auxiliar para generar una tabla de un rango
     const generateTableRange = (start, end) => {
-      let html = `<table>
-        <thead><tr><th>000</th><th>250</th><th>500</th><th>750</th><th>NOMBRE</th></tr></thead>
-        <tbody>`;
+      let html = `<table><thead><tr><th>B.</th><th>+250</th><th>+500</th><th>+750</th><th>PARTICIPANTE</th></tr></thead><tbody>`;
       for (let i = start; i <= end; i++) {
         const baseNum = i.toString().padStart(3, "0");
-        html += `<tr>
-          <td>${baseNum}</td>
-          <td>${(i + 250)}</td>
-          <td>${(i + 500)}</td>
-          <td>${(i + 750)}</td>
-          <td style="text-align:left; padding-left:5px;">${ticketMap.get(baseNum) || ""}</td>
-        </tr>`;
+        const name = ticketMap.get(baseNum) || "";
+        const rowClass = name ? 'occupied' : 'empty';
+        html += `
+          <tr class="${rowClass}">
+            <td class="num">${baseNum}</td>
+            <td class="num">${i + 250}</td>
+            <td class="num">${i + 500}</td>
+            <td class="num">${i + 750}</td>
+            <td class="name">${name}</td>
+          </tr>`;
       }
       return html + `</tbody></table>`;
     };
@@ -180,46 +189,67 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       <html>
         <head>
           <meta charset="UTF-8">
+          <title>Control Visual Campo 30</title>
           <style>
-            body { font-family: Arial, sans-serif; margin: 10px; }
-            .container { display: flex; gap: 15px; justify-content: center; }
+            body { font-family: 'Segoe UI', Arial; background: #f0f2f5; margin: 0; padding: 20px; }
+            .header { text-align: center; background: #1a202c; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
+            .split-container { display: flex; gap: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
             .column { flex: 1; }
-            table { border-collapse: collapse; width: 100%; font-size: 11px; }
-            th, td { border: 1px solid #333; padding: 3px; text-align: center; }
-            th { background-color: #eee; font-size: 10px; }
-            tr:nth-child(even) { background-color: #f9f9f9; }
-            h2 { text-align: center; margin-bottom: 10px; }
+            table { border-collapse: collapse; width: 100%; font-size: 11px; table-layout: fixed; }
+            th { background: #edf2f7; border: 1px solid #cbd5e0; padding: 5px; position: sticky; top: 0; }
+            td { border: 1px solid #cbd5e0; padding: 3px; }
+            .num { width: 32px; text-align: center; background: #f8fafc; font-weight: bold; color: #4a5568; }
+            .name { padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .occupied { background: #ebf8ff; color: #2c5282; font-weight: 500; }
+            .empty { color: #cbd5e0; }
+            tr:hover { background: #fffaf0; }
+            @media print { .header { background: white; color: black; border: 1px solid #000; } }
           </style>
         </head>
         <body>
-          <h2>LISTADO DE BOLETOS - RIFAS CAMPO 30</h2>
-          <div class="container">
+          <div class="header">
+            <h2 style="margin:0">SORTEO CAMPO 30 - CONTROL DE FOLIOS</h2>
+            <small>Fecha de consulta: ${new Date().toLocaleString()}</small>
+          </div>
+          <div class="split-container">
             <div class="column">${generateTableRange(0, 124)}</div>
             <div class="column">${generateTableRange(125, 249)}</div>
           </div>
         </body>
       </html>`;
 
-    const newWindow = window.open();
-    if (newWindow) {
-      newWindow.document.write(finalHtml);
-      newWindow.document.close();
-    }
+    const win = window.open();
+    win.document.write(finalHtml);
+    win.document.close();
   };
 
   return (
     <div style={{ width: "100%", marginTop: 20 }}>
-      <div style={{ marginBottom: 10 }}>
-        <input type="text" id="quickFilter" placeholder="Buscar..." onChange={onQuickFilterChanged} style={{ background: "black", color: "white", border: "1px solid #444", padding: "8px" }} />
+      <ToastContainer position="top-center" autoClose={3000} />
+      
+      <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
+        <input 
+          type="text" 
+          id="quickFilter" 
+          placeholder="🔍 Buscar participante o número..." 
+          onChange={onQuickFilterChanged} 
+          style={{ flex: 1, minWidth: "200px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
+        />
         
-        <button onClick={() => exportVerticalPatternAsDoc(rowData)} style={{ marginLeft: 10, padding: "10px", backgroundColor: "#004aad", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>Descargar Todo (.doc)</button>
+        <button onClick={() => exportVerticalPatternAsDoc(rowData)} style={{ padding: "10px 15px", backgroundColor: "#004aad", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
+          Word (Todos)
+        </button>
         
-        <button onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)} style={{ marginLeft: 10, padding: "10px", backgroundColor: "#009933", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>Solo Libres (.doc)</button>
+        <button onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)} style={{ padding: "10px 15px", backgroundColor: "#009933", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
+          Word (Libres)
+        </button>
         
-        <button onClick={handleViewHtmlTable} style={{ marginLeft: 10, padding: "10px", backgroundColor: "#e68a00", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>Ver Tabla Pantalla Dividida</button>
+        <button onClick={handleViewHtmlTable} style={{ padding: "10px 15px", backgroundColor: "#e68a00", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
+          📺 Ver Tabla Dividida (HTML)
+        </button>
       </div>
 
-      <div className="ag-theme-alpine-dark" style={{ width: "100%" }}>
+      <div className="ag-theme-alpine-dark" style={{ width: "100%", height: "600px" }}>
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
@@ -227,7 +257,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           onCellDoubleClicked={onCellDoubleClicked}
           pagination={true}
           paginationPageSize={100}
-          domLayout="autoHeight"
+          animateRows={true}
         />
       </div>
     </div>
