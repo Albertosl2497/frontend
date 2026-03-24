@@ -196,7 +196,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             table { border-collapse: collapse; width: 100%; font-size: 11px; }
             th, td { border: 1px solid #000; padding: 3px; text-align: center; }
             th { background: #f2f2f2; font-size: 10px; }
-            .base-num { font-weight: bold; background: #f9f9f9; }
+            .base-num { font-weight: bold; }
             .name-td { text-align: left; padding-left: 5px; min-width: 120px; font-weight: bold; font-size: 10px; }
             .sold-row { background-color: #fff9c4; } /* Amarillo suave para vendidos */
             h2.table-title { background: #be123c; color: white; text-align: center; font-size: 16px; margin: 0; padding: 5px; }
