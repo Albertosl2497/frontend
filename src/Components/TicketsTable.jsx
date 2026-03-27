@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineCopy } from "react-icons/ai";
 import "./ticket.css";
 
+// Función para copiar el nombre del usuario al portapapeles
 const copyUserName = (userName) => {
   if (!userName) {
     toast.warning("No hay un nombre para copiar");
@@ -18,6 +19,68 @@ const copyUserName = (userName) => {
   toast.success(`Copiado: ${uppercaseName}`);
 };
 
+// --- EXPORTACIÓN A WORD (TODOS) ---
+const exportVerticalPatternAsDoc = (tickets) => {
+  const safeTickets = JSON.parse(JSON.stringify(tickets));
+  const ticketMap = new Map();
+  safeTickets.forEach((ticket) => {
+    const number = ticket.ticketNumber.toString().padStart(3, "0");
+    const name = ticket.user && ticket.user.trim() !== "" ? ticket.user.split(" (")[0].toUpperCase() : "";
+    ticketMap.set(number, name);
+  });
+
+  let tableHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset="UTF-8"><style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 5px; text-align: center; font-family: Arial; font-size: 11px; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+      </style></head>
+      <body><h2 style="text-align:center">LISTA COMPLETA DE BOLETOS</h2>
+      <table><thead><tr><th>BASE</th><th>+250</th><th>+500</th><th>+750</th><th>NOMBRE</th></tr></thead><tbody>`;
+
+  for (let i = 0; i <= 249; i++) {
+    const baseStr = i.toString().padStart(3, "0");
+    const name = ticketMap.get(baseStr) || "";
+    tableHtml += `<tr><td>${baseStr}</td><td>${i + 250}</td><td>${i + 500}</td><td>${i + 750}</td><td>${name}</td></tr>`;
+  }
+  tableHtml += `</tbody></table></body></html>`;
+
+  const blob = new Blob([tableHtml], { type: "application/msword;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "lista_completa_boletos.doc";
+  link.click();
+};
+
+// --- EXPORTACIÓN A WORD (SOLO DISPONIBLES) ---
+const exportOnlyAvailableTicketsAsDoc = (tickets) => {
+  const safeTickets = JSON.parse(JSON.stringify(tickets));
+  const ticketMap = new Map();
+  safeTickets.forEach((ticket) => {
+    if (ticket.sold === false && (!ticket.user || ticket.user.trim() === "")) {
+      ticketMap.set(ticket.ticketNumber.toString().padStart(3, "0"), "");
+    }
+  });
+
+  let tableHtml = `<html><head><meta charset="UTF-8"><style>
+    table { border-collapse: collapse; width: 100%; }
+    td { border: 1px solid black; padding: 4px; text-align: center; font-family: Arial; font-size: 10px; }
+  </style></head><body><h2 style="text-align:center">BOLETOS DISPONIBLES</h2><table><tbody>`;
+
+  for (let i = 0; i <= 249; i++) {
+    if (ticketMap.has(i.toString().padStart(3, "0"))) {
+      tableHtml += `<tr><td>${i.toString().padStart(3,"0")}</td><td>${i+250}</td><td>${i+500}</td><td>${i+750}</td><td></td></tr>`;
+    }
+  }
+  tableHtml += `</tbody></table></body></html>`;
+  const blob = new Blob([tableHtml], { type: "application/msword;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "boletos_disponibles.doc";
+  link.click();
+};
+
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
@@ -26,7 +89,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     setRowData(tickets || []);
   }, [tickets]);
 
-  const onGridReady = (params) => { setGridApi(params.api); };
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
 
   const onQuickFilterChanged = () => {
     if (gridApi) {
@@ -92,43 +157,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // Estilo CSS compartido para las tablas de fotos
-  const commonStyles = `
-    <style>
-      body { font-family: 'Arial Narrow', Arial, sans-serif; background: #fff; padding: 10px; }
-      .page { border: 3px solid #be123c; padding: 15px; margin-bottom: 30px; border-radius: 10px; page-break-after: always; max-width: 1000px; margin: auto; }
-      .header { text-align: center; color: #be123c; margin-bottom: 15px; }
-      .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
-      .header p { margin: 2px 0; font-weight: bold; font-size: 14px; }
-      .split { display: flex; gap: 15px; }
-      .col { flex: 1; }
-      table { border-collapse: collapse; width: 100%; font-size: 11px; }
-      th, td { border: 1px solid #000; padding: 3px; text-align: center; }
-      th { background: #f2f2f2; font-size: 10px; }
-      .base-num { font-weight: bold; }
-      .name-td { text-align: left; padding-left: 5px; min-width: 120px; font-weight: bold; font-size: 10px; }
-      .sold-row td { background-color: #fff9c4 !important; }
-      h2.table-title { background: #be123c; color: white; text-align: center; font-size: 16px; margin: 0 0 10px 0; padding: 5px; }
-    </style>
-  `;
-
-  const renderTableBlock = (start, end, ticketMap, filterAvailable = false) => {
-    let rowsHtml = "";
-    for (let i = start; i <= end; i++) {
-      const b = i.toString().padStart(3, "0");
-      const name = ticketMap.get(b) || "";
-      if (filterAvailable && name !== "") continue;
-      
-      const rowClass = name ? 'sold-row' : '';
-      rowsHtml += `<tr class="${rowClass}">
-        <td class="base-num">${b}</td>
-        <td>${i + 250}</td><td>${i + 500}</td><td>${i + 750}</td>
-        <td class="name-td">${name}</td>
-      </tr>`;
-    }
-    return `<table><thead><tr><th>NUM.</th><th>+250</th><th>+500</th><th>+750</th><th>NOMBRES:</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
-  };
-
+  // --- LÓGICA DE LA TABLA HTML PARA PUBLICACIÓN (ESTILO PDF DIVIDIDA) ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -137,55 +166,148 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       ticketMap.set(num, name);
     });
 
-    const finalHtml = `<html><head>${commonStyles}</head><body>
-      <div class="header"><h1>RIFAS EFECTIVO CAMPO TREINTA</h1><p>WHATSAPP: 6441382876</p></div>
-      <div class="page"><h2 class="table-title">FOLIOS 000 AL 099</h2><div class="split"><div class="col">${renderTableBlock(0, 49, ticketMap)}</div><div class="col">${renderTableBlock(50, 99, ticketMap)}</div></div></div>
-      <div class="page"><h2 class="table-title">FOLIOS 100 AL 199</h2><div class="split"><div class="col">${renderTableBlock(100, 149, ticketMap)}</div><div class="col">${renderTableBlock(150, 199, ticketMap)}</div></div></div>
-      <div class="page"><h2 class="table-title">FOLIOS 200 AL 249</h2><div style="max-width: 500px; margin: auto;">${renderTableBlock(200, 249, ticketMap)}</div></div>
-    </body></html>`;
-    const win = window.open(); win.document.write(finalHtml); win.document.close();
+    const renderBlock = (start, end) => {
+      let html = `<table><thead><tr><th>NUM.</th><th>+250</th><th>+500</th><th>+750</th><th>NOMBRES:</th></tr></thead><tbody>`;
+      for (let i = start; i <= end; i++) {
+        const b = i.toString().padStart(3, "0");
+        const name = ticketMap.get(b) || "";
+        const rowClass = name ? 'sold-row' : '';
+        html += `<tr class="${rowClass}">
+          <td class="base-num">${b}</td>
+          <td>${i + 250}</td><td>${i + 500}</td><td>${i + 750}</td>
+          <td class="name-td">${name}</td>
+        </tr>`;
+      }
+      return html + `</tbody></table>`;
+    };
+
+    const finalHtml = `
+      <html>
+        <head>
+          <title>Tablas para Publicar - Campo 30</title>
+          <style>
+            body { font-family: 'Arial Narrow', Arial, sans-serif; background: #fff; padding: 10px; }
+            .page { border: 3px solid #be123c; padding: 15px; margin-bottom: 30px; border-radius: 10px; page-break-after: always; max-width: 1000px; margin-left: auto; margin-right: auto; }
+            .header { text-align: center; color: #be123c; margin-bottom: 15px; }
+            .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
+            .header p { margin: 2px 0; font-weight: bold; font-size: 14px; }
+            .split { display: flex; gap: 15px; }
+            .col { flex: 1; }
+            table { border-collapse: collapse; width: 100%; font-size: 11px; }
+            th, td { border: 1px solid #000; padding: 3px; text-align: center; }
+            th { background: #f2f2f2; font-size: 10px; }
+            .base-num { font-weight: bold; }
+            .name-td { text-align: left; padding-left: 5px; min-width: 120px; font-weight: bold; font-size: 10px; }
+            .sold-row { background-color: #fff9c4; } /* Amarillo suave para vendidos */
+            h2.table-title { background: #be123c; color: white; text-align: center; font-size: 16px; margin: 0; padding: 5px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>RIFAS EFECTIVO CAMPO TREINTA</h1>
+            <p>WHATSAPP: 6441382876</p>
+            <p>RIFA DE $15,000 PESOS ESTE 29 DE MARZO 2026</p>
+          </div>
+
+          <div class="page">
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 29 DE MARZO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <div class="split">
+              <div class="col">${renderBlock(0, 49)}</div>
+              <div class="col">${renderBlock(50, 99)}</div>
+            </div>
+          </div>
+
+          <div class="page">
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 29 DE MARZO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <div class="split">
+              <div class="col">${renderBlock(100, 149)}</div>
+              <div class="col">${renderBlock(150, 199)}</div>
+            </div>
+          </div>
+
+          <div class="page">
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 29 DE MARZO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <div style="max-width: 500px; margin: auto;">
+              ${renderBlock(200, 249)}
+            </div>
+          </div>
+        </body>
+      </html>`;
+
+    const win = window.open();
+    win.document.write(finalHtml);
+    win.document.close();
   };
 
-  const handleViewOnlyAvailable = () => {
+  // Mantenemos tu función anterior por si la necesitas para control interno
+  const handleViewHtmlTable = () => {
+    const safeTickets = JSON.parse(JSON.stringify(rowData));
     const ticketMap = new Map();
-    const disponibles = rowData.filter(t => !t.user || t.user.trim() === "");
-    rowData.forEach((t) => {
+    safeTickets.forEach((t) => {
       const num = t.ticketNumber.toString().padStart(3, "0");
-      ticketMap.set(num, "");
+      const name = t.user && t.user.trim() !== "" ? t.user.split(" (")[0].toUpperCase() : "";
+      ticketMap.set(num, name);
     });
 
-    let tableContent = "";
-    if (disponibles.length <= 125) {
-      tableContent = `<div style="max-width: 600px; margin: auto;">${renderTableBlock(0, 249, ticketMap, true)}</div>`;
-    } else {
-      tableContent = `<div class="split"><div class="col">${renderTableBlock(0, 124, ticketMap, true)}</div><div class="col">${renderTableBlock(125, 249, ticketMap, true)}</div></div>`;
-    }
+    const generateTableRange = (start, end) => {
+      let html = `<table><thead><tr><th>B.</th><th>+250</th><th>+500</th><th>+750</th><th>PARTICIPANTE</th></tr></thead><tbody>`;
+      for (let i = start; i <= end; i++) {
+        const baseNum = i.toString().padStart(3, "0");
+        const name = ticketMap.get(baseNum) || "";
+        const rowClass = name ? 'occupied' : 'empty';
+        html += `<tr class="${rowClass}"><td class="num">${baseNum}</td><td class="num">${i+250}</td><td class="num">${i+500}</td><td class="num">${i+750}</td><td class="name">${name}</td></tr>`;
+      }
+      return html + `</tbody></table>`;
+    };
 
-    const finalHtml = `<html><head>${commonStyles}</head><body>
-      <div class="header"><h1>RIFAS EFECTIVO CAMPO TREINTA</h1><p>WHATSAPP: 6441382876</p><p>BOLETOS DISPONIBLES</p></div>
-      <div class="page"><h2 class="table-title">ELIGE TU NÚMERO DE LA SUERTE</h2>${tableContent}</div>
-    </body></html>`;
-    const win = window.open(); win.document.write(finalHtml); win.document.close();
+    const finalHtml = `<html><head><style>body{font-family:Arial;padding:20px;}.split-container{display:flex;gap:20px;}table{border-collapse:collapse;width:100%;font-size:11px;}th,td{border:1px solid #ccc;padding:3px;}.occupied{background:#ebf8ff;}</style></head>
+    <body><h2>Control Interno</h2><div class="split-container"><div>${generateTableRange(0, 124)}</div><div>${generateTableRange(125, 249)}</div></div></body></html>`;
+
+    const win = window.open();
+    win.document.write(finalHtml);
+    win.document.close();
   };
 
   return (
     <div style={{ width: "100%", marginTop: 20 }}>
       <ToastContainer position="top-center" autoClose={3000} />
+      
       <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
-        <input type="text" id="quickFilter" placeholder="🔍 Buscar..." onChange={onQuickFilterChanged} 
-               style={{ flex: 1, padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }} />
+        <input 
+          type="text" 
+          id="quickFilter" 
+          placeholder="🔍 Buscar participante o número..." 
+          onChange={onQuickFilterChanged} 
+          style={{ flex: 1, minWidth: "200px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
+        />
         
-        <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          📸 Generar Tablas para Fotos
+        <button onClick={() => exportVerticalPatternAsDoc(rowData)} style={{ padding: "10px 15px", backgroundColor: "#004aad", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
+          Word (Todos)
+        </button>
+        
+        <button onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)} style={{ padding: "10px 15px", backgroundColor: "#009933", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
+          Word (Libres)
+        </button>
+        
+        <button onClick={handleViewHtmlTable} style={{ padding: "10px 15px", backgroundColor: "#e68a00", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
+          📺 Vista Admin
         </button>
 
-        <button onClick={handleViewOnlyAvailable} style={{ padding: "10px 15px", backgroundColor: "#009933", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          ✅ Solo Disponibles (Fotos)
+        <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
+          📸 Generar Tablas para Fotos
         </button>
       </div>
 
       <div className="ag-theme-alpine-dark" style={{ width: "100%", height: "600px" }}>
-        <AgGridReact rowData={rowData} columnDefs={columnDefs} onGridReady={onGridReady} onCellDoubleClicked={onCellDoubleClicked} pagination={true} paginationPageSize={100} />
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          onGridReady={onGridReady}
+          onCellDoubleClicked={onCellDoubleClicked}
+          pagination={true}
+          paginationPageSize={100}
+          animateRows={true}
+        />
       </div>
     </div>
   );
