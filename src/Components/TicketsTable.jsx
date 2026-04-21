@@ -194,12 +194,37 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             .split { display: flex; gap: 15px; }
             .col { flex: 1; }
             table { border-collapse: collapse; width: 100%; font-size: 11px; }
-            th, td { border: 1px solid #000; padding: 3px; text-align: center; }
-            th { background: #f2f2f2; font-size: 10px; }
+            th, td { 
+  border: 1px solid #000; 
+  padding: 5px; 
+  text-align: center; 
+  font-size: 16px; /* Más grande */
+  font-weight: bold;
+}
+            th { 
+  background: #dbeafe; /* Azul claro */
+  font-size: 14px;
+  font-weight: bold;
+}
             .base-num { font-weight: bold; }
-            .name-td { text-align: left; padding-left: 5px; min-width: 120px; font-weight: bold; font-size: 10px; }
+            .name-td { 
+  text-align: left; 
+  padding-left: 8px; 
+  min-width: 140px; 
+  font-weight: bold; 
+  font-size: 16px; /* Más grande */
+}
             .sold-row { background-color: #fff9c4; } /* Amarillo suave para vendidos */
-            h2.table-title { background: #be123c; color: white; text-align: center; font-size: 16px; margin: 0; padding: 5px; }
+            h2.table-title { 
+  background: #004aad; /* Azul */
+  color: white; 
+  text-align: center; 
+  font-size: 22px; /* Más grande */
+  margin: 0; 
+  padding: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
           </style>
         </head>
         <body>
