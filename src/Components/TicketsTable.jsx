@@ -251,7 +251,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE 19 DE ABRIL 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 26 DE ABRIL 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div style="max-width: 500px; margin: auto;">
               ${renderBlock(200, 249)}
             </div>
