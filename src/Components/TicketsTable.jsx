@@ -231,11 +231,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           <div class="header">
             <h1>RIFAS EFECTIVO CAMPO TREINTA</h1>
             <p>WHATSAPP: 6441382876</p>
-            <p>RIFA DE $15,000 PESOS ESTE 26 DE ABRIL 2026</p>
+            <p>RIFA DE $15,000 PESOS ESTE 03 DE MAYO 2026</p>
           </div>
 
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE 26 DE ABRIL 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 03 DE MAYO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(0, 49)}</div>
               <div class="col">${renderBlock(50, 99)}</div>
@@ -243,7 +243,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE 26 DE ABRIL 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 03 DE MAYO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(100, 149)}</div>
               <div class="col">${renderBlock(150, 199)}</div>
@@ -251,7 +251,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE 26 DE ABRIL 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 03 DE MAYO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div style="max-width: 500px; margin: auto;">
               ${renderBlock(200, 249)}
             </div>
