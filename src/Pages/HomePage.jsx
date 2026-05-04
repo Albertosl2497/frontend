@@ -7,8 +7,8 @@ import "./styles.css";
 function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
-      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 97</p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 03 DE MAYO DE 2026</p>
+      <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 98</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 09 DE MAYO DE 2026</p>
       <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $15,000 PESOS</p>
       <p style={{ fontSize: '20px' }}>Costo por Boleto $100.00 MXN</p>
       <br />
