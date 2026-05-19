@@ -216,7 +216,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 }
             .sold-row { background-color: #fff9c4; } /* Amarillo suave para vendidos */
             h2.table-title { 
-  background: #cf0481; /* Azul */
+  background: #2204cf; /* Azul */
   color: white; 
   text-align: center; 
   font-size: 22px; /* Más grande */
