@@ -8,7 +8,7 @@ function MainPageContent() {
   return (
     <div className="col" style={{ display: 'flex', flexDirection: 'column' }}>
       <p className="bold" style={{ fontSize: '24px' }}>GRAN EDICIÓN # 99</p>
-      <p className="bold" style={{ fontSize: '24px' }}>ESTE 31 DE MAYO DE 2026</p>
+      <p className="bold" style={{ fontSize: '24px' }}>ESTE 07 DE JUNIO DE 2026</p>
       <p className="bold" style={{ fontSize: '24px' }}>LLEVATE $15,000 PESOS</p>
       <p style={{ fontSize: '20px' }}>Costo por Boleto $100.00 MXN</p>
       <br />
