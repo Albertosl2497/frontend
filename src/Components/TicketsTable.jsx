@@ -20,68 +20,6 @@ const copyUserName = (userName) => {
   toast.success(`Copiado: ${uppercaseName}`);
 };
 
-// --- EXPORTACIÓN A WORD (TODOS) ---
-const exportVerticalPatternAsDoc = (tickets) => {
-  const safeTickets = JSON.parse(JSON.stringify(tickets));
-  const ticketMap = new Map();
-  safeTickets.forEach((ticket) => {
-    const number = ticket.ticketNumber.toString().padStart(3, "0");
-    const name = ticket.user && ticket.user.trim() !== "" ? ticket.user.split(" (")[0].toUpperCase() : "";
-    ticketMap.set(number, name);
-  });
-
-  let tableHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-      <head><meta charset="UTF-8"><style>
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid black; padding: 5px; text-align: center; font-family: Arial; font-size: 11px; }
-        th { background-color: #f2f2f2; font-weight: bold; }
-      </style></head>
-      <body><h2 style="text-align:center">LISTA COMPLETA DE BOLETOS</h2>
-      <table><thead><tr><th>BASE</th><th>+250</th><th>+500</th><th>+750</th><th>NOMBRE</th></tr></thead><tbody>`;
-
-  for (let i = 0; i <= 249; i++) {
-    const baseStr = i.toString().padStart(3, "0");
-    const name = ticketMap.get(baseStr) || "";
-    tableHtml += `<tr><td>${baseStr}</td><td>${i + 250}</td><td>${i + 500}</td><td>${i + 750}</td><td>${name}</td></tr>`;
-  }
-  tableHtml += `</tbody></table></body></html>`;
-
-  const blob = new Blob([tableHtml], { type: "application/msword;charset=utf-8;" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "lista_completa_boletos.doc";
-  link.click();
-};
-
-// --- EXPORTACIÓN A WORD (SOLO DISPONIBLES) ---
-const exportOnlyAvailableTicketsAsDoc = (tickets) => {
-  const safeTickets = JSON.parse(JSON.stringify(tickets));
-  const ticketMap = new Map();
-  safeTickets.forEach((ticket) => {
-    if (ticket.sold === false && (!ticket.user || ticket.user.trim() === "")) {
-      ticketMap.set(ticket.ticketNumber.toString().padStart(3, "0"), "");
-    }
-  });
-
-  let tableHtml = `<html><head><meta charset="UTF-8"><style>
-    table { border-collapse: collapse; width: 100%; }
-    td { border: 1px solid black; padding: 4px; text-align: center; font-family: Arial; font-size: 10px; }
-  </style></head><body><h2 style="text-align:center">BOLETOS DISPONIBLES</h2><table><tbody>`;
-
-  for (let i = 0; i <= 249; i++) {
-    if (ticketMap.has(i.toString().padStart(3, "0"))) {
-      tableHtml += `<tr><td>${i.toString().padStart(3,"0")}</td><td>${i+250}</td><td>${i+500}</td><td>${i+750}</td><td></td></tr>`;
-    }
-  }
-  tableHtml += `</tbody></table></body></html>`;
-  const blob = new Blob([tableHtml], { type: "application/msword;charset=utf-8;" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "boletos_disponibles.doc";
-  link.click();
-};
-
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
@@ -275,7 +213,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         const b = i.toString().padStart(3, "0");
         const name = ticketMap.get(b) || "";
         
-        // Colores limpios: Blanco si está libre, gris sutil si está ocupado
         const rowBg = name ? 'background-color: #f1f5f9;' : 'background-color: #ffffff;';
         const numColor = name ? 'color: #94a3b8; font-weight: bold;' : 'color: #000000; font-weight: 900;';
         const nameStyle = 'font-size: 16px; font-weight: bold; text-align: left; padding-left: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #334155;';
@@ -291,7 +228,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       return html + `</tbody></table>`;
     };
 
-    // Contenedor minimalista exclusivo para la tabla
     const createPageWrapper = (id, content) => `
       <div id="${id}" style="background: #ffffff; padding: 15px; width: 950px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 20px;">
         ${content}
@@ -314,7 +250,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
       for (let i = 1; i <= 3; i++) {
         const element = document.getElementById(`export-img-${i}`);
-        // scale: 2 para que se descarguen en súper alta definición nítida
         const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
         
         const imgData = canvas.toDataURL("image/png");
@@ -333,34 +268,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
-  const handleViewHtmlTable = () => {
-    const safeTickets = JSON.parse(JSON.stringify(rowData));
-    const ticketMap = new Map();
-    safeTickets.forEach((t) => {
-      const num = t.ticketNumber.toString().padStart(3, "0");
-      const name = t.user && t.user.trim() !== "" ? t.user.split(" (")[0].toUpperCase() : "";
-      ticketMap.set(num, name);
-    });
-
-    const generateTableRange = (start, end) => {
-      let html = `<table><thead><tr><th>B.</th><th>+250</th><th>+500</th><th>+750</th><th>PARTICIPANTE</th></tr></thead><tbody>`;
-      for (let i = start; i <= end; i++) {
-        const baseNum = i.toString().padStart(3, "0");
-        const name = ticketMap.get(baseNum) || "";
-        const rowClass = name ? 'occupied' : 'empty';
-        html += `<tr class="${rowClass}"><td class="num">${baseNum}</td><td class="num">${i+250}</td><td class="num">${i+500}</td><td class="num">${i+750}</td><td class="name">${name}</td></tr>`;
-      }
-      return html + `</tbody></table>`;
-    };
-
-    const finalHtml = `<html><head><style>body{font-family:Arial;padding:20px;}.split-container{display:flex;gap:20px;}table{border-collapse:collapse;width:100%;font-size:11px;}th,td{border:1px solid #ccc;padding:3px;}.occupied{background:#ebf8ff;}</style></head>
-    <body><h2>Control Interno</h2><div class="split-container"><div>${generateTableRange(0, 124)}</div><div>${generateTableRange(125, 249)}</div></div></body></html>`;
-
-    const win = window.open();
-    win.document.write(finalHtml);
-    win.document.close();
-  };
-
   return (
     <div style={{ width: "100%", marginTop: 20 }}>
       <ToastContainer position="top-center" autoClose={3000} />
@@ -373,18 +280,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           onChange={onQuickFilterChanged} 
           style={{ flex: 1, minWidth: "200px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
         />
-        
-        <button onClick={() => exportVerticalPatternAsDoc(rowData)} style={{ padding: "10px 15px", backgroundColor: "#004aad", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
-          Word (Todos)
-        </button>
-        
-        <button onClick={() => exportOnlyAvailableTicketsAsDoc(rowData)} style={{ padding: "10px 15px", backgroundColor: "#009933", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
-          Word (Libres)
-        </button>
-        
-        <button onClick={handleViewHtmlTable} style={{ padding: "10px 15px", backgroundColor: "#e68a00", color: "white", border: "none", borderRadius: 5, cursor: "pointer" }}>
-          📺 Vista Admin
-        </button>
 
         <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
           📸 Generar Tablas (Ver HTML)
