@@ -203,26 +203,44 @@ OPORTUNIDADES ADICIONALES:
               </div>
 
               <p style={{ color: "#64748b", margin: "0 0 12px 0", fontSize: "11px", textAlign: "center", lineHeight: "1.4" }}>
-                ¡Gracias por participar! 😊 Presiona el botón verde para enviar los datos por WhatsApp y asegurar tu lugar.
+                ¡Gracias por participar! 😊 Copia tu información o envíala, y verifica los métodos de pago.
               </p>
 
-              <div style={{ display: "flex", gap: "8px" }}>
+              {/* CONTENEDOR DE BOTONES */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                
+                {/* Fila de arriba (Copiar y WhatsApp) */}
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <button 
+                    onClick={() => copyToClipboard(textToCopy, "📋 Texto copiado al portapapeles")} 
+                    style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
+                    onMouseOver={(e) => e.target.style.background = "#e2e8f0"}
+                    onMouseOut={(e) => e.target.style.background = "#f1f5f9"}
+                  >
+                    📋 Copiar Texto
+                  </button>
+                  <a 
+                    href={whatsappUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    style={{ flex: 1, backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 10px rgba(37, 211, 102, 0.2)" }}
+                  >
+                    🟢 WhatsApp
+                  </a>
+                </div>
+
+                {/* 💳 NUEVO BOTÓN: Ir a métodos de pago */}
                 <button 
-                  onClick={() => copyToClipboard(textToCopy, "📋 Texto copiado al portapapeles")} 
-                  style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
-                  onMouseOver={(e) => e.target.style.background = "#e2e8f0"}
-                  onMouseOut={(e) => e.target.style.background = "#f1f5f9"}
+                  onClick={() => {
+                    document.getElementById("payment-methods-section")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  style={{ width: "100%", backgroundColor: "#0f172a", color: "white", border: "none", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = "#1e293b"}
+                  onMouseOut={(e) => e.target.style.backgroundColor = "#0f172a"}
                 >
-                  📋 Copiar Texto
+                  💳 Ir a Métodos de Pago
                 </button>
-                <a 
-                  href={whatsappUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  style={{ flex: 1, backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 10px rgba(37, 211, 102, 0.2)" }}
-                >
-                  🟢 WhatsApp
-                </a>
+
               </div>
             </div>
           </>,
@@ -595,8 +613,8 @@ OPORTUNIDADES ADICIONALES:
         </div>
       )}
 
-      {/* 💳 5. BANNER: MÉTODOS DE PAGO REALES DEL CLIENTE */}
-      <div className="payment-banner-container">
+      {/* 💳 5. BANNER: MÉTODOS DE PAGO CON ID PARA SCROLL */}
+      <div id="payment-methods-section" className="payment-banner-container">
         <h3 className="payment-title">💳 Métodos de Pago</h3>
         <div className="payment-grid">
           {paymentMethods.map((method, index) => (
