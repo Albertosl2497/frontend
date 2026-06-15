@@ -9,7 +9,7 @@ function MainPageContent() {
     <div className="hero-banner-container">
       <div className="hero-edition-badge">🏆 GRAN EDICIÓN # 99</div>
       <h1 className="hero-prize">¡LLEVATE $15,000 PESOS!</h1>
-      <p className="hero-date">📅 ESTE 07 DE JUNIO DE 2026</p>
+      <p className="hero-date">📅 ESTE 20 DE JUNIO DE 2026</p>
       
       <div className="hero-price-tag">
         Costo por Boleto <span>$100.00 MXN</span>
