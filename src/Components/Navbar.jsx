@@ -1,120 +1,139 @@
 import React from "react";
 import Logo from "../Assets/logo.png";
+import { FaFacebookF, FaWhatsapp, FaCreditCard } from "react-icons/fa"; // 👈 Importamos los íconos limpios
 
 function Navbar({ onOpenPayments }) {
   return (
     <nav className="custom-navbar">
-      {/* Estilos premium exclusivos para los componentes del Navbar */}
       <style>{`
         .custom-navbar {
           background: #ffffff;
-          padding: 12px 20px;
+          padding: 10px 15px;
           border-bottom: 1px solid #e2e8f0;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          position: sticky;
+          top: 0;
+          z-index: 1000;
         }
         .nav-container-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          flex-wrap: wrap;
-          gap: 15px;
           max-width: 1100px;
           margin: 0 auto;
         }
         .nav-brand-section {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
         }
         .nav-brand-section img {
-          height: 48px;
+          height: 42px;
           width: auto;
+        }
+        .nav-title-block {
+          display: flex;
+          flex-direction: column;
         }
         .nav-title-block h1 {
           margin: 0;
           font-size: 15px;
           font-weight: 900;
           color: #0f172a;
-          line-height: 1.25;
+          line-height: 1.1;
+          letter-spacing: -0.3px;
         }
         .nav-buttons-group {
           display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
+          gap: 10px;
+          align-items: center;
         }
-        .navbar-btn {
-          padding: 8px 14px;
-          border-radius: 6px;
-          font-size: 13px;
-          font-weight: bold;
+        
+        /* 🔵🟢🔴 ESTILOS PARA LOS BOTONES CIRCULARES (ÍCONOS) */
+        .icon-btn {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          color: white;
           text-decoration: none;
           border: none;
           cursor: pointer;
-          transition: all 0.2s;
-          color: white;
-          display: inline-flex;
-          align-items: center;
+          transition: transform 0.2s, box-shadow 0.2s;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .navbar-btn:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+        .icon-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-        .btn-brand-fb { background-color: #1877F2; }
-        .btn-brand-wa { background-color: #25D366; }
-        .btn-brand-pay { background-color: #be123c; }
-        .btn-brand-pay:hover { background-color: #e11d48; }
+        .btn-fb { background-color: #1877F2; }
+        .btn-wa { background-color: #25D366; }
+        .btn-pay { background-color: #be123c; }
 
-        /* Ajustes específicos para celulares */
-        @media (max-width: 650px) {
-          .nav-container-row {
-            justify-content: center;
-            text-align: center;
+        /* 📱 AJUSTES ULTRA COMPACTOS PARA CELULARES */
+        @media (max-width: 480px) {
+          .custom-navbar {
+            padding: 8px 10px;
           }
-          .nav-brand-section {
-            flex-direction: column;
-            gap: 6px;
+          .nav-brand-section img {
+            height: 34px; /* Logo más pequeño para que no estorbe */
+          }
+          .nav-title-block h1 {
+            font-size: 13px; /* Texto ajustado */
+          }
+          .icon-btn {
+            width: 34px;
+            height: 34px;
+            font-size: 15px; /* Botones reducidos perfectamente */
           }
           .nav-buttons-group {
-            width: 100%;
-            justify-content: center;
+            gap: 6px;
           }
         }
       `}</style>
 
       <div className="nav-container-row">
-        {/* Lado Izquierdo: Mantenemos tu estructura intacta de Logo + Texto */}
+        {/* Lado Izquierdo: Logo + Título Compacto */}
         <div className="nav-brand-section">
           <img src={Logo} alt="Logo" />
-          <div className="nav-title-block col">
+          <div className="nav-title-block">
             <h1 className="bold">RIFAS EFECTIVO</h1>
             <h1 className="bold">CAMPO TREINTA</h1>
           </div>
         </div>
 
-        {/* Lado Derecho: Los nuevos botones integrados */}
+        {/* Lado Derecho: Botones Circulares con Íconos */}
         <div className="nav-buttons-group">
           <a 
-            href="https://www.facebook.com" /* 👈 Cambia por el link de tu página real */
+            href="https://www.facebook.com" /* 👈 Pon tu link real de FB */
             target="_blank" 
             rel="noopener noreferrer" 
-            className="navbar-btn btn-brand-fb"
+            className="icon-btn btn-fb"
+            title="Ir a nuestro Facebook"
           >
-            🔵 Facebook
+            <FaFacebookF />
           </a>
+          
           <a 
             href="https://wa.me/526442563616" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="navbar-btn btn-brand-wa"
+            className="icon-btn btn-wa"
+            title="Enviar mensaje por WhatsApp"
           >
-            🟢 WhatsApp
+            <FaWhatsapp />
           </a>
+          
           <button 
             type="button" 
-            className="navbar-btn btn-brand-pay"
+            className="icon-btn btn-pay"
             onClick={onOpenPayments}
+            title="Ver Métodos de Pago"
           >
-            💳 Métodos de Pago
+            <FaCreditCard />
           </button>
         </div>
       </div>
