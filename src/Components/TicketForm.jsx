@@ -94,7 +94,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      // Si faltan datos en el formulario, sube al usuario automáticamente para que los vea
       document.getElementById("form-top-anchor")?.scrollIntoView({ behavior: "smooth" });
       return;
     }
@@ -143,66 +142,68 @@ OPORTUNIDADES ADICIONALES:
 
         const whatsappUrl = `https://api.whatsapp.com/send?phone=526442563616&text=${encodeURIComponent(textToCopy)}`;
 
-        // --- 📄 FORMATO DE VENTANA EMERGENTE MÁS PROFESIONAL (RECIBO DIGITAL) ---
+        // --- 📄 FORMATO DE VENTANA EMERGENTE REDISEÑADO PARA EVITAR SATURACIÓN EN CELULARES ---
         toast.success(
           <>
-            <div style={{ padding: "20px", backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: "0 10px 25px rgba(0,0,0,0.15)", fontFamily: "Arial, sans-serif", border: "1px solid #e2e8f0" }}>
+            <div style={{ padding: "16px 12px", backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: "0 10px 25px rgba(0,0,0,0.15)", fontFamily: "Arial, sans-serif", border: "1px solid #e2e8f0", maxWidth: "100%", boxSizing: "border-box" }}>
               
-              <div style={{ textAlign: "center", marginBottom: "15px" }}>
-                <span style={{ display: "inline-block", background: "#dcfce7", color: "#166534", padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "bold", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+              <div style={{ textAlign: "center", marginBottom: "12px" }}>
+                <span style={{ display: "inline-block", background: "#dcfce7", color: "#166534", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", letterSpacing: "0.5px", textTransform: "uppercase" }}>
                   ✓ Proceso Terminado
                 </span>
-                <h3 style={{ color: "#0f172a", marginTop: "8px", marginBottom: "0", fontSize: "20px", fontWeight: "900", letterSpacing: "-0.5px" }}>
+                <h3 style={{ color: "#0f172a", marginTop: "6px", marginBottom: "0", fontSize: "19px", fontWeight: "900", letterSpacing: "-0.5px" }}>
                   REGISTRO EXITOSO
                 </h3>
               </div>
 
-              <div style={{ borderTop: "2px dashed #e2e8f0", borderBottom: "2px dashed #e2e8f0", padding: "12px 0", margin: "15px 0" }}>
+              <div style={{ borderTop: "2px dashed #e2e8f0", borderBottom: "2px dashed #e2e8f0", padding: "10px 0", margin: "10px 0" }}>
                 
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}>
-                  <span style={{ color: "#64748b" }}>Participante:</span>
-                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>{fullName}</span>
+                {/* Ajustado a bloque vertical para que el nombre largo no se empuje con la etiqueta */}
+                <div style={{ display: "flex", flexDirection: "column", marginBottom: "10px", fontSize: "14px", width: "100%" }}>
+                  <span style={{ color: "#64748b", fontSize: "12px", marginBottom: "2px" }}>Participante:</span>
+                  <span style={{ color: "#0f172a", fontWeight: "bold", fontSize: "15px", wordBreak: "break-word" }}>{fullName}</span>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", fontSize: "14px" }}>
                   <span style={{ color: "#64748b" }}>Cantidad:</span>
                   <span style={{ color: "#0f172a", fontWeight: "bold" }}>{selectedTicketCount} Boleto(s)</span>
                 </div>
 
                 <div style={{ marginBottom: "10px", fontSize: "14px" }}>
-                  <span style={{ color: "#64748b", display: "block", marginBottom: "4px" }}>Boletos Base:</span>
-                  <span style={{ color: "#b91c1c", fontWeight: "900", fontSize: "16px", background: "#fef2f2", padding: "4px 8px", borderRadius: "6px", display: "inline-block" }}>
+                  <span style={{ color: "#64748b", display: "block", fontSize: "12px", marginBottom: "4px" }}>Boletos Base:</span>
+                  <span style={{ color: "#b91c1c", fontWeight: "900", fontSize: "16px", background: "#fef2f2", padding: "4px 8px", borderRadius: "6px", display: "inline-block", wordBreak: "break-all" }}>
                     [ {selectedTicketNumbers} ]
                   </span>
                 </div>
 
-                <div style={{ marginBottom: "8px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9" }}>
-                  <span style={{ color: "#475569", fontWeight: "bold", display: "block", marginBottom: "2px" }}>Oportunidades Extra:</span>
-                  <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px" }}>
+                {/* Contenedor adaptativo para que la lista de números adicionales no desborde la pantalla */}
+                <div style={{ marginBottom: "10px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9", boxSizing: "border-box" }}>
+                  <span style={{ color: "#475569", fontWeight: "bold", display: "block", fontSize: "12px", marginBottom: "2px" }}>Oportunidades Extra:</span>
+                  <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px", display: "block", wordBreak: "break-word", overflowWrap: "break-word" }}>
                     {selectedTicketNumbersWithPairs.join(", ")}
                   </span>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "12px", paddingTop: "8px", borderTop: "1px solid #f1f5f9", fontSize: "14px" }}>
-                  <span style={{ color: "#475569" }}>Sorteo:</span>
-                  <span style={{ color: "#0f172a", fontWeight: "bold", fontSize: "12px" }}>$15,000 (Sáb 20 Jun 2026)</span>
+                <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingTop: "6px", borderTop: "1px solid #f1f5f9", fontSize: "13px" }}>
+                  <span style={{ color: "#475569", fontSize: "11px", marginBottom: "1px" }}>Sorteo:</span>
+                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>$15,000 en Efectivo (Sáb 20 Jun 2026)</span>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", background: "#f0fdf4", padding: "10px", borderRadius: "8px" }}>
-                  <span style={{ color: "#166534", fontWeight: "bold", fontSize: "15px" }}>Total a Pagar:</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px", background: "#f0fdf4", padding: "8px 10px", borderRadius: "8px" }}>
+                  <span style={{ color: "#166534", fontWeight: "bold", fontSize: "14px" }}>Total a Pagar:</span>
                   <span style={{ color: "#15803d", fontWeight: "900", fontSize: "17px" }}>${totalPrice} MXN</span>
                 </div>
 
               </div>
 
-              <p style={{ color: "#64748b", margin: "0 0 15px 0", fontSize: "11px", textAlign: "center", lineHeight: "1.4" }}>
+              <p style={{ color: "#64748b", margin: "0 0 12px 0", fontSize: "11px", textAlign: "center", lineHeight: "1.4" }}>
                 ¡Gracias por participar! 😊 Presiona el botón verde para enviar los datos por WhatsApp y asegurar tu lugar.
               </p>
 
               <div style={{ display: "flex", gap: "8px" }}>
                 <button 
                   onClick={() => copyToClipboard(textToCopy)} 
-                  style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "13px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
+                  style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
                   onMouseOver={(e) => e.target.style.background = "#e2e8f0"}
                   onMouseOut={(e) => e.target.style.background = "#f1f5f9"}
                 >
@@ -212,9 +213,9 @@ OPORTUNIDADES ADICIONALES:
                   href={whatsappUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  style={{ flex: 1, backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", padding: "10px 4px", fontSize: "13px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 10px rgba(37, 211, 102, 0.2)" }}
+                  style={{ flex: 1, backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 10px rgba(37, 211, 102, 0.2)" }}
                 >
-                  🟢 Enviar a WhatsApp
+                  🟢 WhatsApp
                 </a>
               </div>
             </div>
@@ -255,7 +256,6 @@ OPORTUNIDADES ADICIONALES:
 
   return (
     <>
-      {/* --- BLOQUE DE ESTILOS CSS INCORPORADOS --- */}
       <style>{`
         .live-counter-badge {
           background: linear-gradient(135deg, #be123c 0%, #e11d48 100%);
@@ -377,7 +377,6 @@ OPORTUNIDADES ADICIONALES:
         </div>
       )}
 
-      {/* ANCLA PARA DESPLAZAMIENTO EN CASO DE ERROR */}
       <div id="form-top-anchor"></div>
       
       <form onSubmit={handleSubmitForm}>
@@ -509,11 +508,11 @@ OPORTUNIDADES ADICIONALES:
         </div>
       )}
 
-      {/* 🛒 4. BARRA FLOTANTE CON EL NUEVO BOTÓN DE APARTAR DIRECTO */}
+      {/* 🛒 4. BARRA FLOTANTE CON EL BOTÓN DE APARTAR DIRECTO */}
       {selectedTicketCount > 0 && (
         <div className="floating-cart-bar">
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ fontSize: "15px", fontWeight: "bold", color: "#ffffff" }}>
+            <span style={{ fontSize: "14px", fontWeight: "bold", color: "#ffffff" }}>
               🎟️ {selectedTicketCount} Seleccionado(s)
             </span>
             <span style={{ fontSize: "13px", color: "#22c55e", fontWeight: "bold" }}>
@@ -526,7 +525,7 @@ OPORTUNIDADES ADICIONALES:
             disabled={btnLoading}
             onClick={procesarApartado}
           >
-            {btnLoading ? <ClipLoader color="white" size={16} /> : "⚡ Apartar Ya"}
+            {btnLoading ? <ClipLoader color="white" size={16} /> : "⚡ Apartar"}
           </button>
         </div>
       )}
