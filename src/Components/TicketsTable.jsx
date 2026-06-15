@@ -310,7 +310,29 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       </div>
     `;
 
-    const content1 = `<div style="display: flex; gap: 20px;"><div style="flex: 1;">${renderBlockInline(0, 49)}</div><div style="flex: 1;">${renderBlockInline(50, 99)}</div></div>`;
+    // 🏆 HTML DEL ENCABEZADO (Banner con estilos en línea para html2canvas)
+    const headerHtml = `
+      <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #334155; text-align: center; font-family: Arial, sans-serif;">
+        <h2 style="color: #f8fafc; font-size: 26px; font-weight: 900; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px;">🎉 Gran Sorteo Efectivo 🎉</h2>
+        <div style="display: flex; justify-content: space-around; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
+          <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
+            <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎁 Premio Principal</span>
+            <span style="font-size: 18px; font-weight: 900; color: #fbbf24;">$15,000 MXN</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
+            <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">📅 Fecha del Sorteo</span>
+            <span style="font-size: 18px; font-weight: bold; color: #e2e8f0;">Sáb 20 de Jun, 2026</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
+            <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎟️ Precio por Boleto</span>
+            <span style="font-size: 18px; font-weight: 900; color: #22c55e;">$100 Pesos</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Añadimos el headerHtml SOLO a content1
+    const content1 = `${headerHtml}<div style="display: flex; gap: 20px;"><div style="flex: 1;">${renderBlockInline(0, 49)}</div><div style="flex: 1;">${renderBlockInline(50, 99)}</div></div>`;
     const content2 = `<div style="display: flex; gap: 20px;"><div style="flex: 1;">${renderBlockInline(100, 149)}</div><div style="flex: 1;">${renderBlockInline(150, 199)}</div></div>`;
     const content3 = `<div style="max-width: 480px; margin: auto;">${renderBlockInline(200, 249)}</div>`;
 
