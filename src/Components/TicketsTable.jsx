@@ -158,7 +158,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- 📸 1. VISTA PÚBLICA EN NUEVA PESTAÑA (Mantiene formato de tabla limpia) ---
+  // --- 📸 1. VISTA PÚBLICA EN NUEVA PESTAÑA (SÓLO TABLAS LIMPIAS) ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -170,16 +170,16 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     const renderBlock = (start, end) => {
       return `<table>
         <colgroup>
-          <col style="width: 46px;">
-          <col style="width: 46px;">
-          <col style="width: 46px;">
-          <col style="width: 46px;">
+          <col style="width: 52px;">
+          <col style="width: 52px;">
+          <col style="width: 52px;">
+          <col style="width: 52px;">
           <col style="width: auto;">
         </colgroup>
         <thead>
           <tr>
             <th colspan="4">NÚMEROS</th>
-            <th>NOMBRES:</th>
+            <th style="text-align: left; padding-left: 12px;">NOMBRES:</th>
           </tr>
         </thead>
         <tbody>
@@ -190,9 +190,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             const rowClass = name ? 'sold-row' : '';
             return `<tr class="${rowClass}">
               <td class="base-num">${b}</td>
-              <td>${i + 250}</td>
-              <td>${i + 500}</td>
-              <td>${i + 750}</td>
+              <td class="base-num">${i + 250}</td>
+              <td class="base-num">${i + 500}</td>
+              <td class="base-num">${i + 750}</td>
               <td class="name-td" title="${name}">${name}</td>
             </tr>`;
           }).join('')}
@@ -203,47 +203,36 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     const finalHtml = `
       <html>
         <head>
-          <title>Tablas para Publicar - Campo 30</title>
+          <title>Tablas de Control - Campo 30</title>
           <style>
-            body { font-family: 'Arial Narrow', Arial, sans-serif; background: #fff; padding: 10px; }
-            .page { border: 3px solid #be123c; padding: 15px; margin-bottom: 30px; border-radius: 10px; page-break-after: always; max-width: 1000px; margin-left: auto; margin-right: auto; }
-            .header { text-align: center; color: #be123c; margin-bottom: 15px; }
-            .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
-            .header p { margin: 2px 0; font-weight: bold; font-size: 14px; }
-            .split { display: flex; gap: 15px; }
+            body { font-family: 'Arial Narrow', Arial, sans-serif; background: #fff; padding: 20px; }
+            .page { border: 1px solid #cbd5e1; padding: 15px; margin-bottom: 30px; border-radius: 8px; page-break-after: always; max-width: 950px; margin-left: auto; margin-right: auto; }
+            .split { display: flex; gap: 20px; }
             .col { flex: 1; }
             table { border-collapse: collapse; width: 100%; font-size: 11px; table-layout: fixed; }
-            th, td { border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 16px; font-weight: bold; }
-            th { background: #f1f5f9; color: #1e293b; font-size: 14px; font-weight: bold; padding: 8px; }
-            .base-num { font-weight: bold; color: #0f172a; }
-            .name-td { text-align: left; padding-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; font-size: 16px; }
-            .sold-row { background-color: #e0f2fe; color: #0369a1; } 
-            h2.table-title { background: #1e3a8a; color: white; text-align: center; font-size: 21px; margin: 0 0 12px 0; padding: 12px; font-weight: bold; border-radius: 6px; letter-spacing: 0.5px; }
+            th, td { border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; }
+            th { background: #0f172a; color: #ffffff; font-size: 14px; font-weight: bold; padding: 10px 4px; }
+            .base-num { font-size: 19px; font-weight: 900; color: #000000; }
+            .sold-row .base-num { color: #94a3b8; font-weight: bold; }
+            .name-td { text-align: left; padding-left: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; font-size: 16px; color: #334155; }
+            .sold-row { background-color: #f1f5f9; } 
           </style>
         </head>
         <body>
-          <div class="header">
-            <h1>RIFAS EFECTIVO CAMPO TREINTA</h1>
-            <p>WHATSAPP: 6441382876</p>
-            <p>RIFA DE $15,000 PESOS ESTE 07 DE JUNIO 2026</p>
-          </div>
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(0, 49)}</div>
               <div class="col">${renderBlock(50, 99)}</div>
             </div>
           </div>
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(100, 149)}</div>
               <div class="col">${renderBlock(150, 199)}</div>
             </div>
           </div>
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
-            <div style="max-width: 500px; margin: auto;">
+            <div style="max-width: 480px; margin: auto;">
               ${renderBlock(200, 249)}
             </div>
           </div>
@@ -255,9 +244,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // --- ⬇️ 2. DESCARGAR IMÁGENES AUTOMÁTICAMENTE (DISEÑO FLYER DE MARKETING PREMIUM) ---
+  // --- ⬇️ 2. DESCARGAR IMÁGENES AUTOMÁTICAMENTE (SÓLO LAS TABLAS LIMPIAS Y REFORZADAS) ---
   const handleDownloadImages = async () => {
-    const toastId = toast.loading("⏳ Diseñando tus 3 Banners Publicitarios...");
+    const toastId = toast.loading("⏳ Generando las imágenes de las tablas...");
     
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -266,20 +255,19 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       ticketMap.set(num, name);
     });
 
-    // Renderizador exclusivo enfocado en la estética de una imagen compartible
     const renderBlockInline = (start, end) => {
-      let html = `<table style="border-collapse: collapse; width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+      let html = `<table style="border-collapse: collapse; width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
         <colgroup>
-          <col style="width: 46px;">
-          <col style="width: 46px;">
-          <col style="width: 46px;">
-          <col style="width: 46px;">
+          <col style="width: 52px;">
+          <col style="width: 52px;">
+          <col style="width: 52px;">
+          <col style="width: 52px;">
           <col style="width: auto;">
         </colgroup>
         <thead>
           <tr>
-            <th colspan="4" style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 10px 4px; font-size: 13px; font-weight: 900; letter-spacing: 1px;">NÚMEROS</th>
-            <th style="border: 1px solid #cbd5e1; background: #1e293b; color: #ffffff; padding: 10px 8px; font-size: 13px; font-weight: 900; text-align: left; padding-left: 12px; letter-spacing: 1px;">DISPONIBILIDAD / PROPIETARIO</th>
+            <th colspan="4" style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 10px 4px; font-size: 14px; font-weight: bold; text-align: center;">NÚMEROS</th>
+            <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 10px 8px; font-size: 14px; font-weight: bold; text-align: left; padding-left: 12px;">NOMBRES:</th>
           </tr>
         </thead>
         <tbody>`;
@@ -287,59 +275,32 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         const b = i.toString().padStart(3, "0");
         const name = ticketMap.get(b) || "";
         
-        // Estilos diferenciados de marketing: Blanco limpio para libre, gris sutil apagado para ocupado
-        const rowBg = name ? 'background-color: #f1f5f9; color: #64748b;' : 'background-color: #ffffff; color: #000000;';
-        const numColor = name ? 'color: #94a3b8;' : 'color: #1e3a8a; font-weight: 900;';
-        const nameStyle = name 
-          ? 'color: #334155; font-weight: bold; font-size: 15px; background-color: #e2e8f0;' 
-          : 'color: #10b981; font-weight: 900; font-size: 14px; letter-spacing: 0.5px;';
-        const displayName = name ? name : "✨ DISPONIBLE ¡APARTA YA!";
+        // Colores limpios: Blanco si está libre, gris sutil si está ocupado
+        const rowBg = name ? 'background-color: #f1f5f9;' : 'background-color: #ffffff;';
+        const numColor = name ? 'color: #94a3b8; font-weight: bold;' : 'color: #000000; font-weight: 900;';
+        const nameStyle = 'font-size: 16px; font-weight: bold; text-align: left; padding-left: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #334155;';
 
         html += `<tr style="${rowBg}">
-          <td style="border: 1px solid #cbd5e1; padding: 7px 2px; text-align: center; font-size: 16px; ${numColor}">${b}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 7px 2px; text-align: center; font-size: 16px; ${numColor}">${i + 250}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 7px 2px; text-align: center; font-size: 16px; ${numColor}">${i + 500}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 7px 2px; text-align: center; font-size: 16px; ${numColor}">${i + 750}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 7px 12px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ${nameStyle}">${displayName}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${b}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 250}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 500}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 750}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; ${nameStyle}">${name}</td>
         </tr>`;
       }
       return html + `</tbody></table>`;
     };
 
-    // Envoltura con aspecto de Flyer Publicitario de Redes Sociales
+    // Contenedor minimalista exclusivo para la tabla
     const createPageWrapper = (id, content) => `
-      <div id="${id}" style="background: #f8fafc; padding: 24px; width: 1050px; border: 4px solid #be123c; border-radius: 16px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 25px;">
-        
-        <div style="background: linear-gradient(135deg, #be123c 0%, #4c0519 100%); padding: 20px; border-radius: 12px; text-align: center; color: #ffffff; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-          <h1 style="margin: 0; font-size: 28px; font-weight: 900; letter-spacing: 1.5px; text-shadow: 1px 1px 3px rgba(0,0,0,0.4);">RIFAS EFECTIVO CAMPO TREINTA</h1>
-          <div style="display: inline-block; background: #ffffff; color: #be123c; padding: 4px 15px; border-radius: 20px; font-weight: 900; font-size: 15px; margin-top: 8px;">
-            📲 APARTADOS AL WHATSAPP: 6441382876
-          </div>
-        </div>
-
-        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); color: white; text-align: center; margin: 0 0 18px 0; padding: 16px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-          <span style="font-size: 18px; font-weight: bold; text-transform: uppercase; display: block; color: #93c5fd; letter-spacing: 1px;">¡GRAN OPPORTUNIDAD!</span>
-          <h2 style="margin: 3px 0; font-size: 24px; font-weight: 900; color: #f59e0b;">
-            GANA $15,000 PESOS <span style="color:#ffffff; font-size:16px; font-weight:normal;">ESTE 07 DE JUNIO 2026</span>
-          </h2>
-          <p style="margin: 0; font-size: 15px; font-weight: bold; color: #10b981;">
-            Participa con solo $100 pesos 💥 ¡Cuentas con 4 oportunidades de ganar por boleto!
-          </p>
-        </div>
-
+      <div id="${id}" style="background: #ffffff; padding: 15px; width: 950px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 20px;">
         ${content}
-
-        <div style="margin-top: 20px; background: #e2e8f0; text-align: center; padding: 12px; border-radius: 8px; border: 1px dashed #be123c;">
-          <p style="margin: 0; font-size: 16px; font-weight: 900; color: #be123c; letter-spacing: 0.5px;">
-            🍀 ¡Manda mensaje rápido y asegura tu número antes de que te lo ganen! 🍀
-          </p>
-        </div>
       </div>
     `;
 
     const content1 = `<div style="display: flex; gap: 20px;"><div style="flex: 1;">${renderBlockInline(0, 49)}</div><div style="flex: 1;">${renderBlockInline(50, 99)}</div></div>`;
     const content2 = `<div style="display: flex; gap: 20px;"><div style="flex: 1;">${renderBlockInline(100, 149)}</div><div style="flex: 1;">${renderBlockInline(150, 199)}</div></div>`;
-    const content3 = `<div style="max-width: 520px; margin: auto;">${renderBlockInline(200, 249)}</div>`;
+    const content3 = `<div style="max-width: 480px; margin: auto;">${renderBlockInline(200, 249)}</div>`;
 
     const tempContainer = document.createElement("div");
     tempContainer.style.position = "absolute";
@@ -349,23 +310,24 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     document.body.appendChild(tempContainer);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       for (let i = 1; i <= 3; i++) {
         const element = document.getElementById(`export-img-${i}`);
-        const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#f8fafc" });
+        // scale: 2 para que se descarguen en súper alta definición nítida
+        const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
         
         const imgData = canvas.toDataURL("image/png");
         const link = document.createElement("a");
         link.href = imgData;
-        link.download = `Flyer_Rifa_Parte_${i}.png`;
+        link.download = `Tabla_Disponibles_Parte_${i}.png`;
         link.click();
       }
       
-      toast.update(toastId, { render: "✅ ¡Los 3 Banners Publicitarios se descargaron con éxito!", type: "success", isLoading: false, autoClose: 4000 });
+      toast.update(toastId, { render: "✅ ¡Tablas descargadas con éxito!", type: "success", isLoading: false, autoClose: 4000 });
     } catch (error) {
       console.error("Error al generar imágenes:", error);
-      toast.update(toastId, { render: "❌ Ocurrió un error al diseñar las imágenes.", type: "error", isLoading: false, autoClose: 4000 });
+      toast.update(toastId, { render: "❌ Ocurrió un error al procesar las imágenes.", type: "error", isLoading: false, autoClose: 4000 });
     } finally {
       document.body.removeChild(tempContainer);
     }
