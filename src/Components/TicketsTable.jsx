@@ -157,7 +157,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- LÓGICA DE LA TABLA HTML PARA PUBLICACIÓN (ESTILO PDF DIVIDIDA) ---
+  // --- LÓGICA DE LA TABLA HTML PARA PUBLICACIÓN (DISEÑO FOTOS OPTIMIZADO) ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -167,15 +167,25 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     });
 
     const renderBlock = (start, end) => {
-      let html = `<table><thead><tr><th>NUM.</th><th>+250</th><th>+500</th><th>+750</th><th>NOMBRES:</th></tr></thead><tbody>`;
+      // Unificamos las primeras 4 columnas bajo el título "NÚMEROS" usando colspan="4"
+      let html = `<table>
+        <thead>
+          <tr>
+            <th colspan="4">NÚMEROS</th>
+            <th>NOMBRES:</th>
+          </tr>
+        </thead>
+        <tbody>`;
       for (let i = start; i <= end; i++) {
         const b = i.toString().padStart(3, "0");
         const name = ticketMap.get(b) || "";
         const rowClass = name ? 'sold-row' : '';
         html += `<tr class="${rowClass}">
           <td class="base-num">${b}</td>
-          <td>${i + 250}</td><td>${i + 500}</td><td>${i + 750}</td>
-          <td class="name-td">${name}</td>
+          <td>${i + 250}</td>
+          <td>${i + 500}</td>
+          <td>${i + 750}</td>
+          <td class="name-td" title="${name}">${name}</td>
         </tr>`;
       }
       return html + `</tbody></table>`;
@@ -193,49 +203,62 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             .header p { margin: 2px 0; font-weight: bold; font-size: 14px; }
             .split { display: flex; gap: 15px; }
             .col { flex: 1; }
-            table { border-collapse: collapse; width: 100%; font-size: 11px; }
+            
+            table { border-collapse: collapse; width: 100%; font-size: 11px; table-layout: fixed; }
+            
             th, td { 
-  border: 1px solid #000; 
-  padding: 5px; 
-  text-align: center; 
-  font-size: 16px; /* Más grande */
-  font-weight: bold;
-}
+              border: 1px solid #cbd5e1; /* Gris moderno en lugar de negro puro */
+              padding: 6px 4px; 
+              text-align: center; 
+              font-size: 16px; 
+              font-weight: bold;
+            }
             th { 
-  background: #dbeafe; /* Azul claro */
-  font-size: 14px;
-  font-weight: bold;
-}
-            .base-num { font-weight: bold; }
+              background: #f1f5f9; /* Fondo gris muy limpio para cabeceras */
+              color: #1e293b;
+              font-size: 14px;
+              font-weight: bold;
+              padding: 8px;
+            }
+            .base-num { font-weight: bold; color: #0f172a; }
+            
+            /* Control estricto de desbordamiento de nombres con puntos suspensivos (...) */
             .name-td { 
-  text-align: left; 
-  padding-left: 8px; 
-  min-width: 140px; 
-  font-weight: bold; 
-  font-size: 16px; /* Más grande */
-}
-            .sold-row { background-color: #73a7fa; } /* Amarillo suave para vendidos */
+              text-align: left; 
+              padding-left: 8px; 
+              white-space: nowrap; 
+              overflow: hidden; 
+              text-overflow: ellipsis; 
+              font-weight: bold; 
+              font-size: 16px;
+            }
+            
+            /* Azul pastel premium muy claro para filas ocupadas */
+            .sold-row { background-color: #e0f2fe; color: #0369a1; } 
+            
+            /* Banner principal cambiado de naranja a Azul Marino Elegante */
             h2.table-title { 
-  background: #ff6f1c; /* Azul */
-  color: white; 
-  text-align: center; 
-  font-size: 22px; /* Más grande */
-  margin: 0; 
-  padding: 10px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
+              background: #1e3a8a; 
+              color: white; 
+              text-align: center; 
+              font-size: 21px; 
+              margin: 0 0 12px 0; 
+              padding: 12px;
+              font-weight: bold;
+              border-radius: 6px;
+              letter-spacing: 0.5px;
+            }
           </style>
         </head>
         <body>
           <div class="header">
             <h1>RIFAS EFECTIVO CAMPO TREINTA</h1>
             <p>WHATSAPP: 6441382876</p>
-            <p>RIFA DE $15,000 PESOS ESTE SABADO 20 DE JUNIO 2026</p>
+            <p>RIFA DE $15,000 PESOS ESTE 07 DE JUNIO 2026</p>
           </div>
 
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE SABADO 20 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(0, 49)}</div>
               <div class="col">${renderBlock(50, 99)}</div>
@@ -243,7 +266,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE SABADO 20 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
               <div class="col">${renderBlock(100, 149)}</div>
               <div class="col">${renderBlock(150, 199)}</div>
@@ -251,7 +274,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
 
           <div class="page">
-            <h2 class="table-title">GANA $15,000 PESOS ESTE SABADO 20 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
+            <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div style="max-width: 500px; margin: auto;">
               ${renderBlock(200, 249)}
             </div>
