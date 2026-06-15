@@ -2,23 +2,10 @@ import { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify"; // Eliminamos ToastContainer para evitar duplicados
 import "react-toastify/dist/ReactToastify.css";
-import { AiOutlineCopy } from "react-icons/ai";
 import html2canvas from "html2canvas";
 import "./ticket.css";
-
-// Función para copiar el nombre del usuario al portapapeles
-const copyUserName = (userName) => {
-  if (!userName) {
-    toast.warning("No hay un nombre para copiar");
-    return;
-  }
-  const [name] = userName.split(" (");
-  const uppercaseName = name.trim().toUpperCase();
-  navigator.clipboard.writeText(uppercaseName);
-  toast.success(`Copiado: ${uppercaseName}`);
-};
 
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
@@ -38,40 +25,53 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
-  const onCellDoubleClicked = (params) => {
-    const ticketToUpdate = params.data;
-    const field = params.colDef.field;
-    if (field !== "sold" && field !== "availability") return;
+  // --- 🔒 LÓGICA SEGURA DE BOTONES CON CONFIRMACIÓN NATIVA ---
+  const handleCobrar = (ticket) => {
+    if (window.confirm(`¿Estás seguro de marcar el boleto ${ticket.ticketNumber} de ${ticket.user} como PAGADO?`)) {
+      updateTicketStatus(ticket, true);
+    }
+  };
 
-    fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticketToUpdate.ticketNumber}/${!ticketToUpdate[field]}`, {
+  const handleLiberar = (ticket) => {
+    if (window.confirm(`⚠️ ¿Estás seguro de LIBERAR el boleto ${ticket.ticketNumber}? Se perderá el apartado y quedará disponible.`)) {
+      updateTicketStatus(ticket, false);
+    }
+  };
+
+  const updateTicketStatus = (ticket, isSold) => {
+    fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticket.ticketNumber}/${isSold}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Sold Tickets can not be made available") {
-          toast.error(data.message);
+          toast.error("El servidor bloqueó la acción: No se puede liberar un boleto marcado como pagado sin quitarle el pago antes.");
           return;
         }
+        
         const updatedData = [...rowData];
-        const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticketToUpdate.ticketNumber);
-        const updatedTicket = { ...ticketToUpdate };
-        updatedTicket[field] = !updatedTicket[field];
-
-        if (field === "sold") {
-          updatedTicket.availability = !updatedTicket.sold;
-          setStats({ ...stats, soldCount: stats.soldCount + (updatedTicket.sold ? 1 : -1) });
+        const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
+        const updatedTicket = { ...ticket };
+        
+        updatedTicket.sold = isSold;
+        
+        if (isSold) {
+          setStats({ ...stats, soldCount: stats.soldCount + 1 });
+          toast.success("✅ Boleto marcado como PAGADO");
         } else {
-          if (updatedTicket.availability) updatedTicket.sold = false;
-          setStats({ ...stats, bookedCount: stats.bookedCount + (updatedTicket.availability ? -1 : 1) });
+          updatedTicket.availability = true;
+          setStats({ ...stats, soldCount: stats.soldCount - 1 });
+          toast.success("🗑️ Boleto LIBERADO con éxito");
         }
+
         updatedData[rowIndex] = updatedTicket;
         setRowData(updatedData);
-        toast.success("Estado actualizado con éxito");
       })
       .catch(() => toast.error("Error al conectar con el servidor"));
   };
 
+  // --- DEFINICIÓN DE COLUMNAS ---
   const columnDefs = [
     { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
     { headerName: "Propietario", field: "user", flex: 1, sortable: true, filter: true },
@@ -83,20 +83,37 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       cellClassRules: { "cell-value-red": (p) => p.value, "cell-value-green": (p) => !p.value }
     },
     {
-      headerName: "Acción",
-      width: 110,
-      cellRendererFramework: (params) => (
-        <button 
-          onClick={() => copyUserName(params.data.user)}
-          style={{ backgroundColor: "#004aad", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}
-        >
-          <AiOutlineCopy /> Copiar
-        </button>
-      )
+      headerName: "Acciones",
+      width: 180,
+      cellRendererFramework: (params) => {
+        const isSold = params.data.sold;
+        return (
+          <div style={{ display: "flex", gap: "8px", alignItems: "center", height: "100%" }}>
+            {!isSold && (
+              <button 
+                onClick={() => handleCobrar(params.data)}
+                style={{ backgroundColor: "#16a34a", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px", transition: "transform 0.1s" }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              >
+                ✅ Cobrar
+              </button>
+            )}
+            <button 
+              onClick={() => handleLiberar(params.data)}
+              style={{ backgroundColor: "#dc2626", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px", transition: "transform 0.1s" }}
+              onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+              onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+            >
+              🗑️ Liberar
+            </button>
+          </div>
+        );
+      }
     }
   ];
 
-  // --- 📸 1. VISTA PÚBLICA EN NUEVA PESTAÑA (SÓLO TABLAS LIMPIAS) ---
+  // --- 📸 1. VISTA PÚBLICA EN NUEVA PESTAÑA ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -182,7 +199,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // --- ⬇️ 2. DESCARGAR IMÁGENES AUTOMÁTICAMENTE (SÓLO LAS TABLAS LIMPIAS Y REFORZADAS) ---
+  // --- ⬇️ 2. DESCARGAR IMÁGENES AUTOMÁTICAMENTE ---
   const handleDownloadImages = async () => {
     const toastId = toast.loading("⏳ Generando las imágenes de las tablas...");
     
@@ -270,8 +287,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   return (
     <div style={{ width: "100%", marginTop: 20 }}>
-      <ToastContainer position="top-center" autoClose={3000} />
-      
       <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
         <input 
           type="text" 
@@ -282,11 +297,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         />
 
         <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          📸 Generar Tablas (Ver HTML)
+          📸 Generar HTML
         </button>
 
         <button onClick={handleDownloadImages} style={{ padding: "10px 15px", backgroundColor: "#0284c7", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          ⬇️ Descargar en 3 Imágenes
+          ⬇️ Descargar Imágenes
         </button>
       </div>
 
@@ -295,7 +310,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           rowData={rowData}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
-          onCellDoubleClicked={onCellDoubleClicked}
           pagination={true}
           paginationPageSize={100}
           animateRows={true}
