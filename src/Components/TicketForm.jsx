@@ -7,6 +7,14 @@ import "react-toastify/dist/ReactToastify.css";
 import "./ticket.css";
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
+  // 💳 MÉTODOS DE PAGO REALES DEL CLIENTE (INTEGRADOS INTEGRALMENTE)
+  const paymentMethods = [
+    { bank: "DEPÓSITO EN OXXO", number: "2242 1707 6033 2708", holder: "Cualquier Caja de Tienda OXXO", type: "Depósito en Efectivo" },
+    { bank: "SPIN BY OXXO", number: "7289 6900 0066 5538 33", holder: "MARTIN ALBERTO SANCHEZ", type: "Transferencia CLABE" },
+    { bank: "SPIN BY OXXO", number: "7289 6900 0083 2973 89", holder: "MARIA RUIZ BORQUEZ", type: "Transferencia CLABE" },
+    { bank: "SPIN BY OXXO", number: "7289 6900 0107 5676 78", holder: "ALVARO RUIZ MURRIETA", type: "Transferencia CLABE" }
+  ];
+
   // --- Mantenido estrictamente por funcionalidad del usuario (Punto 4) ---
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [city, setCity] = useState("");
@@ -66,11 +74,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     toast.success(`🎲 Se agregaron ${toSelect.length} boleto(s) de la suerte`);
   };
 
-  // Función para copiar al portapapeles
-  const copyToClipboard = async (text) => {
+  // Función para copiar al portapapeles genérica
+  const copyToClipboard = async (text, customMessage = "Texto copiado al portapapeles") => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.info("Texto copiado al portapapeles", { autoClose: 2000 });
+      toast.info(customMessage, { autoClose: 2000 });
     } catch (err) {
       toast.error("Error al copiar al portapapeles");
       console.error("Error al copiar: ", err);
@@ -142,7 +150,7 @@ OPORTUNIDADES ADICIONALES:
 
         const whatsappUrl = `https://api.whatsapp.com/send?phone=526442563616&text=${encodeURIComponent(textToCopy)}`;
 
-        // --- 📄 FORMATO DE VENTANA EMERGENTE REDISEÑADO PARA EVITAR SATURACIÓN EN CELULARES ---
+        // --- 📄 FORMATO DE VENTANA EMERGENTE PROFESIONAL (RECIBO DIGITAL) ---
         toast.success(
           <>
             <div style={{ padding: "16px 12px", backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: "0 10px 25px rgba(0,0,0,0.15)", fontFamily: "Arial, sans-serif", border: "1px solid #e2e8f0", maxWidth: "100%", boxSizing: "border-box" }}>
@@ -158,7 +166,6 @@ OPORTUNIDADES ADICIONALES:
 
               <div style={{ borderTop: "2px dashed #e2e8f0", borderBottom: "2px dashed #e2e8f0", padding: "10px 0", margin: "10px 0" }}>
                 
-                {/* Ajustado a bloque vertical para que el nombre largo no se empuje con la etiqueta */}
                 <div style={{ display: "flex", flexDirection: "column", marginBottom: "10px", fontSize: "14px", width: "100%" }}>
                   <span style={{ color: "#64748b", fontSize: "12px", marginBottom: "2px" }}>Participante:</span>
                   <span style={{ color: "#0f172a", fontWeight: "bold", fontSize: "15px", wordBreak: "break-word" }}>{fullName}</span>
@@ -176,7 +183,6 @@ OPORTUNIDADES ADICIONALES:
                   </span>
                 </div>
 
-                {/* Contenedor adaptativo para que la lista de números adicionales no desborde la pantalla */}
                 <div style={{ marginBottom: "10px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9", boxSizing: "border-box" }}>
                   <span style={{ color: "#475569", fontWeight: "bold", display: "block", fontSize: "12px", marginBottom: "2px" }}>Oportunidades Extra:</span>
                   <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px", display: "block", wordBreak: "break-word", overflowWrap: "break-word" }}>
@@ -202,7 +208,7 @@ OPORTUNIDADES ADICIONALES:
 
               <div style={{ display: "flex", gap: "8px" }}>
                 <button 
-                  onClick={() => copyToClipboard(textToCopy)} 
+                  onClick={() => copyToClipboard(textToCopy, "📋 Texto copiado al portapapeles")} 
                   style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
                   onMouseOver={(e) => e.target.style.background = "#e2e8f0"}
                   onMouseOut={(e) => e.target.style.background = "#f1f5f9"}
@@ -368,6 +374,87 @@ OPORTUNIDADES ADICIONALES:
         .cart-btn-apartar:active {
           transform: scale(0.97);
         }
+        
+        /* 💳 TARJETAS BANCARIAS ADAPTADAS */
+        .payment-banner-container {
+          margin-top: 35px;
+          border-top: 2px dashed #cbd5e1;
+          padding: 25px 15px 40px 15px;
+          background-color: #f8fafc;
+          border-radius: 12px;
+        }
+        .payment-title {
+          font-size: 18px;
+          font-weight: 900;
+          color: #0f172a;
+          margin-bottom: 15px;
+          text-align: center;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .payment-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 15px;
+        }
+        .payment-card {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 15px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+          display: flex;
+          flex-direction: column;
+        }
+        .payment-bank {
+          font-size: 15px;
+          font-weight: 900;
+          color: #be123c;
+          margin-bottom: 2px;
+        }
+        .payment-type {
+          font-size: 11px;
+          color: #64748b;
+          text-transform: uppercase;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+        .payment-number-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: #f1f5f9;
+          border: 1px solid #cbd5e1;
+          padding: 8px 10px;
+          border-radius: 6px;
+          margin-bottom: 8px;
+        }
+        .payment-number {
+          font-family: monospace;
+          font-size: 13.5px;
+          font-weight: bold;
+          color: #0f172a;
+          letter-spacing: 0.3px;
+        }
+        .copy-acc-btn {
+          background: #0f172a;
+          color: white;
+          border: none;
+          padding: 4px 10px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .copy-acc-btn:hover {
+          background: #be123c;
+        }
+        .payment-holder {
+          font-size: 12px;
+          color: #475569;
+          font-weight: bold;
+        }
       `}</style>
 
       <ToastContainer position="top-center" autoClose={5000} />
@@ -507,6 +594,30 @@ OPORTUNIDADES ADICIONALES:
           </div>
         </div>
       )}
+
+      {/* 💳 5. BANNER: MÉTODOS DE PAGO REALES DEL CLIENTE */}
+      <div className="payment-banner-container">
+        <h3 className="payment-title">💳 Métodos de Pago</h3>
+        <div className="payment-grid">
+          {paymentMethods.map((method, index) => (
+            <div key={index} className="payment-card">
+              <span className="payment-bank">{method.bank}</span>
+              <span className="payment-type">{method.type}</span>
+              <div className="payment-number-row">
+                <span className="payment-number">{method.number}</span>
+                <button 
+                  type="button" 
+                  className="copy-acc-btn" 
+                  onClick={() => copyToClipboard(method.number.replace(/\s/g, ""), `📋 ¡Copiado con éxito para tu pago!`)}
+                >
+                  Copiar
+                </button>
+              </div>
+              <span className="payment-holder">👤 {method.holder}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* 🛒 4. BARRA FLOTANTE CON EL BOTÓN DE APARTAR DIRECTO */}
       {selectedTicketCount > 0 && (
