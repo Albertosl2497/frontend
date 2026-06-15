@@ -5,6 +5,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineCopy } from "react-icons/ai";
+import html2canvas from "html2canvas";
 import "./ticket.css";
 
 // Función para copiar el nombre del usuario al portapapeles
@@ -157,7 +158,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- LÓGICA DE LA TABLA HTML PARA PUBLICACIÓN (DISEÑO FOTOS OPTIMIZADO) ---
+  // --- 📸 1. VISTA PÚBLICA EN NUEVA PESTAÑA (CORREGIDA) ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -167,28 +168,36 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     });
 
     const renderBlock = (start, end) => {
-      // Unificamos las primeras 4 columnas bajo el título "NÚMEROS" usando colspan="4"
-      let html = `<table>
+      return `<table>
+        <colgroup>
+          <col style="width: 46px;">
+          <col style="width: 46px;">
+          <col style="width: 46px;">
+          <col style="width: 46px;">
+          <col style="width: auto;">
+        </colgroup>
         <thead>
           <tr>
             <th colspan="4">NÚMEROS</th>
             <th>NOMBRES:</th>
           </tr>
         </thead>
-        <tbody>`;
-      for (let i = start; i <= end; i++) {
-        const b = i.toString().padStart(3, "0");
-        const name = ticketMap.get(b) || "";
-        const rowClass = name ? 'sold-row' : '';
-        html += `<tr class="${rowClass}">
-          <td class="base-num">${b}</td>
-          <td>${i + 250}</td>
-          <td>${i + 500}</td>
-          <td>${i + 750}</td>
-          <td class="name-td" title="${name}">${name}</td>
-        </tr>`;
-      }
-      return html + `</tbody></table>`;
+        <tbody>
+          ${Array.from({ length: end - start + 1 }, (_, index) => {
+            const i = start + index;
+            const b = i.toString().padStart(3, "0");
+            const name = ticketMap.get(b) || "";
+            const rowClass = name ? 'sold-row' : '';
+            return `<tr class="${rowClass}">
+              <td class="base-num">${b}</td>
+              <td>${i + 250}</td>
+              <td>${i + 500}</td>
+              <td>${i + 750}</td>
+              <td class="name-td" title="${name}">${name}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
     };
 
     const finalHtml = `
@@ -203,51 +212,13 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             .header p { margin: 2px 0; font-weight: bold; font-size: 14px; }
             .split { display: flex; gap: 15px; }
             .col { flex: 1; }
-            
             table { border-collapse: collapse; width: 100%; font-size: 11px; table-layout: fixed; }
-            
-            th, td { 
-              border: 1px solid #cbd5e1; /* Gris moderno en lugar de negro puro */
-              padding: 6px 4px; 
-              text-align: center; 
-              font-size: 16px; 
-              font-weight: bold;
-            }
-            th { 
-              background: #f1f5f9; /* Fondo gris muy limpio para cabeceras */
-              color: #1e293b;
-              font-size: 14px;
-              font-weight: bold;
-              padding: 8px;
-            }
+            th, td { border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 16px; font-weight: bold; }
+            th { background: #f1f5f9; color: #1e293b; font-size: 14px; font-weight: bold; padding: 8px; }
             .base-num { font-weight: bold; color: #0f172a; }
-            
-            /* Control estricto de desbordamiento de nombres con puntos suspensivos (...) */
-            .name-td { 
-              text-align: left; 
-              padding-left: 8px; 
-              white-space: nowrap; 
-              overflow: hidden; 
-              text-overflow: ellipsis; 
-              font-weight: bold; 
-              font-size: 16px;
-            }
-            
-            /* Azul pastel premium muy claro para filas ocupadas */
+            .name-td { text-align: left; padding-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; font-size: 16px; }
             .sold-row { background-color: #e0f2fe; color: #0369a1; } 
-            
-            /* Banner principal cambiado de naranja a Azul Marino Elegante */
-            h2.table-title { 
-              background: #1e3a8a; 
-              color: white; 
-              text-align: center; 
-              font-size: 21px; 
-              margin: 0 0 12px 0; 
-              padding: 12px;
-              font-weight: bold;
-              border-radius: 6px;
-              letter-spacing: 0.5px;
-            }
+            h2.table-title { background: #1e3a8a; color: white; text-align: center; font-size: 21px; margin: 0 0 12px 0; padding: 12px; font-weight: bold; border-radius: 6px; letter-spacing: 0.5px; }
           </style>
         </head>
         <body>
@@ -256,7 +227,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             <p>WHATSAPP: 6441382876</p>
             <p>RIFA DE $15,000 PESOS ESTE 07 DE JUNIO 2026</p>
           </div>
-
           <div class="page">
             <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
@@ -264,7 +234,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               <div class="col">${renderBlock(50, 99)}</div>
             </div>
           </div>
-
           <div class="page">
             <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div class="split">
@@ -272,7 +241,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               <div class="col">${renderBlock(150, 199)}</div>
             </div>
           </div>
-
           <div class="page">
             <h2 class="table-title">GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES</h2>
             <div style="max-width: 500px; margin: auto;">
@@ -287,7 +255,97 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // Mantenemos tu función anterior por si la necesitas para control interno
+  // --- ⬇️ 2. DESCARGAR IMÁGENES AUTOMÁTICAMENTE (CORREGIDA) ---
+  const handleDownloadImages = async () => {
+    const toastId = toast.loading("⏳ Generando 3 imágenes, por favor espera...");
+    
+    const ticketMap = new Map();
+    rowData.forEach((t) => {
+      const num = t.ticketNumber.toString().padStart(3, "0");
+      const name = t.user && t.user.trim() !== "" ? t.user.split(" (")[0].toUpperCase() : "";
+      ticketMap.set(num, name);
+    });
+
+    const renderBlockInline = (start, end) => {
+      let html = `<table style="border-collapse: collapse; width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
+        <colgroup>
+          <col style="width: 46px;">
+          <col style="width: 46px;">
+          <col style="width: 46px;">
+          <col style="width: 46px;">
+          <col style="width: auto;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th colspan="4" style="border: 1px solid #cbd5e1; background: #f1f5f9; color: #1e293b; padding: 8px; font-size: 14px; font-weight: bold;">NÚMEROS</th>
+            <th style="border: 1px solid #cbd5e1; background: #f1f5f9; color: #1e293b; padding: 8px; font-size: 14px; font-weight: bold;">NOMBRES:</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      for (let i = start; i <= end; i++) {
+        const b = i.toString().padStart(3, "0");
+        const name = ticketMap.get(b) || "";
+        const bgStyle = name ? 'background-color: #e0f2fe; color: #0369a1;' : 'background-color: #ffffff; color: #000000;';
+        
+        html += `<tr style="${bgStyle}">
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 16px; font-weight: bold; color: #0f172a;">${b}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 16px; font-weight: bold;">${i + 250}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 16px; font-weight: bold;">${i + 500}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 16px; font-weight: bold;">${i + 750}</td>
+          <td style="border: 1px solid #cbd5e1; padding: 6px 10px; text-align: left; font-size: 16px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${name}</td>
+        </tr>`;
+      }
+      return html + `</tbody></table>`;
+    };
+
+    const createPageWrapper = (id, content) => `
+      <div id="${id}" style="background: #fff; padding: 20px; width: 1000px; border: 3px solid #be123c; border-radius: 10px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 20px;">
+        <div style="text-align: center; color: #be123c; margin-bottom: 15px;">
+          <h1 style="margin: 0; font-size: 24px; text-transform: uppercase;">RIFAS EFECTIVO CAMPO TREINTA</h1>
+          <p style="margin: 2px 0; font-weight: bold; font-size: 14px;">WHATSAPP: 6441382876</p>
+          <p style="margin: 2px 0; font-weight: bold; font-size: 14px;">RIFA DE $15,000 PESOS ESTE 07 DE JUNIO 2026</p>
+        </div>
+        <h2 style="background: #1e3a8a; color: white; text-align: center; font-size: 21px; margin: 0 0 12px 0; padding: 12px; font-weight: bold; border-radius: 6px; letter-spacing: 0.5px;">
+          GANA $15,000 PESOS ESTE 07 DE JUNIO 2026 - PARTICIPA POR $100 CON 4 OPORTUNIDADES
+        </h2>
+        ${content}
+      </div>
+    `;
+
+    const content1 = `<div style="display: flex; gap: 15px;"><div style="flex: 1;">${renderBlockInline(0, 49)}</div><div style="flex: 1;">${renderBlockInline(50, 99)}</div></div>`;
+    const content2 = `<div style="display: flex; gap: 15px;"><div style="flex: 1;">${renderBlockInline(100, 149)}</div><div style="flex: 1;">${renderBlockInline(150, 199)}</div></div>`;
+    const content3 = `<div style="max-width: 500px; margin: auto;">${renderBlockInline(200, 249)}</div>`;
+
+    const tempContainer = document.createElement("div");
+    tempContainer.style.position = "absolute";
+    tempContainer.style.left = "-9999px";
+    tempContainer.style.top = "0";
+    tempContainer.innerHTML = createPageWrapper("export-img-1", content1) + createPageWrapper("export-img-2", content2) + createPageWrapper("export-img-3", content3);
+    document.body.appendChild(tempContainer);
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      for (let i = 1; i <= 3; i++) {
+        const element = document.getElementById(`export-img-${i}`);
+        const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+        
+        const imgData = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = `Tabla_Rifa_Parte_${i}.png`;
+        link.click();
+      }
+      
+      toast.update(toastId, { render: "✅ ¡Las 3 imágenes se descargaron con éxito!", type: "success", isLoading: false, autoClose: 4000 });
+    } catch (error) {
+      console.error("Error al generar imágenes:", error);
+      toast.update(toastId, { render: "❌ Ocurrió un error al generar las imágenes.", type: "error", isLoading: false, autoClose: 4000 });
+    } finally {
+      document.body.removeChild(tempContainer);
+    }
+  };
+
   const handleViewHtmlTable = () => {
     const safeTickets = JSON.parse(JSON.stringify(rowData));
     const ticketMap = new Map();
@@ -342,7 +400,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         </button>
 
         <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          📸 Generar Tablas para Fotos
+          📸 Generar Tablas (Ver HTML)
+        </button>
+
+        <button onClick={handleDownloadImages} style={{ padding: "10px 15px", backgroundColor: "#0284c7", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
+          ⬇️ Descargar en 3 Imágenes
         </button>
       </div>
 
