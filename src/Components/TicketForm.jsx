@@ -106,7 +106,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
           const currentDate = new Date();
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-          const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+          const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
 
           // Texto original mantenido exactamente igual
           const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
@@ -118,6 +118,9 @@ OPORTUNIDADES ADICIONALES:
 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
 𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.      
 𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.`;
+
+          // Generamos el enlace directo a WhatsApp con el mensaje formateado
+          const whatsappUrl = `https://api.whatsapp.com/send?phone=526442563616&text=${encodeURIComponent(textToCopy)}`;
 
           toast.success(
             <>
@@ -148,13 +151,23 @@ OPORTUNIDADES ADICIONALES:
                   𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.
                 </p>
                 <p style={{ color: "#555", marginBottom: "3px", fontSize: "10px", fontWeight: "bold" }}>
-                  Gracias por participar.🍀😊 Haz clic abajo para copiar la información y enviarla.
+                  Gracias por participar.🍀😊 Haz clic abajo para copiar la información o enviarla directamente por WhatsApp.
                 </p>
               </div>
-              <div className="button-container" style={{ marginTop: "10px" }}>
-                <button onClick={() => copyToClipboard(textToCopy)} className="dialog-button-whatsapp" style={{ backgroundColor: "#007bff" }}>
+              <div className="button-container" style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+                <button onClick={() => copyToClipboard(textToCopy)} className="dialog-button-whatsapp" style={{ backgroundColor: "#007bff", flex: 1 }}>
                   Copiar Información
                 </button>
+                {/* --- NUEVO BOTÓN: ENVIAR A WHATSAPP --- */}
+                <a 
+                  href={whatsappUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="dialog-button-whatsapp" 
+                  style={{ backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "4px", padding: "6px 12px", fontWeight: "bold", fontSize: "14px", cursor: "pointer", flex: 1 }}
+                >
+                  Enviar a WhatsApp
+                </a>
               </div>
             </>,
             {
