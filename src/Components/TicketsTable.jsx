@@ -25,7 +25,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
-  // --- 🔒 LÓGICA DE ACTUALIZACIÓN DE ESTADO (COBRAR / LIBERAR) ---
+  // --- 🔒 LÓGICA DE ESTADOS (COBRAR / LIBERAR) ---
   const handleCobrar = (ticket) => {
     if (window.confirm(`¿Estás seguro de marcar el boleto ${ticket.ticketNumber} de ${ticket.user} como PAGADO?`)) {
       updateTicketStatus(ticket, true);
@@ -71,55 +71,53 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       .catch(() => toast.error("Error al conectar con el servidor"));
   };
 
-  // --- 📝 NUEVA LÓGICA: EDITAR NOMBRE DIRECTO CON CONFIRMACIÓN Y REVERSIÓN ---
-  const onCellValueChanged = (params) => {
-    // Validamos que el cambio sea estrictamente en la columna del propietario (user)
-    if (params.column.getId() === "user") {
-      const oldName = params.oldValue ? params.oldValue.trim() : "";
-      const newName = params.newValue ? params.newValue.trim() : "";
-      const ticketNumber = params.data.ticketNumber;
+  // --- 📝 LÓGICA SEGURA DE EDICIÓN DE NOMBRE (MEDIANTE BOTÓN PROMPT) ---
+  const handleEditName = (ticket) => {
+    const oldName = ticket.user ? ticket.user.trim() : "";
+    
+    // Abrimos un cuadro de diálogo para que escriba el nuevo nombre
+    const newName = window.prompt(`Escribe el NUEVO NOMBRE para el boleto ${ticket.ticketNumber}:`, oldName);
 
-      // Si el usuario dio doble clic pero dejó el mismo nombre, no hacemos nada
-      if (oldName === newName) return;
-
-      const confirmar = window.confirm(
-        `¿Estás seguro de modificar el nombre del boleto ${ticketNumber}?\n\nDe: "${oldName}"\nA: "${newName}"`
-      );
-
-      if (confirmar) {
-        // Enviamos la actualización al backend
-        // Nota: Asegúrate de cambiar esta URL por la ruta real de tu API para actualizar nombres si es diferente
-        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/update-user/${lotteryNo}/${ticketNumber}`, {
-          method: "PUT", 
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fullName: newName })
-        })
-          .then((res) => {
-            if (!res.ok) throw new Error();
-            toast.success("📝 Nombre modificado con éxito");
-          })
-          .catch(() => {
-            toast.error("❌ Error en el servidor. El nombre no se pudo guardar.");
-            // Si el servidor falla, regresamos el nombre original inmediatamente a la celda
-            params.node.setDataValue("user", oldName);
-          });
-      } else {
-        // Si el usuario presiona "Cancelar" en la alerta, revertimos el texto al nombre original
-        params.node.setDataValue("user", oldName);
-      }
+    // Si cancela (newName es null) o si deja el nombre igual o vacío, no hacemos nada
+    if (newName === null || newName.trim() === "" || newName.trim() === oldName) {
+      return; 
     }
+
+    const finalName = newName.trim();
+
+    // Enviamos la actualización al backend
+    fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/update-user/${lotteryNo}/${ticket.ticketNumber}`, {
+      method: "PUT", 
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fullName: finalName })
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error();
+        
+        // Actualizamos la tabla visualmente si el servidor responde con éxito
+        const updatedData = [...rowData];
+        const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
+        
+        updatedData[rowIndex] = { ...ticket, user: finalName };
+        setRowData(updatedData);
+        
+        toast.success("📝 Nombre modificado con éxito");
+      })
+      .catch(() => {
+        toast.error("❌ Error de servidor. El nombre no se pudo guardar. (Verifica si la ruta /update-user/ existe en tu backend)");
+      });
   };
 
-  // --- CONFIGURACIÓN DE COLUMNAS ---
+  // --- CONFIGURACIÓN DE COLUMNAS (AHORA CON BOTÓN DE EDITAR) ---
   const columnDefs = [
     { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
     { 
-      headerName: "Propietario (Doble clic para editar)", 
+      headerName: "Propietario", 
       field: "user", 
       flex: 1, 
       sortable: true, 
       filter: true,
-      editable: true /* 👈 Activa la edición directa en la celda */
+      editable: false // 👈 Apagamos la edición conflictiva de AG Grid
     },
     { 
       headerName: "Estado", 
@@ -130,22 +128,41 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     },
     {
       headerName: "Acciones",
-      width: 180,
+      width: 250, // Hacemos la columna más ancha para que quepan los 3 botones
       cellRendererFramework: (params) => {
         const isSold = params.data.sold;
         return (
-          <div style={{ display: "flex", gap: "8px", alignItems: "center", height: "100%" }}>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center", height: "100%" }}>
+            
+            {/* BOTÓN 1: EDITAR NOMBRE */}
+            <button 
+              onClick={() => handleEditName(params.data)}
+              style={{ backgroundColor: "#0284c7", color: "white", border: "none", padding: "6px 8px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "11px", transition: "transform 0.1s" }}
+              onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+              onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              title="Editar Nombre"
+            >
+              ✏️ Editar
+            </button>
+
+            {/* BOTÓN 2: COBRAR */}
             {!isSold && (
               <button 
                 onClick={() => handleCobrar(params.data)}
-                style={{ backgroundColor: "#16a34a", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px" }}
+                style={{ backgroundColor: "#16a34a", color: "white", border: "none", padding: "6px 8px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "11px", transition: "transform 0.1s" }}
+                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
               >
                 ✅ Cobrar
               </button>
             )}
+
+            {/* BOTÓN 3: LIBERAR */}
             <button 
               onClick={() => handleLiberar(params.data)}
-              style={{ backgroundColor: "#dc2626", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px" }}
+              style={{ backgroundColor: "#dc2626", color: "white", border: "none", padding: "6px 8px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "11px", transition: "transform 0.1s" }}
+              onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
+              onMouseOut={(e) => e.target.style.transform = "scale(1)"}
             >
               🗑️ Liberar
             </button>
@@ -241,7 +258,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // --- ⬇️ 2. DESCARGAR IMÁGENES AUTOMÁTICAMENTE ---
+  // --- ⬇️ DESCARGAR IMÁGENES AUTOMÁTICAMENTE ---
   const handleDownloadImages = async () => {
     const toastId = toast.loading("⏳ Generando las imágenes de las tablas...");
     
@@ -329,6 +346,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   return (
     <div style={{ width: "100%", marginTop: 20 }}>
+      
       <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
         <input 
           type="text" 
@@ -352,7 +370,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           rowData={rowData}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
-          onCellValueChanged={onCellValueChanged} /* 👈 Conecta la función que escucha el cambio de nombre */
           pagination={true}
           paginationPageSize={100}
           animateRows={true}
