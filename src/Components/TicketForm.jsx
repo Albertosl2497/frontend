@@ -46,13 +46,12 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     ? tickets.filter((ticket) => ticket.includes(searchQuery))
     : [];
 
-  // --- 🎲 FUNCIÓN DE SELECCIÓN AL AZAR (LUCKY PICKER) ---
+  // --- 🎲 LUCKY PICKER ---
   const handleSelectRandom = (count) => {
     if (!Array.isArray(tickets) || tickets.length === 0) {
       toast.warning("No hay boletos disponibles en este momento");
       return;
     }
-    // Filtramos los boletos que están disponibles en la lista pero que el usuario aún no ha seleccionado
     const availableNotSelected = tickets.filter(t => !selectedTickets.includes(t));
     
     if (availableNotSelected.length === 0) {
@@ -60,7 +59,6 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       return;
     }
 
-    // Mezclamos el arreglo aleatoriamente y tomamos la cantidad solicitada
     const shuffled = [...availableNotSelected].sort(() => 0.5 - Math.random());
     const toSelect = shuffled.slice(0, Math.min(count, availableNotSelected.length));
 
@@ -79,58 +77,61 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const errors = {};
-    if (selectedTickets.length === 0) errors.ticket = "Please Select Tickets";
-    if (!phoneNumber) errors.phoneNumber = "Por favor ingrese su número de teléfono";
-    else if (isNaN(phoneNumber)) errors.phoneNumber = "El número de teléfono debe ser un número";
-    if (!fullName) errors.fullName = "Por favor ingrese su nombre completo";
-    if (!state) errors.state = "Por favor ingrese su estado";
-    if (!city) errors.city = "Por favor ingrese su ciudad";
+  // --- LÓGICA DE ENVÍO CENTRALIZADA ---
+  const procesarApartado = async () => {
+    const validationErrors = {};
+    if (selectedTickets.length === 0) validationErrors.ticket = "Please Select Tickets";
+    if (!phoneNumber) validationErrors.phoneNumber = "Por favor ingrese su número de teléfono";
+    else if (isNaN(phoneNumber)) validationErrors.phoneNumber = "El número de teléfono debe ser un número";
+    if (!fullName) validationErrors.fullName = "Por favor ingrese su nombre completo";
+    if (!state) validationErrors.state = "Por favor ingrese su estado";
+    if (!city) validationErrors.city = "Por favor ingrese su ciudad";
     if (!email) {
-      errors.email = "Por favor ingrese su correo electrónico";
+      validationErrors.email = "Por favor ingrese su correo electrónico";
     } else if (!/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(email)) {
-      errors.email = "Por favor ingrese un correo electrónico válido";
+      validationErrors.email = "Por favor ingrese un correo electrónico válido";
     }
 
-    if (Object.keys(errors).length > 0) {
-      setErrors(errors);
-    } else {
-      let mobNumber = phoneNumberCountryCode === "MX" ? `+52 ${phoneNumber}` : `+1 ${phoneNumber}`;
-      try {
-        setBtnLoading(true);
-        const response = await fetch(
-          `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              ticketNumbers: selectedTickets,
-              userInformation: {
-                fullName: fullName,
-                email: email,
-                state: state,
-                city: city,
-                phoneNumber: mobNumber,
-              },
-            }),
-          }
-        );
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      // Si faltan datos en el formulario, sube al usuario automáticamente para que los vea
+      document.getElementById("form-top-anchor")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
 
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.message);
-        } else {
-          const newTickets = tickets.filter((ticket) => !selectedTickets.includes(ticket));
-          setTickets(newTickets);
+    let mobNumber = phoneNumberCountryCode === "MX" ? `+52 ${phoneNumber}` : `+1 ${phoneNumber}`;
+    try {
+      setBtnLoading(true);
+      const response = await fetch(
+        `https://rifasefectivocampotreinta.onrender.com/api/tickets/sell-tickets/${lotteryNo}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ticketNumbers: selectedTickets,
+            userInformation: {
+              fullName: fullName,
+              email: email,
+              state: state,
+              city: city,
+              phoneNumber: mobNumber,
+            },
+          }),
+        }
+      );
 
-          const currentDate = new Date();
-          const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-          const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
+      } else {
+        const newTickets = tickets.filter((ticket) => !selectedTickets.includes(ticket));
+        setTickets(newTickets);
 
-          const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+        const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+
+        const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
 OPORTUNIDADES ADICIONALES:
 [ ${selectedTicketNumbersWithPairs.join(", ")} ].
@@ -140,76 +141,109 @@ OPORTUNIDADES ADICIONALES:
 𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.      
 𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.`;
 
-          const whatsappUrl = `https://api.whatsapp.com/send?phone=526442563616&text=${encodeURIComponent(textToCopy)}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=526442563616&text=${encodeURIComponent(textToCopy)}`;
 
-          toast.success(
-            <>
-              <div style={{ padding: "20px", backgroundColor: "#f2f2f2", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
-                <h3 style={{ color: "#333", marginBottom: "10px", fontSize: "18px", fontWeight: "bold", textAlign: "center" }}>
-                  "REGISTRO EXITOSO"
+        // --- 📄 FORMATO DE VENTANA EMERGENTE MÁS PROFESIONAL (RECIBO DIGITAL) ---
+        toast.success(
+          <>
+            <div style={{ padding: "20px", backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: "0 10px 25px rgba(0,0,0,0.15)", fontFamily: "Arial, sans-serif", border: "1px solid #e2e8f0" }}>
+              
+              <div style={{ textAlign: "center", marginBottom: "15px" }}>
+                <span style={{ display: "inline-block", background: "#dcfce7", color: "#166534", padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "bold", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                  ✓ Proceso Terminado
+                </span>
+                <h3 style={{ color: "#0f172a", marginTop: "8px", marginBottom: "0", fontSize: "20px", fontWeight: "900", letterSpacing: "-0.5px" }}>
+                  REGISTRO EXITOSO
                 </h3>
-                <hr style={{ border: "1px solid #ccc", marginBottom: "20px" }} />
-                <p style={{ color: "#555", marginBottom: "3px", fontSize: "14px", fontWeight: "bold" }}>
-                  HOLA, HAS RESERVADO {selectedTicketCount} BOLETO(S).
-                  <br />
-                  𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
-                  <br />
-                  OPORTUNIDADES ADICIONALES:
-                  <br />
-                  [ {selectedTicketNumbersWithPairs.join(", ")} ].
-                  <br />
-                  𝗣𝗔𝗥𝗔 𝗘𝗟 𝗦𝗢𝗥𝗧𝗘𝗢 𝗗𝗘:
-                  <br />
-                  $15,000 PESOS EN EFECTIVO.
-                  <br />
-                  𝗗𝗘𝗟 𝗗𝗜𝗔: *SABADO 20 DE JUNIO DE 2026* .
-                  <br />
-                  **NOMBRE:**
-                  <br />
-                  {fullName}.
-                  <br />
-                  𝗣𝗥𝗘𝗖𝗜𝗢 𝗧𝗢𝗧𝗔𝗟: ${totalPrice} PESOS.
-                </p>
-                <p style={{ color: "#555", marginBottom: "3px", fontSize: "10px", fontWeight: "bold" }}>
-                  Gracias por participar.🍀😊 Haz clic abajo para copiar la información o enviarla directamente por WhatsApp.
-                </p>
               </div>
-              <div className="button-container" style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                <button onClick={() => copyToClipboard(textToCopy)} className="dialog-button-whatsapp" style={{ backgroundColor: "#007bff", flex: 1 }}>
-                  Copiar Información
+
+              <div style={{ borderTop: "2px dashed #e2e8f0", borderBottom: "2px dashed #e2e8f0", padding: "12px 0", margin: "15px 0" }}>
+                
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}>
+                  <span style={{ color: "#64748b" }}>Participante:</span>
+                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>{fullName}</span>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}>
+                  <span style={{ color: "#64748b" }}>Cantidad:</span>
+                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>{selectedTicketCount} Boleto(s)</span>
+                </div>
+
+                <div style={{ marginBottom: "10px", fontSize: "14px" }}>
+                  <span style={{ color: "#64748b", display: "block", marginBottom: "4px" }}>Boletos Base:</span>
+                  <span style={{ color: "#b91c1c", fontWeight: "900", fontSize: "16px", background: "#fef2f2", padding: "4px 8px", borderRadius: "6px", display: "inline-block" }}>
+                    [ {selectedTicketNumbers} ]
+                  </span>
+                </div>
+
+                <div style={{ marginBottom: "8px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9" }}>
+                  <span style={{ color: "#475569", fontWeight: "bold", display: "block", marginBottom: "2px" }}>Oportunidades Extra:</span>
+                  <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px" }}>
+                    {selectedTicketNumbersWithPairs.join(", ")}
+                  </span>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "12px", paddingTop: "8px", borderTop: "1px solid #f1f5f9", fontSize: "14px" }}>
+                  <span style={{ color: "#475569" }}>Sorteo:</span>
+                  <span style={{ color: "#0f172a", fontWeight: "bold", fontSize: "12px" }}>$15,000 (Sáb 20 Jun 2026)</span>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", background: "#f0fdf4", padding: "10px", borderRadius: "8px" }}>
+                  <span style={{ color: "#166534", fontWeight: "bold", fontSize: "15px" }}>Total a Pagar:</span>
+                  <span style={{ color: "#15803d", fontWeight: "900", fontSize: "17px" }}>${totalPrice} MXN</span>
+                </div>
+
+              </div>
+
+              <p style={{ color: "#64748b", margin: "0 0 15px 0", fontSize: "11px", textAlign: "center", lineHeight: "1.4" }}>
+                ¡Gracias por participar! 😊 Presiona el botón verde para enviar los datos por WhatsApp y asegurar tu lugar.
+              </p>
+
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button 
+                  onClick={() => copyToClipboard(textToCopy)} 
+                  style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "13px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
+                  onMouseOver={(e) => e.target.style.background = "#e2e8f0"}
+                  onMouseOut={(e) => e.target.style.background = "#f1f5f9"}
+                >
+                  📋 Copiar Texto
                 </button>
                 <a 
                   href={whatsappUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="dialog-button-whatsapp" 
-                  style={{ backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "4px", padding: "6px 12px", fontWeight: "bold", fontSize: "14px", cursor: "pointer", flex: 1 }}
+                  style={{ flex: 1, backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", padding: "10px 4px", fontSize: "13px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 10px rgba(37, 211, 102, 0.2)" }}
                 >
-                  Enviar a WhatsApp
+                  🟢 Enviar a WhatsApp
                 </a>
               </div>
-            </>,
-            {
-              position: toast.POSITION.TOP_CENTER,
-              autoClose: false,
-              hideProgressBar: true,
-            }
-          );
-        }
-
-        // Limpiar formulario
-        setPhoneNumber("");
-        setFullName("");
-        setState("");
-        setRandomNumber(Math.floor(Math.random() * 1000000000));
-        setSelectedTickets([]);
-        setErrors({});
-      } catch (error) {
-        setErrors({ submit: error.message });
-      } finally {
-        setBtnLoading(false);
+            </div>
+          </>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: false,
+            hideProgressBar: true,
+          }
+        );
       }
+
+      // Limpiar formulario tras éxito
+      setPhoneNumber("");
+      setFullName("");
+      setState("");
+      setRandomNumber(Math.floor(Math.random() * 1000000000));
+      setSelectedTickets([]);
+      setErrors({});
+    } catch (error) {
+      setErrors({ submit: error.message });
+    } finally {
+      setBtnLoading(false);
     }
+  };
+
+  const handleSubmitForm = (event) => {
+    event.preventDefault();
+    procesarApartado();
   };
 
   useEffect(() => {
@@ -221,7 +255,7 @@ OPORTUNIDADES ADICIONALES:
 
   return (
     <>
-      {/* --- INYECCIÓN DE ESTILOS CSS INTELIGENTES PARA LAS NUEVAS MEJORAS VISUALES --- */}
+      {/* --- BLOQUE DE ESTILOS CSS INCORPORADOS --- */}
       <style>{`
         .live-counter-badge {
           background: linear-gradient(135deg, #be123c 0%, #e11d48 100%);
@@ -316,19 +350,23 @@ OPORTUNIDADES ADICIONALES:
           from { bottom: -80px; opacity: 0; }
           to { bottom: 20px; opacity: 1; }
         }
-        .cart-btn-scroll {
-          background: #be123c;
+        .cart-btn-apartar {
+          background: #15803d;
           color: white;
           border: none;
-          padding: 7px 14px;
+          padding: 8px 20px;
           border-radius: 20px;
           font-weight: bold;
-          font-size: 13px;
+          font-size: 14px;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: background 0.2s, transform 0.1s;
+          box-shadow: 0 4px 10px rgba(21, 128, 61, 0.3);
         }
-        .cart-btn-scroll:hover {
-          background: #e11d48;
+        .cart-btn-apartar:hover {
+          background: #16a34a;
+        }
+        .cart-btn-apartar:active {
+          transform: scale(0.97);
         }
       `}</style>
 
@@ -339,9 +377,10 @@ OPORTUNIDADES ADICIONALES:
         </div>
       )}
 
-      {/* ELEMENTO CENTRALIZADO DEL FORMULARIO */}
+      {/* ANCLA PARA DESPLAZAMIENTO EN CASO DE ERROR */}
       <div id="form-top-anchor"></div>
-      <form onSubmit={handleSubmit}>
+      
+      <form onSubmit={handleSubmitForm}>
         <div className="col flex-start">
           <label className="bold-label">Numero de telefono</label>
           <div className="form-row">
@@ -384,7 +423,7 @@ OPORTUNIDADES ADICIONALES:
             />
           </div>
 
-          <button className="select-ticket" type="submit">
+          <button className="select-ticket" type="submit" disabled={btnLoading}>
             {btnLoading ? <ClipLoader color="white" size={20} /> : "Apartar boletos"}
           </button>
         </div>
@@ -417,10 +456,9 @@ OPORTUNIDADES ADICIONALES:
         ))}
       </div>
 
-      {/* --- SECCIÓN DISPONIBILIDAD, BUSCADOR Y LUCKY PICKER --- */}
       <div style={{ marginTop: "25px", borderTop: "1px solid #e2e8f0", paddingTop: "20px" }}>
         
-        {/* 🔥 1. CONTADOR EN TIEMPO REAL */}
+        {/* 🔥 1. CONTADOR DE DISPONIBILIDAD EN TIEMPO REAL */}
         {Array.isArray(tickets) && (
           <div className="live-counter-badge">
             🔥 ¡Solo quedan {tickets.length} boletos disponibles!
@@ -430,14 +468,14 @@ OPORTUNIDADES ADICIONALES:
         <div className="row search-bar" style={{ marginTop: "5px" }}>
           <input
             type="text"
-            placeholder="Buscar tu boleto libre..."
+            placeholder="Buscar tu boleto"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             style={{ fontSize: "14px", fontWeight: "normal", color: "gray", width: "100%" }}
           />
         </div>
 
-        {/* 🎲 2. BOTONES DEL LUCKY PICKER */}
+        {/* 🎲 2. LUCKY PICKER (BOTONES DE SELECCIÓN AL AZAR) */}
         <div className="bold-label" style={{ fontSize: "13px", marginTop: "10px" }}>¿Indeciso? Elige boletos al azar de la suerte:</div>
         <div className="lucky-picker-container">
           <button type="button" className="lucky-btn" onClick={() => handleSelectRandom(1)}>🎲 +1 Al Azar</button>
@@ -454,7 +492,7 @@ OPORTUNIDADES ADICIONALES:
         <div className="ticket-list-container">
           <div className="display-tickets">
             {currentItems.map((ticket) => (
-              /* 🎟️ 3. DISEÑO DE BOLETO TIPO TALONARIO CON CLASE DINÁMICA ANIMADA */
+              /* 🎟️ 3. DISEÑO DE BOLETO PERFORADO CON ANIMACIÓN */
               <div
                 key={ticket}
                 className={`ticket ticket-stub ${selectedTickets.includes(ticket) ? "selected" : ""}`}
@@ -471,25 +509,24 @@ OPORTUNIDADES ADICIONALES:
         </div>
       )}
 
-      {/* 🛒 4. BARRA FLOTANTE DE RESUMEN (ESTILO CARRITO DE COMPRAS) */}
+      {/* 🛒 4. BARRA FLOTANTE CON EL NUEVO BOTÓN DE APARTAR DIRECTO */}
       {selectedTicketCount > 0 && (
         <div className="floating-cart-bar">
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span style={{ fontSize: "15px", fontWeight: "bold", color: "#ffffff" }}>
-              🎟️ {selectedTicketCount} Boleto(s) Seleccionado(s)
+              🎟️ {selectedTicketCount} Seleccionado(s)
             </span>
-            <span style={{ fontSize: "13px", color: "#10b981", fontWeight: "bold" }}>
+            <span style={{ fontSize: "13px", color: "#22c55e", fontWeight: "bold" }}>
               Total: ${totalPrice} PESOS
             </span>
           </div>
           <button 
             type="button" 
-            className="cart-btn-scroll"
-            onClick={() => {
-              document.getElementById("form-top-anchor")?.scrollIntoView({ behavior: "smooth" });
-            }}
+            className="cart-btn-apartar"
+            disabled={btnLoading}
+            onClick={procesarApartado}
           >
-            ✍️ Subir a Apartar
+            {btnLoading ? <ClipLoader color="white" size={16} /> : "⚡ Apartar Ya"}
           </button>
         </div>
       )}
