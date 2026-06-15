@@ -563,11 +563,19 @@ OPORTUNIDADES ADICIONALES:
       <div style={{ marginTop: "25px", borderTop: "1px solid #e2e8f0", paddingTop: "20px" }}>
         
         {/* 🔥 1. CONTADOR DE DISPONIBILIDAD EN TIEMPO REAL */}
-        {Array.isArray(tickets) && (
-          <div className="live-counter-badge">
-            🔥 ¡Solo quedan {tickets.length} boletos disponibles!
-          </div>
-        )}
+{loading ? (
+  <div className="live-counter-badge" style={{ background: "#475569", animation: "none", boxShadow: "none" }}>
+    ⏳ Cargando disponibilidad...
+  </div>
+) : Array.isArray(tickets) && tickets.length > 0 ? (
+  <div className="live-counter-badge">
+    🔥 ¡Solo quedan {tickets.length} boletos disponibles!
+  </div>
+) : Array.isArray(tickets) && tickets.length === 0 ? (
+  <div className="live-counter-badge" style={{ background: "#0f172a", animation: "none", boxShadow: "none" }}>
+    🚫 Boletos Agotados
+  </div>
+) : null}
 
         <div className="row search-bar" style={{ marginTop: "5px" }}>
           <input
