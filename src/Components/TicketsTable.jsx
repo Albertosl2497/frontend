@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { toast } from "react-toastify"; // Eliminamos ToastContainer para evitar duplicados
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import html2canvas from "html2canvas";
 import "./ticket.css";
@@ -25,7 +25,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
-  // --- 🔒 LÓGICA SEGURA DE BOTONES CON CONFIRMACIÓN NATIVA ---
+  // --- 🔒 LÓGICA DE ACTUALIZACIÓN DE ESTADO (COBRAR / LIBERAR) ---
   const handleCobrar = (ticket) => {
     if (window.confirm(`¿Estás seguro de marcar el boleto ${ticket.ticketNumber} de ${ticket.user} como PAGADO?`)) {
       updateTicketStatus(ticket, true);
@@ -46,7 +46,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Sold Tickets can not be made available") {
-          toast.error("El servidor bloqueó la acción: No se puede liberar un boleto marcado como pagado sin quitarle el pago antes.");
+          toast.error("Acción bloqueada por el servidor.");
           return;
         }
         
@@ -71,10 +71,56 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       .catch(() => toast.error("Error al conectar con el servidor"));
   };
 
-  // --- DEFINICIÓN DE COLUMNAS ---
+  // --- 📝 NUEVA LÓGICA: EDITAR NOMBRE DIRECTO CON CONFIRMACIÓN Y REVERSIÓN ---
+  const onCellValueChanged = (params) => {
+    // Validamos que el cambio sea estrictamente en la columna del propietario (user)
+    if (params.column.getId() === "user") {
+      const oldName = params.oldValue ? params.oldValue.trim() : "";
+      const newName = params.newValue ? params.newValue.trim() : "";
+      const ticketNumber = params.data.ticketNumber;
+
+      // Si el usuario dio doble clic pero dejó el mismo nombre, no hacemos nada
+      if (oldName === newName) return;
+
+      const confirmar = window.confirm(
+        `¿Estás seguro de modificar el nombre del boleto ${ticketNumber}?\n\nDe: "${oldName}"\nA: "${newName}"`
+      );
+
+      if (confirmar) {
+        // Enviamos la actualización al backend
+        // Nota: Asegúrate de cambiar esta URL por la ruta real de tu API para actualizar nombres si es diferente
+        fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/update-user/${lotteryNo}/${ticketNumber}`, {
+          method: "PUT", 
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fullName: newName })
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error();
+            toast.success("📝 Nombre modificado con éxito");
+          })
+          .catch(() => {
+            toast.error("❌ Error en el servidor. El nombre no se pudo guardar.");
+            // Si el servidor falla, regresamos el nombre original inmediatamente a la celda
+            params.node.setDataValue("user", oldName);
+          });
+      } else {
+        // Si el usuario presiona "Cancelar" en la alerta, revertimos el texto al nombre original
+        params.node.setDataValue("user", oldName);
+      }
+    }
+  };
+
+  // --- CONFIGURACIÓN DE COLUMNAS ---
   const columnDefs = [
     { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
-    { headerName: "Propietario", field: "user", flex: 1, sortable: true, filter: true },
+    { 
+      headerName: "Propietario (Doble clic para editar)", 
+      field: "user", 
+      flex: 1, 
+      sortable: true, 
+      filter: true,
+      editable: true /* 👈 Activa la edición directa en la celda */
+    },
     { 
       headerName: "Estado", 
       field: "sold", 
@@ -92,18 +138,14 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             {!isSold && (
               <button 
                 onClick={() => handleCobrar(params.data)}
-                style={{ backgroundColor: "#16a34a", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px", transition: "transform 0.1s" }}
-                onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
-                onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+                style={{ backgroundColor: "#16a34a", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px" }}
               >
                 ✅ Cobrar
               </button>
             )}
             <button 
               onClick={() => handleLiberar(params.data)}
-              style={{ backgroundColor: "#dc2626", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px", transition: "transform 0.1s" }}
-              onMouseOver={(e) => e.target.style.transform = "scale(1.05)"}
-              onMouseOut={(e) => e.target.style.transform = "scale(1)"}
+              style={{ backgroundColor: "#dc2626", color: "white", border: "none", padding: "6px 10px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "12px" }}
             >
               🗑️ Liberar
             </button>
@@ -113,7 +155,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- 📸 1. VISTA PÚBLICA EN NUEVA PESTAÑA ---
+  // --- 📸 VISTA PÚBLICA EN NUEVA PESTAÑA ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -310,6 +352,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           rowData={rowData}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
+          onCellValueChanged={onCellValueChanged} /* 👈 Conecta la función que escucha el cambio de nombre */
           pagination={true}
           paginationPageSize={100}
           animateRows={true}
