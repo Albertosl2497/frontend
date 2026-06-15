@@ -1,27 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
-import ReactPaginate from "react-paginate";
+import { useEffect, useState } from "react";
 import ReactFlagsSelect from "react-flags-select";
-import { BsSearch } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
-import "./ticket.css";
 import { PropagateLoader, ClipLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import jsPDF from "jspdf";
+import "./ticket.css";
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
+  // --- Mantenido estrictamente por funcionalidad del usuario (Punto 4) ---
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
-  const [selectedTickets, setSelectedTickets] = useState([]);
-  const [btnLoading, setBtnLoading] = useState(false);
-
-  const [itemOffset, setItemOffset] = useState(0);
-  const [currentItems, setCurrentItems] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
 
@@ -30,12 +17,20 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     setEmail(randomEmail);
     setCity(" ");
   }, [randomNumber]);
+  // -----------------------------------------------------------------------
+
+  const [selectedTickets, setSelectedTickets] = useState([]);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [state, setState] = useState("");
 
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
 
   const selectedTicketCount = selectedTickets.length;
-  const totalTickets = selectedTicketCount;
   const ticketPrice = 100;
   const totalPrice = selectedTicketCount * ticketPrice;
   const selectedTicketNumbers = selectedTickets.join(", ");
@@ -45,6 +40,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     const pairs = [original + 250, original + 500, original + 750];
     return pairs.map((num) => num.toString().padStart(3, "0"));
   });
+
+  // Filtrado de boletos libres directo y ultra veloz (Sin paginación)
+  const currentItems = Array.isArray(tickets) 
+    ? tickets.filter((ticket) => ticket.includes(searchQuery))
+    : [];
 
   // Función para copiar al portapapeles
   const copyToClipboard = async (text) => {
@@ -108,8 +108,8 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
           const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
           const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
 
-          // Texto que se va a copiar
-          const textToCopy = `HOLA, HAS RESERVADO ${totalTickets} BOLETO(S).
+          // Texto original mantenido exactamente igual
+          const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
 OPORTUNIDADES ADICIONALES:
 [ ${selectedTicketNumbersWithPairs.join(", ")} ].
@@ -127,7 +127,7 @@ OPORTUNIDADES ADICIONALES:
                 </h3>
                 <hr style={{ border: "1px solid #ccc", marginBottom: "20px" }} />
                 <p style={{ color: "#555", marginBottom: "3px", fontSize: "14px", fontWeight: "bold" }}>
-                  HOLA, HAS RESERVADO {totalTickets} BOLETO(S).
+                  HOLA, HAS RESERVADO {selectedTicketCount} BOLETO(S).
                   <br />
                   𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[{selectedTicketNumbers}].
                   <br />
@@ -141,7 +141,7 @@ OPORTUNIDADES ADICIONALES:
                   <br />
                   𝗗𝗘𝗟 𝗗𝗜𝗔: *SABADO 20 DE JUNIO DE 2026* .
                   <br />
-                  𝗡𝗢𝗠𝗕𝗥𝗘:
+                  **NOMBRE:**
                   <br />
                   {fullName}.
                   <br />
@@ -169,7 +169,6 @@ OPORTUNIDADES ADICIONALES:
         setPhoneNumber("");
         setFullName("");
         setState("");
-        setCity(" ");
         setRandomNumber(Math.floor(Math.random() * 1000000000));
         setSelectedTickets([]);
         setErrors({});
@@ -180,22 +179,6 @@ OPORTUNIDADES ADICIONALES:
       }
     }
   };
-
-  const handlePageClick = ({ selected }) => {
-    const offset = selected * itemsPerPage;
-    setItemOffset(offset);
-  };
-
-  let itemsPerPage = 5000;
-
-  useEffect(() => {
-    if (Array.isArray(tickets)) {
-      const endOffset = itemOffset + itemsPerPage;
-      const filteredTickets = tickets.filter((ticket) => ticket.includes(searchQuery));
-      setCurrentItems(filteredTickets.slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(filteredTickets.length / itemsPerPage));
-    }
-  }, [tickets, itemOffset, itemsPerPage, searchQuery]);
 
   useEffect(() => {
     if (selectedTickets.length > 0) {
@@ -259,9 +242,14 @@ OPORTUNIDADES ADICIONALES:
           <button className="select-ticket" type="submit">
             {btnLoading ? <ClipLoader color="white" size={20} /> : "Apartar boletos"}
           </button>
-          <label className="bold-label">Da click en los numeros seleccionados para eliminarlo:</label>
         </div>
       </form>
+
+      {selectedTickets.length > 0 && (
+        <label className="bold-label" style={{ marginTop: "15px", display: "block" }}>
+          Da click en los numeros seleccionados para eliminarlo:
+        </label>
+      )}
 
       <div className="search-bar selected-container">
         {selectedTickets.map((ticket, index) => (
@@ -284,7 +272,7 @@ OPORTUNIDADES ADICIONALES:
         ))}
       </div>
 
-      <div className="row search-bar">
+      <div className="row search-bar" style={{ marginTop: "15px" }}>
         <input
           type="text"
           placeholder="Buscar tu boleto"
@@ -299,35 +287,23 @@ OPORTUNIDADES ADICIONALES:
           <PropagateLoader color="orangered" />
         </div>
       ) : (
-        <>
-          <div className="ticket-list-container">
-            <div className="display-tickets">
-              {currentItems.map((ticket) => (
-                <div
-                  key={ticket}
-                  className={`ticket ${selectedTickets.includes(ticket) ? "selected" : ""}`}
-                  onClick={() => {
-                    if (!selectedTickets.includes(ticket)) {
-                      setSelectedTickets([...selectedTickets, ticket]);
-                    }
-                  }}
-                >
-                  {ticket}
-                </div>
-              ))}
-            </div>
+        <div className="ticket-list-container">
+          <div className="display-tickets">
+            {currentItems.map((ticket) => (
+              <div
+                key={ticket}
+                className={`ticket ${selectedTickets.includes(ticket) ? "selected" : ""}`}
+                onClick={() => {
+                  if (!selectedTickets.includes(ticket)) {
+                    setSelectedTickets([...selectedTickets, ticket]);
+                  }
+                }}
+              >
+                {ticket}
+              </div>
+            ))}
           </div>
-
-          <ReactPaginate
-            breakLabel="..."
-            onPageChange={handlePageClick}
-            pageCount={pageCount}
-            containerClassName="pagination"
-            activeClassName="active"
-            previousLabel={pageCount > 1 ? "< previous" : null}
-            nextLabel={pageCount > 1 ? "next >" : null}
-          />
-        </>
+        </div>
       )}
     </>
   );
