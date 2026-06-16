@@ -56,9 +56,12 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const handleLiberar = (ticket) => {
     if (window.confirm(`⚠️ ¿Estás seguro de LIBERAR el boleto ${ticket.ticketNumber}? Se perderá el apartado y quedará disponible.`)) {
       
-      // NOTA: Verifica que tu backend use este método DELETE y esta ruta para borrar boletos.
-      fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/book-ticket/${lotteryNo}/${ticket.ticketNumber}`, {
-        method: "DELETE",
+      // 1. Elegimos la ruta correcta según el estado del boleto (Pagado vs Pendiente)
+      const endpoint = ticket.sold ? "sold-ticket" : "claim-ticket";
+
+      // 2. Hacemos la petición POST con el valor "false" al final
+      fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/${endpoint}/${lotteryNo}/${ticket.ticketNumber}/false`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
       })
         .then(async (res) => {
@@ -67,12 +70,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             throw new Error(errorData.message || "No se pudo liberar el boleto");
           }
           
-          // Si el servidor lo borró con éxito, lo quitamos de la tabla visualmente
+          // 3. Si el servidor lo borró con éxito, lo quitamos de la tabla visualmente
           const updatedData = rowData.filter((row) => row.ticketNumber !== ticket.ticketNumber);
-          
           setRowData(updatedData);
           
-          // Si el boleto ya estaba pagado y se libera, restamos del contador
+          // 4. Si el boleto ya estaba pagado y se libera, restamos del contador
           if (ticket.sold) {
             setStats({ ...stats, soldCount: stats.soldCount - 1 });
           }
