@@ -25,50 +25,64 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
-  // --- 🔒 LÓGICA DE ESTADOS (COBRAR / LIBERAR) ---
+  // --- 🔒 LÓGICA PARA COBRAR (PAGADO) ---
   const handleCobrar = (ticket) => {
     if (window.confirm(`¿Estás seguro de marcar el boleto ${ticket.ticketNumber} de ${ticket.user} como PAGADO?`)) {
-      updateTicketStatus(ticket, true);
-    }
-  };
+      fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticket.ticketNumber}/true`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "Sold Tickets can not be made available") {
+            toast.error("Acción bloqueada por el servidor.");
+            return;
+          }
 
-  const handleLiberar = (ticket) => {
-    if (window.confirm(`⚠️ ¿Estás seguro de LIBERAR el boleto ${ticket.ticketNumber}? Se perderá el apartado y quedará disponible.`)) {
-      updateTicketStatus(ticket, false);
-    }
-  };
-
-  const updateTicketStatus = (ticket, isSold) => {
-    fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/sold-ticket/${lotteryNo}/${ticket.ticketNumber}/${isSold}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Sold Tickets can not be made available") {
-          toast.error("Acción bloqueada por el servidor.");
-          return;
-        }
-        
-        const updatedData = [...rowData];
-        const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
-        const updatedTicket = { ...ticket };
-        
-        updatedTicket.sold = isSold;
-        
-        if (isSold) {
+          // Actualizamos la tabla visualmente
+          const updatedData = [...rowData];
+          const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
+          updatedData[rowIndex] = { ...ticket, sold: true };
+          
+          setRowData(updatedData);
           setStats({ ...stats, soldCount: stats.soldCount + 1 });
           toast.success("✅ Boleto marcado como PAGADO");
-        } else {
-          updatedTicket.availability = true;
-          setStats({ ...stats, soldCount: stats.soldCount - 1 });
-          toast.success("🗑️ Boleto LIBERADO con éxito");
-        }
+        })
+        .catch(() => toast.error("Error al conectar con el servidor"));
+    }
+  };
 
-        updatedData[rowIndex] = updatedTicket;
-        setRowData(updatedData);
+  // --- 🗑️ LÓGICA PARA LIBERAR (ELIMINAR APARTADO) ---
+  const handleLiberar = (ticket) => {
+    if (window.confirm(`⚠️ ¿Estás seguro de LIBERAR el boleto ${ticket.ticketNumber}? Se perderá el apartado y quedará disponible.`)) {
+      
+      // NOTA: Verifica que tu backend use este método DELETE y esta ruta para borrar boletos.
+      fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/book-ticket/${lotteryNo}/${ticket.ticketNumber}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
       })
-      .catch(() => toast.error("Error al conectar con el servidor"));
+        .then(async (res) => {
+          if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "No se pudo liberar el boleto");
+          }
+          
+          // Si el servidor lo borró con éxito, lo quitamos de la tabla visualmente
+          const updatedData = rowData.filter((row) => row.ticketNumber !== ticket.ticketNumber);
+          
+          setRowData(updatedData);
+          
+          // Si el boleto ya estaba pagado y se libera, restamos del contador
+          if (ticket.sold) {
+            setStats({ ...stats, soldCount: stats.soldCount - 1 });
+          }
+          
+          toast.success("🗑️ Boleto LIBERADO con éxito");
+        })
+        .catch((err) => {
+          toast.error(`❌ Error: ${err.message}`);
+        });
+    }
   };
 
   // --- 📝 LÓGICA SEGURA DE EDICIÓN DE NOMBRE (MEDIANTE BOTÓN PROMPT) ---
@@ -108,7 +122,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       });
   };
 
-  // --- CONFIGURACIÓN DE COLUMNAS (AHORA CON BOTÓN DE EDITAR) ---
+  // --- CONFIGURACIÓN DE COLUMNAS ---
   const columnDefs = [
     { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
     { 
@@ -117,7 +131,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       flex: 1, 
       sortable: true, 
       filter: true,
-      editable: false // 👈 Apagamos la edición conflictiva de AG Grid
+      editable: false 
     },
     { 
       headerName: "Estado", 
@@ -128,7 +142,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     },
     {
       headerName: "Acciones",
-      width: 250, // Hacemos la columna más ancha para que quepan los 3 botones
+      width: 250, 
       cellRendererFramework: (params) => {
         const isSold = params.data.sold;
         return (
