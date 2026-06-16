@@ -42,7 +42,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           // Actualizamos la tabla visualmente
           const updatedData = [...rowData];
           const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
-          updatedData[rowIndex] = { ...ticket, sold: true };
+          updatedData[rowIndex] = { ...ticket, sold: true, availability: false };
           
           setRowData(updatedData);
           setStats({ ...stats, soldCount: stats.soldCount + 1 });
@@ -54,12 +54,10 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   // --- 🗑️ LÓGICA PARA LIBERAR (ELIMINAR APARTADO) ---
   const handleLiberar = (ticket) => {
-    if (window.confirm(`⚠️ ¿Estás seguro de LIBERAR el boleto ${ticket.ticketNumber}? Se perderá el apartado y quedará disponible.`)) {
+    if (window.confirm(`⚠️ ¿Estás seguro de LIBERAR el boleto ${ticket.ticketNumber}? Se perderá el apartado y quedará completamente disponible.`)) {
       
-      // 1. Elegimos la ruta correcta según el estado del boleto (Pagado vs Pendiente)
       const endpoint = ticket.sold ? "sold-ticket" : "claim-ticket";
 
-      // 2. Hacemos la petición POST con el valor "false" al final
       fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/${endpoint}/${lotteryNo}/${ticket.ticketNumber}/false`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,16 +68,24 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             throw new Error(errorData.message || "No se pudo liberar el boleto");
           }
           
-          // 3. Si el servidor lo borró con éxito, lo quitamos de la tabla visualmente
-          const updatedData = rowData.filter((row) => row.ticketNumber !== ticket.ticketNumber);
+          // En lugar de borrarlo de la tabla, lo transformamos en "Disponible"
+          const updatedData = [...rowData];
+          const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
+          
+          updatedData[rowIndex] = { 
+            ...ticket, 
+            sold: false, 
+            availability: true, 
+            user: null 
+          };
+          
           setRowData(updatedData);
           
-          // 4. Si el boleto ya estaba pagado y se libera, restamos del contador
           if (ticket.sold) {
             setStats({ ...stats, soldCount: stats.soldCount - 1 });
           }
           
-          toast.success("🗑️ Boleto LIBERADO con éxito");
+          toast.success("🗑️ Boleto LIBERADO con éxito (Ahora está Disponible)");
         })
         .catch((err) => {
           toast.error(`❌ Error: ${err.message}`);
@@ -87,21 +93,18 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
-  // --- 📝 LÓGICA SEGURA DE EDICIÓN DE NOMBRE (MEDIANTE BOTÓN PROMPT) ---
+  // --- 📝 LÓGICA SEGURA DE EDICIÓN DE NOMBRE ---
   const handleEditName = (ticket) => {
     const oldName = ticket.user ? ticket.user.trim() : "";
     
-    // Abrimos un cuadro de diálogo para que escriba el nuevo nombre
     const newName = window.prompt(`Escribe el NUEVO NOMBRE para el boleto ${ticket.ticketNumber}:`, oldName);
 
-    // Si cancela (newName es null) o si deja el nombre igual o vacío, no hacemos nada
     if (newName === null || newName.trim() === "" || newName.trim() === oldName) {
       return; 
     }
 
     const finalName = newName.trim();
 
-    // Enviamos la actualización al backend
     fetch(`https://rifasefectivocampotreinta.onrender.com/api/tickets/update-user/${lotteryNo}/${ticket.ticketNumber}`, {
       method: "PUT", 
       headers: { "Content-Type": "application/json" },
@@ -110,7 +113,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       .then(async (res) => {
         if (!res.ok) throw new Error();
         
-        // Actualizamos la tabla visualmente si el servidor responde con éxito
         const updatedData = [...rowData];
         const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
         
@@ -120,11 +122,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         toast.success("📝 Nombre modificado con éxito");
       })
       .catch(() => {
-        toast.error("❌ Error de servidor. El nombre no se pudo guardar. (Verifica si la ruta /update-user/ existe en tu backend)");
+        toast.error("❌ Error de servidor al guardar el nombre.");
       });
   };
 
-  // --- CONFIGURACIÓN DE COLUMNAS ---
+  // --- CONFIGURACIÓN DE COLUMNAS (AHORA DETECTA DISPONIBLES) ---
   const columnDefs = [
     { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
     { 
@@ -138,19 +140,30 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     { 
       headerName: "Estado", 
       field: "sold", 
-      width: 120,
-      cellRenderer: (p) => p.value ? "✅ Pagado" : "⏳ Pendiente",
-      cellClassRules: { "cell-value-red": (p) => p.value, "cell-value-green": (p) => !p.value }
+      width: 130,
+      cellRenderer: (p) => {
+        if (p.data.sold) return "✅ Pagado";
+        if (p.data.availability === false) return "⏳ Pendiente";
+        return "🟢 Disponible";
+      },
+      cellClassRules: { 
+        "cell-value-red": (p) => p.data.sold, 
+        "cell-value-green": (p) => p.data.availability === false && !p.data.sold 
+      }
     },
     {
       headerName: "Acciones",
       width: 250, 
       cellRendererFramework: (params) => {
+        // Si el boleto está disponible, no mostramos botones, solo un texto
+        if (params.data.availability === true) {
+          return <div style={{ color: "#94a3b8", fontSize: "12px", fontWeight: "bold", marginTop: "8px" }}>Boleto Libre</div>;
+        }
+
         const isSold = params.data.sold;
         return (
           <div style={{ display: "flex", gap: "6px", alignItems: "center", height: "100%" }}>
             
-            {/* BOTÓN 1: EDITAR NOMBRE */}
             <button 
               onClick={() => handleEditName(params.data)}
               style={{ backgroundColor: "#0284c7", color: "white", border: "none", padding: "6px 8px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "11px", transition: "transform 0.1s" }}
@@ -161,7 +174,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               ✏️ Editar
             </button>
 
-            {/* BOTÓN 2: COBRAR */}
             {!isSold && (
               <button 
                 onClick={() => handleCobrar(params.data)}
@@ -173,7 +185,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               </button>
             )}
 
-            {/* BOTÓN 3: LIBERAR */}
             <button 
               onClick={() => handleLiberar(params.data)}
               style={{ backgroundColor: "#dc2626", color: "white", border: "none", padding: "6px 8px", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "11px", transition: "transform 0.1s" }}
@@ -326,7 +337,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       </div>
     `;
 
-    // 🏆 HTML DEL ENCABEZADO (Banner con estilos en línea para html2canvas)
     const headerHtml = `
       <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #334155; text-align: center; font-family: Arial, sans-serif;">
         <h2 style="color: #f8fafc; font-size: 26px; font-weight: 900; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px;">🎉 Gran Sorteo Efectivo 🎉</h2>
@@ -347,7 +357,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       </div>
     `;
 
-    // Añadimos el headerHtml SOLO a content1
     const content1 = `${headerHtml}<div style="display: flex; gap: 20px;"><div style="flex: 1;">${renderBlockInline(0, 49)}</div><div style="flex: 1;">${renderBlockInline(50, 99)}</div></div>`;
     const content2 = `<div style="display: flex; gap: 20px;"><div style="flex: 1;">${renderBlockInline(100, 149)}</div><div style="flex: 1;">${renderBlockInline(150, 199)}</div></div>`;
     const content3 = `<div style="max-width: 480px; margin: auto;">${renderBlockInline(200, 249)}</div>`;
