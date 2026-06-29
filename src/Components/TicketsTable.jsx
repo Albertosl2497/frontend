@@ -347,7 +347,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </div>
           <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
             <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">📅 Fecha del Sorteo</span>
-            <span style="font-size: 18px; font-weight: bold; color: #e2e8f0;">Sáb 20 de Jun, 2026</span>
+            <span style="font-size: 18px; font-weight: bold; color: #e2e8f0;">Dom 05 de Jul, 2026</span>
           </div>
           <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
             <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎟️ Precio por Boleto</span>
