@@ -142,7 +142,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
 OPORTUNIDADES ADICIONALES:
 [ ${selectedTicketNumbersWithPairs.join(", ")} ].
-𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL *DIA DOMINGO 12 DE JULIO DE 2026* .
+𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL *DIA DOMINGO 19 DE JULIO DE 2026* .
 
 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
 𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.      
@@ -192,7 +192,7 @@ OPORTUNIDADES ADICIONALES:
 
                 <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingTop: "6px", borderTop: "1px solid #f1f5f9", fontSize: "13px" }}>
                   <span style={{ color: "#475569", fontSize: "11px", marginBottom: "1px" }}>Sorteo:</span>
-                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>$15,000 en Efectivo (Dom 12 Jul 2026)</span>
+                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>$15,000 en Efectivo (Dom 19 Jul 2026)</span>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px", background: "#f0fdf4", padding: "8px 10px", borderRadius: "8px" }}>
