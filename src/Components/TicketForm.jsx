@@ -15,7 +15,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     { bank: "SPIN BY OXXO", number: "7289 6900 0107 5676 78", holder: "ALVARO RUIZ MURRIETA", type: "Transferencia CLABE" }
   ];
 
-  // --- Mantenido estrictamente por funcionalidad del usuario (Punto 4) ---
+  // --- Mantenido estrictamente por funcionalidad del usuario ---
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
@@ -37,6 +37,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   const [phoneNumberCountryCode, setPhoneNumberCountryCode] = useState("MX");
   const [errors, setErrors] = useState({});
+
+  // 🔥 NUEVO ESTADO: Para controlar la ventana emergente de conflicto
+  const [conflictModal, setConflictModal] = useState({ show: false, unavailable: [], remaining: [] });
 
   const selectedTicketCount = selectedTickets.length;
   const ticketPrice = 100;
@@ -131,24 +134,30 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       const data = await response.json();
 
       if (!response.ok) {
-        // 🔥 MANEJO DE CONDICIÓN DE CARRERA (ALGUIEN GANÓ EL BOLETO)
+        // 🔥 LÓGICA DE CONFLICTO MEJORADA (VENTANA EMERGENTE)
         if (response.status === 409 || response.status === 400) {
-           toast.error(`¡Ups! Alguien fue más rápido. ${data.message || 'Algunos boletos ya fueron comprados.'}`);
-           setSelectedTickets([]); // Vaciamos el carrito
-           setBtnLoading(false);
+           const unavailable = data.unavailableTickets || [];
            
-           // Si tienes una función para recargar los boletos desde la API en el componente padre, 
-           // sería ideal llamarla aquí. Por ahora, forzamos la actualización local:
-           const safeTickets = tickets.filter(t => !selectedTickets.includes(t));
+           // Identificamos cuáles boletos del carrito aún son válidos
+           const remaining = selectedTickets.filter(t => !unavailable.includes(t));
+           
+           // Actualizamos la pantalla principal: Eliminamos los boletos perdidos de la cuadrícula visual
+           const safeTickets = tickets.filter(t => !unavailable.includes(t));
            setTickets(safeTickets);
 
-           return; // Detenemos la ejecución aquí
+           // Dejamos en el carrito SOLAMENTE los que aún están disponibles
+           setSelectedTickets(remaining);
+           setBtnLoading(false);
+           
+           // Mostramos la ventana emergente con la info
+           setConflictModal({ show: true, unavailable, remaining });
+           return;
         }
         
         throw new Error(data.message || "Error al procesar la solicitud");
       } 
       
-      // EXITO
+      // === ÉXITO ===
       const newTickets = tickets.filter((ticket) => !selectedTickets.includes(ticket));
       setTickets(newTickets);
 
@@ -224,10 +233,7 @@ OPORTUNIDADES ADICIONALES:
               ¡Gracias por participar! 😊 Copia tu información o envíala, y verifica los métodos de pago.
             </p>
 
-            {/* CONTENEDOR DE BOTONES */}
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              
-              {/* Fila de arriba (Copiar y WhatsApp) */}
               <div style={{ display: "flex", gap: "8px" }}>
                 <button 
                   onClick={() => copyToClipboard(textToCopy, "📋 Texto copiado al portapapeles")} 
@@ -246,8 +252,6 @@ OPORTUNIDADES ADICIONALES:
                   🟢 WhatsApp
                 </a>
               </div>
-
-              {/* 💳 NUEVO BOTÓN: Ir a métodos de pago */}
               <button 
                 onClick={() => {
                   document.getElementById("payment-methods-section")?.scrollIntoView({ behavior: "smooth" });
@@ -258,7 +262,6 @@ OPORTUNIDADES ADICIONALES:
               >
                 💳 Ir a Métodos de Pago
               </button>
-
             </div>
           </div>
         </>,
@@ -410,7 +413,6 @@ OPORTUNIDADES ADICIONALES:
           transform: scale(0.97);
         }
         
-        /* 💳 TARJETAS BANCARIAS ADAPTADAS */
         .payment-banner-container {
           margin-top: 35px;
           border-top: 2px dashed #cbd5e1;
@@ -493,6 +495,77 @@ OPORTUNIDADES ADICIONALES:
       `}</style>
 
       <ToastContainer position="top-center" autoClose={5000} />
+      
+      {/* 🚨 VENTANA EMERGENTE (MODAL) DE CONFLICTO 🚨 */}
+      {conflictModal.show && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(15, 23, 42, 0.85)', zIndex: 100000,
+          display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px',
+          backdropFilter: 'blur(4px)'
+        }}>
+          <div style={{
+            background: 'white', padding: '30px', borderRadius: '16px',
+            maxWidth: '400px', width: '100%', textAlign: 'center',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+          }}>
+            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🏃💨</div>
+            <h3 style={{ color: '#0f172a', margin: '0 0 15px 0', fontSize: '20px', fontWeight: '900' }}>
+              ¡Alguien fue más rápido!
+            </h3>
+            
+            <p style={{ color: '#475569', fontSize: '14px', marginBottom: '10px' }}>
+              Los siguientes boletos que seleccionaste acaban de ser apartados:
+            </p>
+            <div style={{ background: '#fef2f2', color: '#b91c1c', padding: '8px', borderRadius: '8px', fontWeight: 'bold', marginBottom: '20px' }}>
+              [{conflictModal.unavailable.join(', ')}]
+            </div>
+
+            {conflictModal.remaining.length > 0 ? (
+              <>
+                <p style={{ color: '#475569', fontSize: '14px', marginBottom: '10px' }}>
+                  Aún tienes <b>{conflictModal.remaining.length} boleto(s)</b> disponibles en tu carrito:
+                </p>
+                <div style={{ background: '#f0fdf4', color: '#15803d', padding: '8px', borderRadius: '8px', fontWeight: 'bold', marginBottom: '25px' }}>
+                  [{conflictModal.remaining.join(', ')}]
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <button 
+                    onClick={() => {
+                      setConflictModal({ show: false, unavailable: [], remaining: [] });
+                      // Llama a procesar apartado directamente con los boletos que quedaron
+                      setTimeout(() => procesarApartado(), 100); 
+                    }}
+                    style={{ background: '#15803d', color: 'white', border: 'none', padding: '12px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+                  >
+                    ⚡ Apartar solo los {conflictModal.remaining.length} restantes
+                  </button>
+                  <button 
+                    onClick={() => setConflictModal({ show: false, unavailable: [], remaining: [] })}
+                    style={{ background: '#f1f5f9', color: '#334155', border: '1px solid #cbd5e1', padding: '12px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+                  >
+                    🔍 Buscar otros números para reemplazar
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p style={{ color: '#475569', fontSize: '14px', marginBottom: '20px' }}>
+                  Tu carrito quedó vacío. ¡Busca otros números de la suerte!
+                </p>
+                <button 
+                  onClick={() => setConflictModal({ show: false, unavailable: [], remaining: [] })}
+                  style={{ width: '100%', background: '#0f172a', color: 'white', border: 'none', padding: '12px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+                >
+                  Volver a elegir
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {Object.keys(errors).length !== 0 && (
         <div className="error-box">
           <span className="error">{Object.values(errors)[0]}</span>
@@ -579,20 +652,19 @@ OPORTUNIDADES ADICIONALES:
 
       <div style={{ marginTop: "25px", borderTop: "1px solid #e2e8f0", paddingTop: "20px" }}>
         
-        {/* 🔥 1. CONTADOR DE DISPONIBILIDAD EN TIEMPO REAL */}
-{loading ? (
-  <div className="live-counter-badge" style={{ background: "#475569", animation: "none", boxShadow: "none" }}>
-    ⏳ Cargando disponibilidad...
-  </div>
-) : Array.isArray(tickets) && tickets.length > 0 ? (
-  <div className="live-counter-badge">
-    🔥 ¡Solo quedan {tickets.length} boletos disponibles!
-  </div>
-) : Array.isArray(tickets) && tickets.length === 0 ? (
-  <div className="live-counter-badge" style={{ background: "#0f172a", animation: "none", boxShadow: "none" }}>
-    🚫 Boletos Agotados
-  </div>
-) : null}
+        {loading ? (
+          <div className="live-counter-badge" style={{ background: "#475569", animation: "none", boxShadow: "none" }}>
+            ⏳ Cargando disponibilidad...
+          </div>
+        ) : Array.isArray(tickets) && tickets.length > 0 ? (
+          <div className="live-counter-badge">
+            🔥 ¡Solo quedan {tickets.length} boletos disponibles!
+          </div>
+        ) : Array.isArray(tickets) && tickets.length === 0 ? (
+          <div className="live-counter-badge" style={{ background: "#0f172a", animation: "none", boxShadow: "none" }}>
+            🚫 Boletos Agotados
+          </div>
+        ) : null}
 
         <div className="row search-bar" style={{ marginTop: "5px" }}>
           <input
@@ -604,7 +676,6 @@ OPORTUNIDADES ADICIONALES:
           />
         </div>
 
-        {/* 🎲 2. LUCKY PICKER (BOTONES DE SELECCIÓN AL AZAR) */}
         <div className="bold-label" style={{ fontSize: "13px", marginTop: "10px" }}>¿Indeciso? Elige boletos al azar de la suerte:</div>
         <div className="lucky-picker-container">
           <button type="button" className="lucky-btn" onClick={() => handleSelectRandom(1)}>🎲 +1 Al Azar</button>
@@ -621,7 +692,6 @@ OPORTUNIDADES ADICIONALES:
         <div className="ticket-list-container">
           <div className="display-tickets">
             {currentItems.map((ticket) => (
-              /* 🎟️ 3. DISEÑO DE BOLETO PERFORADO CON ANIMACIÓN */
               <div
                 key={ticket}
                 className={`ticket ticket-stub ${selectedTickets.includes(ticket) ? "selected" : ""}`}
@@ -638,7 +708,7 @@ OPORTUNIDADES ADICIONALES:
         </div>
       )}
 
-      {/* 💳 5. BANNER: MÉTODOS DE PAGO CON ID PARA SCROLL */}
+      {/* 💳 BANNER DE PAGOS */}
       <div id="payment-methods-section" className="payment-banner-container">
         <h3 className="payment-title">💳 Métodos de Pago</h3>
         <div className="payment-grid">
@@ -662,7 +732,7 @@ OPORTUNIDADES ADICIONALES:
         </div>
       </div>
 
-      {/* 🛒 4. BARRA FLOTANTE CON EL BOTÓN DE APARTAR DIRECTO */}
+      {/* 🛒 BARRA FLOTANTE */}
       {selectedTicketCount > 0 && (
         <div className="floating-cart-bar">
           <div style={{ display: "flex", flexDirection: "column" }}>
