@@ -107,6 +107,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     }
 
     let mobNumber = phoneNumberCountryCode === "MX" ? `+52 ${phoneNumber}` : `+1 ${phoneNumber}`;
+    
     try {
       setBtnLoading(true);
       const response = await fetch(
@@ -127,18 +128,35 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
         }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message);
-      } else {
-        const newTickets = tickets.filter((ticket) => !selectedTickets.includes(ticket));
-        setTickets(newTickets);
+        // 🔥 MANEJO DE CONDICIÓN DE CARRERA (ALGUIEN GANÓ EL BOLETO)
+        if (response.status === 409 || response.status === 400) {
+           toast.error(`¡Ups! Alguien fue más rápido. ${data.message || 'Algunos boletos ya fueron comprados.'}`);
+           setSelectedTickets([]); // Vaciamos el carrito
+           setBtnLoading(false);
+           
+           // Si tienes una función para recargar los boletos desde la API en el componente padre, 
+           // sería ideal llamarla aquí. Por ahora, forzamos la actualización local:
+           const safeTickets = tickets.filter(t => !selectedTickets.includes(t));
+           setTickets(safeTickets);
 
-        const currentDate = new Date();
-        const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-        const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+           return; // Detenemos la ejecución aquí
+        }
+        
+        throw new Error(data.message || "Error al procesar la solicitud");
+      } 
+      
+      // EXITO
+      const newTickets = tickets.filter((ticket) => !selectedTickets.includes(ticket));
+      setTickets(newTickets);
 
-        const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
+      const currentDate = new Date();
+      const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+      const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+
+      const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
 OPORTUNIDADES ADICIONALES:
 [ ${selectedTicketNumbersWithPairs.join(", ")} ].
@@ -148,110 +166,109 @@ OPORTUNIDADES ADICIONALES:
 𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.      
 𝗙𝗘𝗖𝗛𝗔 𝗗𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢 𝗗𝗘𝗟 𝗕𝗢𝗟𝗘𝗧𝗢: ${formattedDate} ${formattedTime} Horas.`;
 
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=526442563616&text=${encodeURIComponent(textToCopy)}`;
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=526442563616&text=${encodeURIComponent(textToCopy)}`;
 
-        // --- 📄 FORMATO DE VENTANA EMERGENTE PROFESIONAL (RECIBO DIGITAL) ---
-        toast.success(
-          <>
-            <div style={{ padding: "16px 12px", backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: "0 10px 25px rgba(0,0,0,0.15)", fontFamily: "Arial, sans-serif", border: "1px solid #e2e8f0", maxWidth: "100%", boxSizing: "border-box" }}>
-              
-              <div style={{ textAlign: "center", marginBottom: "12px" }}>
-                <span style={{ display: "inline-block", background: "#dcfce7", color: "#166534", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                  ✓ Proceso Terminado
-                </span>
-                <h3 style={{ color: "#0f172a", marginTop: "6px", marginBottom: "0", fontSize: "19px", fontWeight: "900", letterSpacing: "-0.5px" }}>
-                  REGISTRO EXITOSO
-                </h3>
-              </div>
-
-              <div style={{ borderTop: "2px dashed #e2e8f0", borderBottom: "2px dashed #e2e8f0", padding: "10px 0", margin: "10px 0" }}>
-                
-                <div style={{ display: "flex", flexDirection: "column", marginBottom: "10px", fontSize: "14px", width: "100%" }}>
-                  <span style={{ color: "#64748b", fontSize: "12px", marginBottom: "2px" }}>Participante:</span>
-                  <span style={{ color: "#0f172a", fontWeight: "bold", fontSize: "15px", wordBreak: "break-word" }}>{fullName}</span>
-                </div>
-
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", fontSize: "14px" }}>
-                  <span style={{ color: "#64748b" }}>Cantidad:</span>
-                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>{selectedTicketCount} Boleto(s)</span>
-                </div>
-
-                <div style={{ marginBottom: "10px", fontSize: "14px" }}>
-                  <span style={{ color: "#64748b", display: "block", fontSize: "12px", marginBottom: "4px" }}>Boletos Base:</span>
-                  <span style={{ color: "#b91c1c", fontWeight: "900", fontSize: "16px", background: "#fef2f2", padding: "4px 8px", borderRadius: "6px", display: "inline-block", wordBreak: "break-all" }}>
-                    [ {selectedTicketNumbers} ]
-                  </span>
-                </div>
-
-                <div style={{ marginBottom: "10px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9", boxSizing: "border-box" }}>
-                  <span style={{ color: "#475569", fontWeight: "bold", display: "block", fontSize: "12px", marginBottom: "2px" }}>Oportunidades Extra:</span>
-                  <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px", display: "block", wordBreak: "break-word", overflowWrap: "break-word" }}>
-                    {selectedTicketNumbersWithPairs.join(", ")}
-                  </span>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingTop: "6px", borderTop: "1px solid #f1f5f9", fontSize: "13px" }}>
-                  <span style={{ color: "#475569", fontSize: "11px", marginBottom: "1px" }}>Sorteo:</span>
-                  <span style={{ color: "#0f172a", fontWeight: "bold" }}>$15,000 en Efectivo (Dom 26 Jul 2026)</span>
-                </div>
-
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px", background: "#f0fdf4", padding: "8px 10px", borderRadius: "8px" }}>
-                  <span style={{ color: "#166534", fontWeight: "bold", fontSize: "14px" }}>Total a Pagar:</span>
-                  <span style={{ color: "#15803d", fontWeight: "900", fontSize: "17px" }}>${totalPrice} MXN</span>
-                </div>
-
-              </div>
-
-              <p style={{ color: "#64748b", margin: "0 0 12px 0", fontSize: "11px", textAlign: "center", lineHeight: "1.4" }}>
-                ¡Gracias por participar! 😊 Copia tu información o envíala, y verifica los métodos de pago.
-              </p>
-
-              {/* CONTENEDOR DE BOTONES */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                
-                {/* Fila de arriba (Copiar y WhatsApp) */}
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <button 
-                    onClick={() => copyToClipboard(textToCopy, "📋 Texto copiado al portapapeles")} 
-                    style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
-                    onMouseOver={(e) => e.target.style.background = "#e2e8f0"}
-                    onMouseOut={(e) => e.target.style.background = "#f1f5f9"}
-                  >
-                    📋 Copiar Texto
-                  </button>
-                  <a 
-                    href={whatsappUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    style={{ flex: 1, backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 10px rgba(37, 211, 102, 0.2)" }}
-                  >
-                    🟢 WhatsApp
-                  </a>
-                </div>
-
-                {/* 💳 NUEVO BOTÓN: Ir a métodos de pago */}
-                <button 
-                  onClick={() => {
-                    document.getElementById("payment-methods-section")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  style={{ width: "100%", backgroundColor: "#0f172a", color: "white", border: "none", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
-                  onMouseOver={(e) => e.target.style.backgroundColor = "#1e293b"}
-                  onMouseOut={(e) => e.target.style.backgroundColor = "#0f172a"}
-                >
-                  💳 Ir a Métodos de Pago
-                </button>
-
-              </div>
+      // --- 📄 FORMATO DE VENTANA EMERGENTE PROFESIONAL (RECIBO DIGITAL) ---
+      toast.success(
+        <>
+          <div style={{ padding: "16px 12px", backgroundColor: "#ffffff", borderRadius: "12px", boxShadow: "0 10px 25px rgba(0,0,0,0.15)", fontFamily: "Arial, sans-serif", border: "1px solid #e2e8f0", maxWidth: "100%", boxSizing: "border-box" }}>
+            
+            <div style={{ textAlign: "center", marginBottom: "12px" }}>
+              <span style={{ display: "inline-block", background: "#dcfce7", color: "#166534", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                ✓ Proceso Terminado
+              </span>
+              <h3 style={{ color: "#0f172a", marginTop: "6px", marginBottom: "0", fontSize: "19px", fontWeight: "900", letterSpacing: "-0.5px" }}>
+                REGISTRO EXITOSO
+              </h3>
             </div>
-          </>,
-          {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: false,
-            hideProgressBar: true,
-          }
-        );
-      }
 
+            <div style={{ borderTop: "2px dashed #e2e8f0", borderBottom: "2px dashed #e2e8f0", padding: "10px 0", margin: "10px 0" }}>
+              
+              <div style={{ display: "flex", flexDirection: "column", marginBottom: "10px", fontSize: "14px", width: "100%" }}>
+                <span style={{ color: "#64748b", fontSize: "12px", marginBottom: "2px" }}>Participante:</span>
+                <span style={{ color: "#0f172a", fontWeight: "bold", fontSize: "15px", wordBreak: "break-word" }}>{fullName}</span>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", fontSize: "14px" }}>
+                <span style={{ color: "#64748b" }}>Cantidad:</span>
+                <span style={{ color: "#0f172a", fontWeight: "bold" }}>{selectedTicketCount} Boleto(s)</span>
+              </div>
+
+              <div style={{ marginBottom: "10px", fontSize: "14px" }}>
+                <span style={{ color: "#64748b", display: "block", fontSize: "12px", marginBottom: "4px" }}>Boletos Base:</span>
+                <span style={{ color: "#b91c1c", fontWeight: "900", fontSize: "16px", background: "#fef2f2", padding: "4px 8px", borderRadius: "6px", display: "inline-block", wordBreak: "break-all" }}>
+                  [ {selectedTicketNumbers} ]
+                </span>
+              </div>
+
+              <div style={{ marginBottom: "10px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9", boxSizing: "border-box" }}>
+                <span style={{ color: "#475569", fontWeight: "bold", display: "block", fontSize: "12px", marginBottom: "2px" }}>Oportunidades Extra:</span>
+                <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px", display: "block", wordBreak: "break-word", overflowWrap: "break-word" }}>
+                  {selectedTicketNumbersWithPairs.join(", ")}
+                </span>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingTop: "6px", borderTop: "1px solid #f1f5f9", fontSize: "13px" }}>
+                <span style={{ color: "#475569", fontSize: "11px", marginBottom: "1px" }}>Sorteo:</span>
+                <span style={{ color: "#0f172a", fontWeight: "bold" }}>$15,000 en Efectivo (Dom 26 Jul 2026)</span>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px", background: "#f0fdf4", padding: "8px 10px", borderRadius: "8px" }}>
+                <span style={{ color: "#166534", fontWeight: "bold", fontSize: "14px" }}>Total a Pagar:</span>
+                <span style={{ color: "#15803d", fontWeight: "900", fontSize: "17px" }}>${totalPrice} MXN</span>
+              </div>
+
+            </div>
+
+            <p style={{ color: "#64748b", margin: "0 0 12px 0", fontSize: "11px", textAlign: "center", lineHeight: "1.4" }}>
+              ¡Gracias por participar! 😊 Copia tu información o envíala, y verifica los métodos de pago.
+            </p>
+
+            {/* CONTENEDOR DE BOTONES */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              
+              {/* Fila de arriba (Copiar y WhatsApp) */}
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button 
+                  onClick={() => copyToClipboard(textToCopy, "📋 Texto copiado al portapapeles")} 
+                  style={{ flex: 1, backgroundColor: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
+                  onMouseOver={(e) => e.target.style.background = "#e2e8f0"}
+                  onMouseOut={(e) => e.target.style.background = "#f1f5f9"}
+                >
+                  📋 Copiar Texto
+                </button>
+                <a 
+                  href={whatsappUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{ flex: 1, backgroundColor: "#25D366", color: "white", textDecoration: "none", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 10px rgba(37, 211, 102, 0.2)" }}
+                >
+                  🟢 WhatsApp
+                </a>
+              </div>
+
+              {/* 💳 NUEVO BOTÓN: Ir a métodos de pago */}
+              <button 
+                onClick={() => {
+                  document.getElementById("payment-methods-section")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                style={{ width: "100%", backgroundColor: "#0f172a", color: "white", border: "none", borderRadius: "8px", padding: "10px 4px", fontSize: "12px", fontWeight: "bold", cursor: "pointer", transition: "background 0.2s" }}
+                onMouseOver={(e) => e.target.style.backgroundColor = "#1e293b"}
+                onMouseOut={(e) => e.target.style.backgroundColor = "#0f172a"}
+              >
+                💳 Ir a Métodos de Pago
+              </button>
+
+            </div>
+          </div>
+        </>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: false,
+          hideProgressBar: true,
+        }
+      );
+      
       // Limpiar formulario tras éxito
       setPhoneNumber("");
       setFullName("");
