@@ -7,9 +7,9 @@ import "./styles.css";
 function MainPageContent() {
   return (
     <div className="hero-banner-container">
-      <div className="hero-edition-badge">🏆 GRAN EDICIÓN # 99</div>
+      <div className="hero-edition-badge">🏆 GRAN EDICIÓN # 100</div>
       <h1 className="hero-prize">¡LLEVATE $15,000 PESOS!</h1>
-      <p className="hero-date">📅 ESTE 26 DE JULIO DE 2026</p>
+      <p className="hero-date">📅 ESTE 02 DE AGOSTO DE 2026</p>
       
       <div className="hero-price-tag">
         Costo por Boleto <span>$100.00 MXN</span>
