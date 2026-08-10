@@ -16,7 +16,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ⚙️ ESTADOS GLOBALES DE CONFIGURACIÓN (Persistidos en localStorage)
+  // ⚙️ ESTADOS GLOBALES DE CONFIGURACIÓN (Inician con lo que hay en localStorage)
   const [opportunities, setOpportunities] = useState(() => {
     const saved = localStorage.getItem("lottery_opportunities");
     return saved ? Number(saved) : 4;
@@ -36,28 +36,27 @@ function Dashboard({ handleLogout, lotteryNo }) {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // Manejadores de cambios
-  const handleOpportunitiesChange = (e) => {
-    const newValue = Number(e.target.value);
-    setOpportunities(newValue);
-    localStorage.setItem("lottery_opportunities", newValue);
-    toast.info(`Boletera cambiada a ${newValue} oportunidad(es)`);
-  };
+  // ✍️ Manejadores de cambios (SOLO cambian lo visual, NO guardan aún)
+  const handleOpportunitiesChange = (e) => setOpportunities(Number(e.target.value));
+  const handlePrizeChange = (e) => setPrize(e.target.value);
+  const handleDateChange = (e) => setLotteryDate(e.target.value);
+  const handlePriceChange = (e) => setTicketPrice(Number(e.target.value));
 
-  const handlePrizeChange = (e) => {
-    setPrize(e.target.value);
-    localStorage.setItem("lottery_prize", e.target.value);
-  };
-
-  const handleDateChange = (e) => {
-    setLotteryDate(e.target.value);
-    localStorage.setItem("lottery_date", e.target.value);
-  };
-
-  const handlePriceChange = (e) => {
-    const newValue = Number(e.target.value);
-    setTicketPrice(newValue);
-    localStorage.setItem("lottery_price", newValue);
+  // 💾 FUNCIÓN PARA GUARDAR Y CONFIRMAR LOS CAMBIOS
+  const saveConfig = () => {
+    if (window.confirm("⚠️ ¿Estás seguro de que deseas guardar y aplicar estos cambios al sistema?")) {
+      localStorage.setItem("lottery_opportunities", opportunities);
+      localStorage.setItem("lottery_prize", prize);
+      localStorage.setItem("lottery_date", lotteryDate);
+      localStorage.setItem("lottery_price", ticketPrice);
+      
+      toast.success("✅ Configuración actualizada con éxito");
+      
+      // Recargar la página para que la tabla inferior (TicketTable) tome los nuevos valores
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
   };
 
   useEffect(() => {
@@ -138,7 +137,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
             ⚙️ Configuración del Sorteo Activo
           </h3>
           
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "15px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "15px", marginBottom: "15px" }}>
             
             {/* OPORTUNIDADES */}
             <div style={{ display: "flex", flexDirection: "column", flex: "1 1 200px" }}>
@@ -185,8 +184,28 @@ function Dashboard({ handleLogout, lotteryNo }) {
                 style={{ padding: "8px", borderRadius: "6px", backgroundColor: "#0f172a", color: "white", border: "1px solid #475569" }}
               />
             </div>
-
           </div>
+
+          {/* 💾 BOTÓN PARA CONFIRMAR Y GUARDAR */}
+          <button
+            onClick={saveConfig}
+            style={{
+              width: "100%",
+              padding: "12px",
+              backgroundColor: "#16a34a",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              fontWeight: "bold",
+              fontSize: "14px",
+              cursor: "pointer",
+              transition: "background 0.2s"
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = "#15803d"}
+            onMouseOut={(e) => e.target.style.backgroundColor = "#16a34a"}
+          >
+            💾 Confirmar y Guardar Cambios
+          </button>
         </div>
 
         <div className="row">
