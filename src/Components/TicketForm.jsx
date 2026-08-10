@@ -15,6 +15,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     { bank: "SPIN BY OXXO", number: "7289 6900 0107 5676 78", holder: "ALVARO RUIZ MURRIETA", type: "Transferencia CLABE" }
   ];
 
+  // ⚙️ Leer configuración de oportunidades (1 o 4) desde localStorage
+  const opportunitiesCount = Number(localStorage.getItem("lottery_opportunities")) || 4;
+
   // --- Mantenido estrictamente por funcionalidad del usuario ---
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
   const [city, setCity] = useState("");
@@ -46,7 +49,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const totalPrice = selectedTicketCount * ticketPrice;
   const selectedTicketNumbers = selectedTickets.join(", ");
 
+  // ⚙️ Cálculo dinámico de números pares (Solo si hay > 1 oportunidad)
   const selectedTicketNumbersWithPairs = selectedTickets.flatMap((ticket) => {
+    if (opportunitiesCount === 1) return []; // No generamos pares
     const original = parseInt(ticket);
     const pairs = [original + 250, original + 500, original + 750];
     return pairs.map((num) => num.toString().padStart(3, "0"));
@@ -165,11 +170,14 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
       const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
       const formattedTime = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
 
+      // ⚙️ Texto dinámico para WhatsApp
+      const extraOpportunitiesText = opportunitiesCount > 1 
+        ? `OPORTUNIDADES ADICIONALES:\n[ ${selectedTicketNumbersWithPairs.join(", ")} ].\n`
+        : ``;
+
       const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-OPORTUNIDADES ADICIONALES:
-[ ${selectedTicketNumbersWithPairs.join(", ")} ].
-𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL *DIA DOMINGO 09 DE AGOSTO DE 2026* .
+${extraOpportunitiesText}𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL *DIA DOMINGO 09 DE AGOSTO DE 2026* .
 
 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
 𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.      
@@ -210,12 +218,15 @@ OPORTUNIDADES ADICIONALES:
                 </span>
               </div>
 
-              <div style={{ marginBottom: "10px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9", boxSizing: "border-box" }}>
-                <span style={{ color: "#475569", fontWeight: "bold", display: "block", fontSize: "12px", marginBottom: "2px" }}>Oportunidades Extra:</span>
-                <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px", display: "block", wordBreak: "break-word", overflowWrap: "break-word" }}>
-                  {selectedTicketNumbersWithPairs.join(", ")}
-                </span>
-              </div>
+              {/* ⚙️ Ocultar Oportunidades Extra si la boletera es de 1 sola oportunidad */}
+              {opportunitiesCount > 1 && (
+                <div style={{ marginBottom: "10px", fontSize: "13px", background: "#f8fafc", padding: "8px", borderRadius: "6px", border: "1px solid #f1f5f9", boxSizing: "border-box" }}>
+                  <span style={{ color: "#475569", fontWeight: "bold", display: "block", fontSize: "12px", marginBottom: "2px" }}>Oportunidades Extra:</span>
+                  <span style={{ color: "#334155", fontFamily: "monospace", fontSize: "12px", display: "block", wordBreak: "break-word", overflowWrap: "break-word" }}>
+                    {selectedTicketNumbersWithPairs.join(", ")}
+                  </span>
+                </div>
+              )}
 
               <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingTop: "6px", borderTop: "1px solid #f1f5f9", fontSize: "13px" }}>
                 <span style={{ color: "#475569", fontSize: "11px", marginBottom: "1px" }}>Sorteo:</span>
@@ -641,7 +652,9 @@ OPORTUNIDADES ADICIONALES:
             }}
           >
             {ticket} <AiOutlineDelete style={{ fontWeight: 900 }} />
-            {[250, 500, 750].map((add) => (
+            
+            {/* ⚙️ Ocultar mini-números si la boletera es de 1 oportunidad */}
+            {opportunitiesCount > 1 && [250, 500, 750].map((add) => (
               <span key={add} style={{ fontSize: "10px", marginLeft: "4px" }}>
                 ({parseInt(ticket) + add})
               </span>
