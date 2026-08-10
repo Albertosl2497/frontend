@@ -11,8 +11,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
 
-  // ⚙️ Leer configuración de oportunidades (1 o 4)
+  // ⚙️ Leer configuración global (Oportunidades, Premio, Fecha, Precio)
   const opportunitiesCount = Number(localStorage.getItem("lottery_opportunities")) || 4;
+  const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Dom 09 Agosto 2026";
+  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 100;
 
   useEffect(() => {
     setRowData(tickets || []);
@@ -253,7 +256,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     const finalHtml = `
       <html>
         <head>
-          <title>Tablas de Control - Campo 30</title>
+          <title>Tablas de Control - Sorteo</title>
           <style>
             body { font-family: 'Arial Narrow', Arial, sans-serif; background: #fff; padding: 20px; }
             .page { border: 1px solid #cbd5e1; padding: 15px; margin-bottom: 30px; border-radius: 8px; page-break-after: always; max-width: 950px; margin-left: auto; margin-right: auto; }
@@ -355,21 +358,22 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       </div>
     `;
 
+    // ⚙️ BANNER CON TEXTO DINÁMICO (PREMIO, FECHA, PRECIO)
     const headerHtml = `
       <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #334155; text-align: center; font-family: Arial, sans-serif;">
         <h2 style="color: #f8fafc; font-size: 26px; font-weight: 900; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px;">🎉 Gran Sorteo Efectivo 🎉</h2>
         <div style="display: flex; justify-content: space-around; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
           <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
             <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎁 Premio Principal</span>
-            <span style="font-size: 18px; font-weight: 900; color: #fbbf24;">$15,000 MXN</span>
+            <span style="font-size: 18px; font-weight: 900; color: #fbbf24;">${lotteryPrize}</span>
           </div>
           <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
             <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">📅 Fecha del Sorteo</span>
-            <span style="font-size: 18px; font-weight: bold; color: #e2e8f0;">Dom 09 de Agosto, 2026</span>
+            <span style="font-size: 18px; font-weight: bold; color: #e2e8f0;">${lotteryDate}</span>
           </div>
           <div style="display: flex; flex-direction: column; gap: 4px; text-align: center;">
             <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎟️ Precio por Boleto</span>
-            <span style="font-size: 18px; font-weight: 900; color: #22c55e;">$100 Pesos</span>
+            <span style="font-size: 18px; font-weight: 900; color: #22c55e;">$${ticketPrice} Pesos</span>
           </div>
         </div>
       </div>
