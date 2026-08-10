@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "../Components/Sidebar";
 import TicketTable from "../Components/TicketsTable";
-import { Column } from "ag-grid-community";
 import UsersTable from "../Components/UsersTable";
 import Modal from "../Components/Modal";
 
@@ -17,8 +16,22 @@ function Dashboard({ handleLogout, lotteryNo }) {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // ⚙️ ESTADO GLOBAL DE OPORTUNIDADES (Persistido en localStorage)
+  const [opportunities, setOpportunities] = useState(() => {
+    const saved = localStorage.getItem("lottery_opportunities");
+    return saved ? Number(saved) : 4;
+  });
+
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  // Manejador del cambio de oportunidad desde el panel
+  const handleOpportunitiesChange = (e) => {
+    const newValue = Number(e.target.value);
+    setOpportunities(newValue);
+    localStorage.setItem("lottery_opportunities", newValue);
+    toast.info(`Configuración cambiada a boletera de ${newValue} oportunidad(es)`);
   };
 
   useEffect(() => {
@@ -26,10 +39,10 @@ function Dashboard({ handleLogout, lotteryNo }) {
       .then((response) => response.json())
       .then((data) => {
         setStats(data);
-
         setTickets(data.tickets);
         console.log(newTicks);
-      });
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   function generateTickets() {
@@ -46,12 +59,12 @@ function Dashboard({ handleLogout, lotteryNo }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        totalTickets: totalTickets, // Replace with the total number of tickets you want to create
+        totalTickets: totalTickets, // Reemplaza con el número total de boletos
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.message); // Successfully created lottery 1
+        console.log(data.message);
         setLoading(false);
         toast.success("Nuevo sorteo creado");
         window.location.reload();
@@ -59,7 +72,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
       .catch((error) => {
         setLoading(false);
         console.error(error);
-        toast.error("Error starting lottry.");
+        toast.error("Error al iniciar la lotería.");
       });
   }
 
@@ -85,6 +98,43 @@ function Dashboard({ handleLogout, lotteryNo }) {
           {selectedTickets === 1 ? "Tickets Operations" : "Users"}
         </p>
         <hr />
+
+        {/* ⚙️ PANEL DE CONFIGURACIÓN DE BOLETERA */}
+        <div
+          style={{
+            margin: "15px 0",
+            padding: "15px",
+            backgroundColor: "#1e293b",
+            borderRadius: "8px",
+            border: "1px solid #334155",
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+            maxWidth: "450px",
+          }}
+        >
+          <label style={{ color: "#f8fafc", fontWeight: "bold", fontSize: "14px" }}>
+            ⚙️ Tipo de Boletera Activa:
+          </label>
+          <select
+            value={opportunities}
+            onChange={handleOpportunitiesChange}
+            style={{
+              padding: "10px",
+              borderRadius: "6px",
+              backgroundColor: "#0f172a",
+              color: "white",
+              border: "1px solid #475569",
+              fontSize: "14px",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            <option value={4}>4 Oportunidades (Base + 3 Números Extra)</option>
+            <option value={1}>1 Oportunidad (Boleto Sencillo)</option>
+          </select>
+        </div>
+
         <div className="row">
           <input
             type="number"
@@ -130,6 +180,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
               lotteryNo={lotteryNo}
               setStats={setStats}
               stats={stats}
+              opportunities={opportunities}
             />
           </div>
         )}
