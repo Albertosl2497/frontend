@@ -11,6 +11,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
 
+  // ⚙️ Leer configuración de oportunidades (1 o 4)
+  const opportunitiesCount = Number(localStorage.getItem("lottery_opportunities")) || 4;
+
   useEffect(() => {
     setRowData(tickets || []);
   }, [tickets]);
@@ -39,7 +42,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             return;
           }
 
-          // Actualizamos la tabla visualmente
           const updatedData = [...rowData];
           const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
           updatedData[rowIndex] = { ...ticket, sold: true, availability: false };
@@ -68,7 +70,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             throw new Error(errorData.message || "No se pudo liberar el boleto");
           }
           
-          // En lugar de borrarlo de la tabla, lo transformamos en "Disponible"
           const updatedData = [...rowData];
           const rowIndex = updatedData.findIndex((row) => row.ticketNumber === ticket.ticketNumber);
           
@@ -126,7 +127,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       });
   };
 
-  // --- CONFIGURACIÓN DE COLUMNAS (AHORA DETECTA DISPONIBLES) ---
+  // --- CONFIGURACIÓN DE COLUMNAS ---
   const columnDefs = [
     { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
     { 
@@ -155,7 +156,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       headerName: "Acciones",
       width: 250, 
       cellRendererFramework: (params) => {
-        // Si el boleto está disponible, no mostramos botones, solo un texto
         if (params.data.availability === true) {
           return <div style={{ color: "#94a3b8", fontSize: "12px", fontWeight: "bold", marginTop: "8px" }}>Boleto Libre</div>;
         }
@@ -199,7 +199,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- 📸 VISTA PÚBLICA EN NUEVA PESTAÑA ---
+  // --- 📸 VISTA PÚBLICA EN NUEVA PESTAÑA (DINÁMICA 1 o 4) ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -208,18 +208,22 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       ticketMap.set(num, name);
     });
 
+    const isFour = opportunitiesCount === 4;
+
     const renderBlock = (start, end) => {
       return `<table>
         <colgroup>
           <col style="width: 52px;">
-          <col style="width: 52px;">
-          <col style="width: 52px;">
-          <col style="width: 52px;">
+          ${isFour ? `
+            <col style="width: 52px;">
+            <col style="width: 52px;">
+            <col style="width: 52px;">
+          ` : ''}
           <col style="width: auto;">
         </colgroup>
         <thead>
           <tr>
-            <th colspan="4">NÚMEROS</th>
+            <th colspan="${isFour ? 4 : 1}">NÚMEROS</th>
             <th style="text-align: left; padding-left: 12px;">NOMBRES:</th>
           </tr>
         </thead>
@@ -229,11 +233,16 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             const b = i.toString().padStart(3, "0");
             const name = ticketMap.get(b) || "";
             const rowClass = name ? 'sold-row' : '';
+            
+            const numCells = isFour 
+              ? `<td class="base-num">${b}</td>
+                 <td class="base-num">${i + 250}</td>
+                 <td class="base-num">${i + 500}</td>
+                 <td class="base-num">${i + 750}</td>`
+              : `<td class="base-num">${b}</td>`;
+
             return `<tr class="${rowClass}">
-              <td class="base-num">${b}</td>
-              <td class="base-num">${i + 250}</td>
-              <td class="base-num">${i + 500}</td>
-              <td class="base-num">${i + 750}</td>
+              ${numCells}
               <td class="name-td" title="${name}">${name}</td>
             </tr>`;
           }).join('')}
@@ -285,7 +294,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // --- ⬇️ DESCARGAR IMÁGENES AUTOMÁTICAMENTE ---
+  // --- ⬇️ DESCARGAR IMÁGENES AUTOMÁTICAMENTE (DINÁMICA 1 o 4) ---
   const handleDownloadImages = async () => {
     const toastId = toast.loading("⏳ Generando las imágenes de las tablas...");
     
@@ -296,22 +305,27 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       ticketMap.set(num, name);
     });
 
+    const isFour = opportunitiesCount === 4;
+
     const renderBlockInline = (start, end) => {
       let html = `<table style="border-collapse: collapse; width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
         <colgroup>
           <col style="width: 52px;">
-          <col style="width: 52px;">
-          <col style="width: 52px;">
-          <col style="width: 52px;">
+          ${isFour ? `
+            <col style="width: 52px;">
+            <col style="width: 52px;">
+            <col style="width: 52px;">
+          ` : ''}
           <col style="width: auto;">
         </colgroup>
         <thead>
           <tr>
-            <th colspan="4" style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 10px 4px; font-size: 14px; font-weight: bold; text-align: center;">NÚMEROS</th>
+            <th colspan="${isFour ? 4 : 1}" style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 10px 4px; font-size: 14px; font-weight: bold; text-align: center;">NÚMEROS</th>
             <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 10px 8px; font-size: 14px; font-weight: bold; text-align: left; padding-left: 12px;">NOMBRES:</th>
           </tr>
         </thead>
         <tbody>`;
+      
       for (let i = start; i <= end; i++) {
         const b = i.toString().padStart(3, "0");
         const name = ticketMap.get(b) || "";
@@ -320,11 +334,15 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         const numColor = name ? 'color: #94a3b8; font-weight: bold;' : 'color: #000000; font-weight: 900;';
         const nameStyle = 'font-size: 16px; font-weight: bold; text-align: left; padding-left: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #334155;';
 
+        const numCells = isFour 
+          ? `<td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${b}</td>
+             <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 250}</td>
+             <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 500}</td>
+             <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 750}</td>`
+          : `<td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${b}</td>`;
+
         html += `<tr style="${rowBg}">
-          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${b}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 250}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 500}</td>
-          <td style="border: 1px solid #cbd5e1; padding: 6px 2px; text-align: center; font-size: 19px; ${numColor}">${i + 750}</td>
+          ${numCells}
           <td style="border: 1px solid #cbd5e1; padding: 6px 2px; ${nameStyle}">${name}</td>
         </tr>`;
       }
