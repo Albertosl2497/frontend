@@ -16,22 +16,48 @@ function Dashboard({ handleLogout, lotteryNo }) {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ⚙️ ESTADO GLOBAL DE OPORTUNIDADES (Persistido en localStorage)
+  // ⚙️ ESTADOS GLOBALES DE CONFIGURACIÓN (Persistidos en localStorage)
   const [opportunities, setOpportunities] = useState(() => {
     const saved = localStorage.getItem("lottery_opportunities");
     return saved ? Number(saved) : 4;
+  });
+  const [prize, setPrize] = useState(() => {
+    return localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
+  });
+  const [lotteryDate, setLotteryDate] = useState(() => {
+    return localStorage.getItem("lottery_date") || "Dom 09 Agosto 2026";
+  });
+  const [ticketPrice, setTicketPrice] = useState(() => {
+    const saved = localStorage.getItem("lottery_price");
+    return saved ? Number(saved) : 100;
   });
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // Manejador del cambio de oportunidad desde el panel
+  // Manejadores de cambios
   const handleOpportunitiesChange = (e) => {
     const newValue = Number(e.target.value);
     setOpportunities(newValue);
     localStorage.setItem("lottery_opportunities", newValue);
-    toast.info(`Configuración cambiada a boletera de ${newValue} oportunidad(es)`);
+    toast.info(`Boletera cambiada a ${newValue} oportunidad(es)`);
+  };
+
+  const handlePrizeChange = (e) => {
+    setPrize(e.target.value);
+    localStorage.setItem("lottery_prize", e.target.value);
+  };
+
+  const handleDateChange = (e) => {
+    setLotteryDate(e.target.value);
+    localStorage.setItem("lottery_date", e.target.value);
+  };
+
+  const handlePriceChange = (e) => {
+    const newValue = Number(e.target.value);
+    setTicketPrice(newValue);
+    localStorage.setItem("lottery_price", newValue);
   };
 
   useEffect(() => {
@@ -40,7 +66,6 @@ function Dashboard({ handleLogout, lotteryNo }) {
       .then((data) => {
         setStats(data);
         setTickets(data.tickets);
-        console.log(newTicks);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -59,12 +84,11 @@ function Dashboard({ handleLogout, lotteryNo }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        totalTickets: totalTickets, // Reemplaza con el número total de boletos
+        totalTickets: totalTickets,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.message);
         setLoading(false);
         toast.success("Nuevo sorteo creado");
         window.location.reload();
@@ -95,44 +119,74 @@ function Dashboard({ handleLogout, lotteryNo }) {
         style={{ height: "100%" }}
       >
         <p className="heading">
-          {selectedTickets === 1 ? "Tickets Operations" : "Users"}
+          {selectedTickets === 1 ? "Panel de Operaciones" : "Usuarios"}
         </p>
         <hr />
 
-        {/* ⚙️ PANEL DE CONFIGURACIÓN DE BOLETERA */}
+        {/* ⚙️ PANEL DE CONFIGURACIÓN GENERAL */}
         <div
           style={{
             margin: "15px 0",
-            padding: "15px",
+            padding: "20px",
             backgroundColor: "#1e293b",
-            borderRadius: "8px",
+            borderRadius: "10px",
             border: "1px solid #334155",
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-            maxWidth: "450px",
+            maxWidth: "800px",
           }}
         >
-          <label style={{ color: "#f8fafc", fontWeight: "bold", fontSize: "14px" }}>
-            ⚙️ Tipo de Boletera Activa:
-          </label>
-          <select
-            value={opportunities}
-            onChange={handleOpportunitiesChange}
-            style={{
-              padding: "10px",
-              borderRadius: "6px",
-              backgroundColor: "#0f172a",
-              color: "white",
-              border: "1px solid #475569",
-              fontSize: "14px",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-          >
-            <option value={4}>4 Oportunidades (Base + 3 Números Extra)</option>
-            <option value={1}>1 Oportunidad (Boleto Sencillo)</option>
-          </select>
+          <h3 style={{ color: "#f8fafc", marginTop: 0, marginBottom: "15px", fontSize: "16px" }}>
+            ⚙️ Configuración del Sorteo Activo
+          </h3>
+          
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "15px" }}>
+            
+            {/* OPORTUNIDADES */}
+            <div style={{ display: "flex", flexDirection: "column", flex: "1 1 200px" }}>
+              <label style={{ color: "#cbd5e1", fontSize: "12px", marginBottom: "5px", fontWeight: "bold" }}>TIPO DE BOLETERA:</label>
+              <select
+                value={opportunities}
+                onChange={handleOpportunitiesChange}
+                style={{ padding: "8px", borderRadius: "6px", backgroundColor: "#0f172a", color: "white", border: "1px solid #475569" }}
+              >
+                <option value={4}>4 Oportunidades</option>
+                <option value={1}>1 Oportunidad</option>
+              </select>
+            </div>
+
+            {/* PREMIO */}
+            <div style={{ display: "flex", flexDirection: "column", flex: "1 1 200px" }}>
+              <label style={{ color: "#cbd5e1", fontSize: "12px", marginBottom: "5px", fontWeight: "bold" }}>PREMIO (Ej: $15,000 en Efectivo):</label>
+              <input
+                type="text"
+                value={prize}
+                onChange={handlePrizeChange}
+                style={{ padding: "8px", borderRadius: "6px", backgroundColor: "#0f172a", color: "white", border: "1px solid #475569" }}
+              />
+            </div>
+
+            {/* FECHA */}
+            <div style={{ display: "flex", flexDirection: "column", flex: "1 1 200px" }}>
+              <label style={{ color: "#cbd5e1", fontSize: "12px", marginBottom: "5px", fontWeight: "bold" }}>FECHA DEL SORTEO:</label>
+              <input
+                type="text"
+                value={lotteryDate}
+                onChange={handleDateChange}
+                style={{ padding: "8px", borderRadius: "6px", backgroundColor: "#0f172a", color: "white", border: "1px solid #475569" }}
+              />
+            </div>
+
+            {/* PRECIO */}
+            <div style={{ display: "flex", flexDirection: "column", flex: "1 1 100px" }}>
+              <label style={{ color: "#cbd5e1", fontSize: "12px", marginBottom: "5px", fontWeight: "bold" }}>PRECIO ($):</label>
+              <input
+                type="number"
+                value={ticketPrice}
+                onChange={handlePriceChange}
+                style={{ padding: "8px", borderRadius: "6px", backgroundColor: "#0f172a", color: "white", border: "1px solid #475569" }}
+              />
+            </div>
+
+          </div>
         </div>
 
         <div className="row">
@@ -150,15 +204,13 @@ function Dashboard({ handleLogout, lotteryNo }) {
             min={1}
             value={totalTickets}
             onChange={(e) => setTotalTickets(e.target.value)}
+            placeholder="Cantidad de boletos para nuevo sorteo..."
           />
         </div>
         <div className="row" style={{ flexWrap: "wrap" }}>
           <button
             className="card"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-            }}
+            style={{ display: "flex", flexDirection: "column" }}
             onClick={() => generateTickets()}
           >
             <h1>Generar Nuevo Sorteo</h1>
@@ -173,6 +225,7 @@ function Dashboard({ handleLogout, lotteryNo }) {
             <h1>{stats?.bookedCount}</h1>
           </button>
         </div>
+        
         {selectedTickets === 1 && (
           <div className="row" style={{ height: "100%" }}>
             <TicketTable
@@ -180,7 +233,6 @@ function Dashboard({ handleLogout, lotteryNo }) {
               lotteryNo={lotteryNo}
               setStats={setStats}
               stats={stats}
-              opportunities={opportunities}
             />
           </div>
         )}
