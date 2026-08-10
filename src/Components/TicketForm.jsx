@@ -15,8 +15,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
     { bank: "SPIN BY OXXO", number: "7289 6900 0107 5676 78", holder: "ALVARO RUIZ MURRIETA", type: "Transferencia CLABE" }
   ];
 
-  // ⚙️ Leer configuración de oportunidades (1 o 4) desde localStorage
+  // ⚙️ Leer configuraciones dinámicas desde localStorage
   const opportunitiesCount = Number(localStorage.getItem("lottery_opportunities")) || 4;
+  const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Dom 09 Agosto 2026";
+  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 100;
 
   // --- Mantenido estrictamente por funcionalidad del usuario ---
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
@@ -45,7 +48,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   const [conflictModal, setConflictModal] = useState({ show: false, unavailable: [], remaining: [] });
 
   const selectedTicketCount = selectedTickets.length;
-  const ticketPrice = 100;
+  // El precio ahora es dinámico según la configuración
   const totalPrice = selectedTicketCount * ticketPrice;
   const selectedTicketNumbers = selectedTickets.join(", ");
 
@@ -146,11 +149,11 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
            // Identificamos cuáles boletos del carrito aún son válidos
            const remaining = selectedTickets.filter(t => !unavailable.includes(t));
            
-           // Actualizamos la pantalla principal: Eliminamos los boletos perdidos de la cuadrícula visual
+           // Actualizamos la pantalla principal
            const safeTickets = tickets.filter(t => !unavailable.includes(t));
            setTickets(safeTickets);
 
-           // Dejamos en el carrito SOLAMENTE los que aún están disponibles
+           // Dejamos en el carrito SOLAMENTE los disponibles
            setSelectedTickets(remaining);
            setBtnLoading(false);
            
@@ -177,7 +180,7 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
       const textToCopy = `HOLA, HAS RESERVADO ${selectedTicketCount} BOLETO(S).
 𝘾𝙊𝙉 𝙇𝙊𝙎 𝙉𝙐𝙈𝙀𝙍𝙊𝙎:[${selectedTicketNumbers}].
-${extraOpportunitiesText}𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: $15,000 EN EFECTIVO. DEL *DIA DOMINGO 09 DE AGOSTO DE 2026* .
+${extraOpportunitiesText}𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿𝙀: ${lotteryPrize}. DEL *DIA ${lotteryDate.toUpperCase()}* .
 
 𝘼 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀: ${fullName}.
 𝙀𝙇 𝙋𝙍𝙀𝘾𝙄𝙊 𝘼 𝙋𝘼𝙂𝘼𝙍 𝙀𝙎: $${totalPrice} PESOS.      
@@ -230,11 +233,13 @@ ${extraOpportunitiesText}𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿
 
               <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingTop: "6px", borderTop: "1px solid #f1f5f9", fontSize: "13px" }}>
                 <span style={{ color: "#475569", fontSize: "11px", marginBottom: "1px" }}>Sorteo:</span>
-                <span style={{ color: "#0f172a", fontWeight: "bold" }}>$15,000 en Efectivo (Dom 09 Agosto 2026)</span>
+                {/* ⚙️ PREMIO Y FECHA DINÁMICOS */}
+                <span style={{ color: "#0f172a", fontWeight: "bold" }}>{lotteryPrize} ({lotteryDate})</span>
               </div>
 
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px", background: "#f0fdf4", padding: "8px 10px", borderRadius: "8px" }}>
                 <span style={{ color: "#166534", fontWeight: "bold", fontSize: "14px" }}>Total a Pagar:</span>
+                {/* ⚙️ PRECIO DINÁMICO */}
                 <span style={{ color: "#15803d", fontWeight: "900", fontSize: "17px" }}>${totalPrice} MXN</span>
               </div>
 
@@ -753,6 +758,7 @@ ${extraOpportunitiesText}𝙋𝘼𝙍𝘼 𝙀𝙇 𝙎𝙊𝙍𝙏𝙀𝙊 𝘿
               🎟️ {selectedTicketCount} Seleccionado(s)
             </span>
             <span style={{ fontSize: "13px", color: "#22c55e", fontWeight: "bold" }}>
+              {/* ⚙️ PRECIO TOTAL DINÁMICO */}
               Total: ${totalPrice} PESOS
             </span>
           </div>
