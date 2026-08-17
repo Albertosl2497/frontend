@@ -11,7 +11,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
   
-  // ⚙️ ESTADO NUEVO: Controlar si vemos la Lista o la Cuadrícula
+  // ⚙️ Controlar si vemos la Lista o la Cuadrícula
   const [viewMode, setViewMode] = useState("list"); // "list" | "grid"
 
   // ⚙️ Leer configuración global (Premio, Fecha, Precio)
@@ -131,7 +131,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       });
   };
 
-  // --- CONFIGURACIÓN DE COLUMNAS ---
+  // --- CONFIGURACIÓN DE COLUMNAS (TABLA ADMIN) ---
   const columnDefs = [
     { headerName: "Boleto", field: "ticketNumber", width: 90, sortable: true, filter: true },
     { 
@@ -193,17 +193,18 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- FUNCIÓN GENERADORA DE BLOQUES PARA HTML/IMÁGENES (000 al 999) ---
+  // --- 📏 FUNCIÓN GENERADORA DE BLOQUES RÍGIDOS (ANTI-DEFORMACIÓN) ---
   const createTableBlock = (start, end, ticketMap) => {
-    return `<table style="border-collapse: collapse; width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
+    // Definimos anchos estrictos: 50px para Número y 200px para el Nombre
+    return `<table style="border-collapse: collapse; width: 100%; max-width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
       <colgroup>
-        <col style="width: 50px;">
-        <col style="width: auto;">
+        <col style="width: 55px;">
+        <col style="width: 200px;">
       </colgroup>
       <thead>
         <tr>
-          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 6px 2px; font-size: 13px; font-weight: bold; text-align: center;">NÚM</th>
-          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 6px 6px; font-size: 13px; font-weight: bold; text-align: left;">NOMBRE</th>
+          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 6px 0; font-size: 13px; font-weight: bold; text-align: center; overflow: hidden;">NÚM</th>
+          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 6px 6px; font-size: 13px; font-weight: bold; text-align: left; overflow: hidden;">NOMBRE</th>
         </tr>
       </thead>
       <tbody>
@@ -214,11 +215,15 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           
           const rowBg = name ? 'background-color: #f1f5f9;' : 'background-color: #ffffff;';
           const numColor = name ? 'color: #94a3b8; font-weight: bold;' : 'color: #000000; font-weight: 900;';
-          const nameStyle = 'font-size: 13px; font-weight: bold; text-align: left; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #334155;';
 
-          return `<tr style="${rowBg}">
-            <td style="border: 1px solid #cbd5e1; padding: 4px 2px; text-align: center; font-size: 15px; ${numColor}">${b}</td>
-            <td style="border: 1px solid #cbd5e1; padding: 4px 2px; ${nameStyle}">${name}</td>
+          // El div interno fuerza a que el texto se corte con (...) si sobrepasa el límite, protegiendo la tabla.
+          return `<tr style="${rowBg} height: 26px;">
+            <td style="border: 1px solid #cbd5e1; padding: 0; text-align: center; font-size: 15px; ${numColor} overflow: hidden; white-space: nowrap;">${b}</td>
+            <td style="border: 1px solid #cbd5e1; padding: 0 6px; vertical-align: middle;">
+              <div style="width: 185px; font-size: 13px; font-weight: bold; color: #334155; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                ${name}
+              </div>
+            </td>
           </tr>`;
         }).join('')}
       </tbody>
@@ -260,7 +265,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           <title>Tablas de Control (4 Partes)</title>
           <style>
             body { font-family: 'Arial Narrow', Arial, sans-serif; background: #f1f5f9; padding: 20px; }
-            .page { background: white; border: 1px solid #cbd5e1; padding: 20px; margin-bottom: 30px; border-radius: 8px; max-width: 1400px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+            .page { background: white; border: 1px solid #cbd5e1; padding: 20px; margin-bottom: 30px; border-radius: 8px; max-width: 1450px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
             .grid-5-cols { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
           </style>
         </head>
@@ -329,7 +334,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     });
 
     const createPageWrapper = (id, title, colsArray) => `
-      <div id="${id}" style="background: #ffffff; padding: 25px; width: 1500px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 20px;">
+      <div id="${id}" style="background: #ffffff; padding: 25px; width: 1450px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 20px;">
         ${getHeaderHtml()}
         <h3 style="text-align:center; color:#334155; font-size: 22px; margin-bottom: 15px;">${title}</h3>
         <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;">
@@ -392,9 +397,8 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
-  // --- 🔲 RENDER DE LA CUADRÍCULA VISUAL ---
+  // --- 🔲 RENDER DE LA CUADRÍCULA VISUAL (BLANCO Y NEGRO) ---
   const renderGridView = () => {
-    // 1. Mapeamos la data de la DB para lectura rápida
     const ticketMap = new Map();
     rowData.forEach(t => {
       const num = t.ticketNumber.toString().padStart(3, "0");
@@ -403,74 +407,71 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
     const boxes = [];
 
-    // 2. Creamos 1000 cuadritos (Del 000 al 999)
+    // Creamos 1000 cuadritos (Del 000 al 999)
     for (let i = 0; i < 1000; i++) {
       const num = i.toString().padStart(3, "0");
       const t = ticketMap.get(num);
       
-      let bgColor = "#22c55e"; // Verde por defecto (Disponible)
-      let textColor = "white";
-      let titleHover = `Boleto ${num} - DISPONIBLE`;
+      let bgColor = "#ffffff"; // Blanco (Disponible)
+      let textColor = "#000000"; // Letra negra
+      let displayText = num;     // Muestra el número
+      let borderStyle = "1px solid #cbd5e1";
 
-      if (t) {
-        if (t.sold) {
-          bgColor = "#dc2626"; // Rojo (Pagado)
-          titleHover = `Boleto ${num} - PAGADO por: ${t.user}`;
-        } else if (t.availability === false) {
-          bgColor = "#eab308"; // Amarillo (Apartado/Pendiente)
-          textColor = "#0f172a";
-          titleHover = `Boleto ${num} - APARTADO por: ${t.user}`;
-        }
+      // Si el boleto está apartado o pagado (No disponible)
+      if (t && (t.sold || t.availability === false)) {
+        bgColor = "#000000"; // Color Totalmente Negro
+        textColor = "transparent"; // Letra invisible (o vacía)
+        displayText = ""; // Borramos el texto
+        borderStyle = "1px solid #000000";
       }
 
       boxes.push(
         <div 
           key={num} 
-          title={titleHover}
           style={{
             backgroundColor: bgColor,
             color: textColor,
-            padding: "8px 2px",
-            textAlign: "center",
+            height: "32px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             borderRadius: "4px",
             fontSize: "13px",
             fontWeight: "bold",
-            border: "1px solid rgba(255,255,255,0.2)",
-            cursor: "pointer",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+            border: borderStyle,
+            boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
           }}
         >
-          {num}
+          {displayText}
         </div>
       );
     }
 
     return (
       <div style={{ marginTop: "10px" }}>
-        {/* LEYENDA DE COLORES */}
-        <div style={{ display: "flex", gap: "20px", marginBottom: "15px", justifyContent: "center", backgroundColor: "#1e293b", padding: "10px", borderRadius: "8px" }}>
+        {/* LEYENDA BLANCO Y NEGRO */}
+        <div style={{ display: "flex", gap: "30px", marginBottom: "15px", justifyContent: "center", backgroundColor: "#1e293b", padding: "12px", borderRadius: "8px" }}>
            <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
-             <span style={{ width: 18, height: 18, background: "#22c55e", borderRadius: 4 }}></span> Disponible
+             <span style={{ width: 20, height: 20, background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: 4 }}></span> 
+             Boleto Disponible
            </div>
            <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
-             <span style={{ width: 18, height: 18, background: "#eab308", borderRadius: 4 }}></span> Apartado
-           </div>
-           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
-             <span style={{ width: 18, height: 18, background: "#dc2626", borderRadius: 4 }}></span> Pagado
+             <span style={{ width: 20, height: 20, background: "#000000", borderRadius: 4 }}></span> 
+             Boleto Ocupado
            </div>
         </div>
 
         {/* CONTENEDOR DE LA CUADRÍCULA */}
         <div style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fill, minmax(45px, 1fr))", 
-          gap: "6px", 
+          gridTemplateColumns: "repeat(auto-fill, minmax(40px, 1fr))", 
+          gap: "5px", 
           maxHeight: "550px", 
           overflowY: "auto", 
           padding: "15px", 
-          backgroundColor: "#0f172a", 
+          backgroundColor: "#f8fafc", 
           borderRadius: "8px", 
-          border: "1px solid #334155" 
+          border: "1px solid #cbd5e1" 
         }}>
           {boxes}
         </div>
@@ -509,7 +510,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         </button>
       </div>
 
-      {/* RENDERIZADO CONDICIONAL: Muestra la Lista (AgGrid) o la Cuadrícula */}
+      {/* RENDERIZADO CONDICIONAL: Muestra la Lista o la Cuadrícula */}
       {viewMode === "list" ? (
         <div className="ag-theme-alpine-dark" style={{ width: "100%", height: "600px" }}>
           <AgGridReact
