@@ -180,35 +180,25 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   // 🔠 SÚPER BANNER GIGANTE Y LLAMATIVO
   const getHeaderHtml = () => `
     <div style="position: relative; overflow: hidden; background: linear-gradient(145deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); color: white; border-radius: 16px; padding: 35px 20px; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border-bottom: 6px solid #be123c; text-align: center; font-family: Arial, sans-serif;">
-      
-      <!-- Efecto de brillo de fondo -->
       <div style="position: absolute; top: -50%; left: -10%; width: 120%; height: 200%; background: radial-gradient(circle, rgba(190,18,60,0.15) 0%, transparent 60%); pointer-events: none;"></div>
-
       <h2 style="position: relative; color: #ffffff; font-size: 52px; font-weight: 900; margin: 0 0 25px 0; text-transform: uppercase; letter-spacing: 3px; text-shadow: 3px 5px 10px rgba(0,0,0,0.5);">
         🎉 GRAN SORTEO EFECTIVO 🎉
       </h2>
-      
       <div style="position: relative; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.25); padding: 25px 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);">
-        
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">🎁 Premio Principal</span>
           <span style="font-size: 42px; font-weight: 900; color: #fbbf24; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">${lotteryPrize}</span>
         </div>
-        
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
-        
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">📅 Fecha del Sorteo</span>
           <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">${lotteryDate}</span>
         </div>
-        
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
-
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">🎟️ Precio por Boleto</span>
           <span style="font-size: 42px; font-weight: 900; color: #4ade80; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">$${ticketPrice} Pesos</span>
         </div>
-        
       </div>
     </div>
   `;
@@ -247,7 +237,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // --- 🔲 VISTA PÚBLICA DE LA CUADRÍCULA CUADRADA BLANCO Y NEGRO ---
+  // --- 🔲 VISTA PÚBLICA DE LA CUADRÍCULA CUADRADA BLANCO Y NEGRO (32x32) ---
   const handleViewPublicGrid = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -262,8 +252,10 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       const isTaken = t && (t.sold || t.availability === false);
 
       if (isTaken) {
+        // Cuadro ocupado: Fondo oscuro, letra invisible
         boxesHtml += `<div class="ticket-box taken"></div>`;
       } else {
+        // Cuadro disponible: Fondo blanco, letra negra
         boxesHtml += `<div class="ticket-box avail">${num}</div>`;
       }
     }
@@ -280,7 +272,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               margin: 0;
             }
             .header-container {
-              max-width: 1200px;
+              max-width: 1300px;
               margin: 0 auto 20px auto;
             }
             .legend-container {
@@ -308,31 +300,34 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             .legend-avail { background: #ffffff; border: 2px solid #0f172a; }
             .legend-taken { background: #0f172a; border: 2px solid #0f172a; }
             
+            /* MATRIZ EXACTA DE 32 COLUMNAS (32x32) */
             .grid-container {
               display: grid;
-              grid-template-columns: repeat(25, 1fr);
-              gap: 6px;
-              max-width: 1200px;
+              grid-template-columns: repeat(32, 1fr);
+              gap: 4px; /* Espacio reducido para que quepan 32 */
+              max-width: 1300px;
               margin: 0 auto;
               background: #ffffff;
-              padding: 25px;
+              padding: 20px;
               border-radius: 12px;
               border: 1px solid #cbd5e1;
               box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             }
+            
+            /* CUADROS PERFECTAMENTE CUADRADOS */
             .ticket-box {
               aspect-ratio: 1 / 1;
               display: flex;
               align-items: center;
               justify-content: center;
-              border-radius: 6px;
-              font-size: 17px;
+              border-radius: 4px;
+              font-size: 13px; /* Letra ajustada para caber en 32 columnas */
               font-weight: 900;
               box-sizing: border-box;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
-            .avail { background: #ffffff; color: #0f172a; border: 2px solid #94a3b8; }
-            .taken { background: #0f172a; color: transparent; border: 2px solid #0f172a; }
+            .avail { background: #ffffff; color: #0f172a; border: 1.5px solid #94a3b8; }
+            .taken { background: #0f172a; color: transparent; border: 1.5px solid #0f172a; }
           </style>
         </head>
         <body>
