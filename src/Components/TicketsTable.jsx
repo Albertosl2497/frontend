@@ -15,9 +15,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [viewMode, setViewMode] = useState("list");
 
   // ⚙️ Leer configuración global (Premio, Fecha, Precio)
-  const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
-  const lotteryDate = localStorage.getItem("lottery_date") || "Dom 09 Agosto 2026";
-  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 100;
+  const lotteryPrize = localStorage.getItem("lottery_prize") || "$18,000 en Efectivo";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Sabado 29 Agosto 2026";
+  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 35;
 
   useEffect(() => {
     setRowData(tickets || []);
@@ -187,17 +187,17 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       <div style="position: relative; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.25); padding: 25px 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);">
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">🎁 Premio Principal</span>
-          <span style="font-size: 42px; font-weight: 900; color: #fbbf24; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">${lotteryPrize}</span>
+          <span style="font-size: 42px; font-weight: 900; color: #fbbf24; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">$18,000 Pesos</span>
         </div>
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">📅 Fecha del Sorteo</span>
-          <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">${lotteryDate}</span>
+          <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);"> Sabado 29 de Agosto</span>
         </div>
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">🎟️ Precio por Boleto</span>
-          <span style="font-size: 42px; font-weight: 900; color: #4ade80; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">$${ticketPrice} Pesos</span>
+          <span style="font-size: 42px; font-weight: 900; color: #4ade80; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">$35 Pesos</span>
         </div>
       </div>
     </div>
