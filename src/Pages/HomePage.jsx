@@ -6,13 +6,13 @@ import "./styles.css";
 
 function MainPageContent() {
   // ⚙️ Leer configuración global del sorteo desde localStorage
-  const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
-  const lotteryDate = localStorage.getItem("lottery_date") || "Dom 09 Agosto 2026";
-  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 100;
+  const lotteryPrize = localStorage.getItem("lottery_prize") || "$18,000 en Efectivo";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Sabado 29 Agosto 2026";
+  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 35;
 
   return (
     <div className="hero-banner-container">
-      <div className="hero-edition-badge">🏆 GRAN EDICIÓN # 100</div>
+      <div className="hero-edition-badge">🏆 GRAN EDICIÓN # 101</div>
       
       {/* ⚙️ PREMIO DINÁMICO */}
       <h1 className="hero-prize">¡LLEVATE {lotteryPrize.toUpperCase()}!</h1>
