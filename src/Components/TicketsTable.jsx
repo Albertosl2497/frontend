@@ -10,6 +10,9 @@ import "./ticket.css";
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
+  
+  // ⚙️ ESTADO NUEVO: Controlar si vemos la Lista o la Cuadrícula
+  const [viewMode, setViewMode] = useState("list"); // "list" | "grid"
 
   // ⚙️ Leer configuración global (Premio, Fecha, Precio)
   const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
@@ -190,7 +193,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- FUNCIÓN GENERADORA DE BLOQUES DE 1 SOLA OPORTUNIDAD ---
+  // --- FUNCIÓN GENERADORA DE BLOQUES PARA HTML/IMÁGENES (000 al 999) ---
   const createTableBlock = (start, end, ticketMap) => {
     return `<table style="border-collapse: collapse; width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
       <colgroup>
@@ -367,9 +370,8 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     document.body.appendChild(tempContainer);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 500)); // Dar tiempo al DOM para renderizar
+      await new Promise(resolve => setTimeout(resolve, 500)); 
 
-      // Descargar las 4 imágenes
       for (let i = 1; i <= 4; i++) {
         const element = document.getElementById(`export-img-${i}`);
         const canvas = await html2canvas(element, { scale: 1.5, useCORS: true, backgroundColor: "#ffffff" });
@@ -390,16 +392,113 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
+  // --- 🔲 RENDER DE LA CUADRÍCULA VISUAL ---
+  const renderGridView = () => {
+    // 1. Mapeamos la data de la DB para lectura rápida
+    const ticketMap = new Map();
+    rowData.forEach(t => {
+      const num = t.ticketNumber.toString().padStart(3, "0");
+      ticketMap.set(num, t);
+    });
+
+    const boxes = [];
+
+    // 2. Creamos 1000 cuadritos (Del 000 al 999)
+    for (let i = 0; i < 1000; i++) {
+      const num = i.toString().padStart(3, "0");
+      const t = ticketMap.get(num);
+      
+      let bgColor = "#22c55e"; // Verde por defecto (Disponible)
+      let textColor = "white";
+      let titleHover = `Boleto ${num} - DISPONIBLE`;
+
+      if (t) {
+        if (t.sold) {
+          bgColor = "#dc2626"; // Rojo (Pagado)
+          titleHover = `Boleto ${num} - PAGADO por: ${t.user}`;
+        } else if (t.availability === false) {
+          bgColor = "#eab308"; // Amarillo (Apartado/Pendiente)
+          textColor = "#0f172a";
+          titleHover = `Boleto ${num} - APARTADO por: ${t.user}`;
+        }
+      }
+
+      boxes.push(
+        <div 
+          key={num} 
+          title={titleHover}
+          style={{
+            backgroundColor: bgColor,
+            color: textColor,
+            padding: "8px 2px",
+            textAlign: "center",
+            borderRadius: "4px",
+            fontSize: "13px",
+            fontWeight: "bold",
+            border: "1px solid rgba(255,255,255,0.2)",
+            cursor: "pointer",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+          }}
+        >
+          {num}
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ marginTop: "10px" }}>
+        {/* LEYENDA DE COLORES */}
+        <div style={{ display: "flex", gap: "20px", marginBottom: "15px", justifyContent: "center", backgroundColor: "#1e293b", padding: "10px", borderRadius: "8px" }}>
+           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
+             <span style={{ width: 18, height: 18, background: "#22c55e", borderRadius: 4 }}></span> Disponible
+           </div>
+           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
+             <span style={{ width: 18, height: 18, background: "#eab308", borderRadius: 4 }}></span> Apartado
+           </div>
+           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
+             <span style={{ width: 18, height: 18, background: "#dc2626", borderRadius: 4 }}></span> Pagado
+           </div>
+        </div>
+
+        {/* CONTENEDOR DE LA CUADRÍCULA */}
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fill, minmax(45px, 1fr))", 
+          gap: "6px", 
+          maxHeight: "550px", 
+          overflowY: "auto", 
+          padding: "15px", 
+          backgroundColor: "#0f172a", 
+          borderRadius: "8px", 
+          border: "1px solid #334155" 
+        }}>
+          {boxes}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ width: "100%", marginTop: 20 }}>
-      <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
-        <input 
-          type="text" 
-          id="quickFilter" 
-          placeholder="🔍 Buscar participante o número..." 
-          onChange={onQuickFilterChanged} 
-          style={{ flex: 1, minWidth: "200px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
-        />
+      
+      <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", alignItems: "center" }}>
+        {/* BOTÓN PARA CAMBIAR VISTA */}
+        <button 
+          onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")} 
+          style={{ padding: "10px 15px", backgroundColor: "#f59e0b", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold", fontSize: "14px", transition: "0.2s" }}
+        >
+          {viewMode === "list" ? "🔲 Ver Cuadrícula" : "📋 Ver Lista de Registros"}
+        </button>
+
+        {viewMode === "list" && (
+          <input 
+            type="text" 
+            id="quickFilter" 
+            placeholder="🔍 Buscar participante o número..." 
+            onChange={onQuickFilterChanged} 
+            style={{ flex: 1, minWidth: "200px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
+          />
+        )}
 
         <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
           📸 Generar HTML (4 Partes)
@@ -410,16 +509,21 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         </button>
       </div>
 
-      <div className="ag-theme-alpine-dark" style={{ width: "100%", height: "600px" }}>
-        <AgGridReact
-          rowData={rowData}
-          columnDefs={columnDefs}
-          onGridReady={onGridReady}
-          pagination={true}
-          paginationPageSize={100}
-          animateRows={true}
-        />
-      </div>
+      {/* RENDERIZADO CONDICIONAL: Muestra la Lista (AgGrid) o la Cuadrícula */}
+      {viewMode === "list" ? (
+        <div className="ag-theme-alpine-dark" style={{ width: "100%", height: "600px" }}>
+          <AgGridReact
+            rowData={rowData}
+            columnDefs={columnDefs}
+            onGridReady={onGridReady}
+            pagination={true}
+            paginationPageSize={100}
+            animateRows={true}
+          />
+        </div>
+      ) : (
+        renderGridView()
+      )}
     </div>
   );
 }
