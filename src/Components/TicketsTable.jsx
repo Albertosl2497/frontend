@@ -144,7 +144,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   // --- 📏 FUNCIÓN GENERADORA DE BLOQUES CON TEXTO AUMENTADO (ANTI-DEFORMACIÓN) ---
   const createTableBlock = (start, end, ticketMap) => {
-    // 🔠 Ajustes de tamaño: Número 85px | Nombre 240px
     return `<table style="border-collapse: collapse; width: 100%; max-width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
       <colgroup>
         <col style="width: 85px;">
@@ -165,7 +164,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           const rowBg = name ? 'background-color: #f1f5f9;' : 'background-color: #ffffff;';
           const numColor = name ? 'color: #94a3b8; font-weight: bold;' : 'color: #000000; font-weight: 900;';
 
-          // Aumento de altura de fila y tamaños de letra (22px número, 18px nombre)
           return `<tr style="${rowBg} height: 34px;">
             <td style="border: 1px solid #cbd5e1; padding: 0; text-align: center; font-size: 22px; ${numColor} overflow: hidden; white-space: nowrap;">${b}</td>
             <td style="border: 1px solid #cbd5e1; padding: 0 10px; vertical-align: middle;">
@@ -182,7 +180,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   // 🔠 BANNER GIGANTE PARA MAYOR LEGIBILIDAD
   const getHeaderHtml = () => `
     <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 16px; padding: 25px; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: 1px solid #334155; text-align: center; font-family: Arial, sans-serif;">
-      <h2 style="color: #f8fafc; font-size: 34px; font-weight: 900; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 1px;">🎉 Gran Sorteo Efectivo 🎉</h2>
+      <h2 style="color: #f8fafc; font-size: 34px; font-weight: 900; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 1px;">💰 LLEVATE $18,000 PESOS 💰</h2>
       <div style="display: flex; justify-content: space-around; background: rgba(255, 255, 255, 0.05); padding: 18px; border-radius: 12px;">
         <div style="display: flex; flex-direction: column; gap: 5px; text-align: center;">
           <span style="font-size: 16px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎁 Premio Principal</span>
@@ -200,7 +198,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     </div>
   `;
 
-  // --- 📸 VISTA PÚBLICA DE TABLAS EN NUEVA PESTAÑA ---
+  // --- 📸 VISTA PÚBLICA DE TABLAS (NOMBRES) ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -221,56 +219,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           </style>
         </head>
         <body>
-          <div class="page">
-            ${getHeaderHtml()}
-            <h3 class="part-title">PARTE 1: NÚMEROS DEL 000 AL 199</h3>
-            <div class="grid-4-cols">
-              <div>${createTableBlock(0, 49, ticketMap)}</div>
-              <div>${createTableBlock(50, 99, ticketMap)}</div>
-              <div>${createTableBlock(100, 149, ticketMap)}</div>
-              <div>${createTableBlock(150, 199, ticketMap)}</div>
-            </div>
-          </div>
-          <div class="page">
-            ${getHeaderHtml()}
-            <h3 class="part-title">PARTE 2: NÚMEROS DEL 200 AL 399</h3>
-            <div class="grid-4-cols">
-              <div>${createTableBlock(200, 249, ticketMap)}</div>
-              <div>${createTableBlock(250, 299, ticketMap)}</div>
-              <div>${createTableBlock(300, 349, ticketMap)}</div>
-              <div>${createTableBlock(350, 399, ticketMap)}</div>
-            </div>
-          </div>
-          <div class="page">
-            ${getHeaderHtml()}
-            <h3 class="part-title">PARTE 3: NÚMEROS DEL 400 AL 599</h3>
-            <div class="grid-4-cols">
-              <div>${createTableBlock(400, 449, ticketMap)}</div>
-              <div>${createTableBlock(450, 499, ticketMap)}</div>
-              <div>${createTableBlock(500, 549, ticketMap)}</div>
-              <div>${createTableBlock(550, 599, ticketMap)}</div>
-            </div>
-          </div>
-          <div class="page">
-            ${getHeaderHtml()}
-            <h3 class="part-title">PARTE 4: NÚMEROS DEL 600 AL 799</h3>
-            <div class="grid-4-cols">
-              <div>${createTableBlock(600, 649, ticketMap)}</div>
-              <div>${createTableBlock(650, 699, ticketMap)}</div>
-              <div>${createTableBlock(700, 749, ticketMap)}</div>
-              <div>${createTableBlock(750, 799, ticketMap)}</div>
-            </div>
-          </div>
-          <div class="page">
-            ${getHeaderHtml()}
-            <h3 class="part-title">PARTE 5: NÚMEROS DEL 800 AL 999</h3>
-            <div class="grid-4-cols">
-              <div>${createTableBlock(800, 849, ticketMap)}</div>
-              <div>${createTableBlock(850, 899, ticketMap)}</div>
-              <div>${createTableBlock(900, 949, ticketMap)}</div>
-              <div>${createTableBlock(950, 999, ticketMap)}</div>
-            </div>
-          </div>
+          <div class="page">${getHeaderHtml()}<h3 class="part-title">PARTE 1: NÚMEROS DEL 000 AL 199</h3><div class="grid-4-cols"><div>${createTableBlock(0, 49, ticketMap)}</div><div>${createTableBlock(50, 99, ticketMap)}</div><div>${createTableBlock(100, 149, ticketMap)}</div><div>${createTableBlock(150, 199, ticketMap)}</div></div></div>
+          <div class="page">${getHeaderHtml()}<h3 class="part-title">PARTE 2: NÚMEROS DEL 200 AL 399</h3><div class="grid-4-cols"><div>${createTableBlock(200, 249, ticketMap)}</div><div>${createTableBlock(250, 299, ticketMap)}</div><div>${createTableBlock(300, 349, ticketMap)}</div><div>${createTableBlock(350, 399, ticketMap)}</div></div></div>
+          <div class="page">${getHeaderHtml()}<h3 class="part-title">PARTE 3: NÚMEROS DEL 400 AL 599</h3><div class="grid-4-cols"><div>${createTableBlock(400, 449, ticketMap)}</div><div>${createTableBlock(450, 499, ticketMap)}</div><div>${createTableBlock(500, 549, ticketMap)}</div><div>${createTableBlock(550, 599, ticketMap)}</div></div></div>
+          <div class="page">${getHeaderHtml()}<h3 class="part-title">PARTE 4: NÚMEROS DEL 600 AL 799</h3><div class="grid-4-cols"><div>${createTableBlock(600, 649, ticketMap)}</div><div>${createTableBlock(650, 699, ticketMap)}</div><div>${createTableBlock(700, 749, ticketMap)}</div><div>${createTableBlock(750, 799, ticketMap)}</div></div></div>
+          <div class="page">${getHeaderHtml()}<h3 class="part-title">PARTE 5: NÚMEROS DEL 800 AL 999</h3><div class="grid-4-cols"><div>${createTableBlock(800, 849, ticketMap)}</div><div>${createTableBlock(850, 899, ticketMap)}</div><div>${createTableBlock(900, 949, ticketMap)}</div><div>${createTableBlock(950, 999, ticketMap)}</div></div></div>
         </body>
       </html>`;
 
@@ -279,7 +232,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // --- 🔲 VISTA PÚBLICA DE LA CUADRÍCULA (BLANCO Y NEGRO) EN NUEVA PESTAÑA ---
+  // --- 🔲 VISTA PÚBLICA DE LA CUADRÍCULA CUADRADA BLANCO Y NEGRO ---
   const handleViewPublicGrid = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -294,8 +247,10 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       const isTaken = t && (t.sold || t.availability === false);
 
       if (isTaken) {
+        // Cuadro ocupado: Fondo oscuro, letra invisible
         boxesHtml += `<div class="ticket-box taken"></div>`;
       } else {
+        // Cuadro disponible: Fondo blanco, letra súper gruesa oscura
         boxesHtml += `<div class="ticket-box avail">${num}</div>`;
       }
     }
@@ -303,32 +258,99 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     const gridHtml = `
       <html>
         <head>
-          <title>Cuadrícula de Boletos</title>
+          <title>Cuadrícula de Boletos - Disponibilidad</title>
           <style>
-            body { font-family: Arial, sans-serif; background: #f1f5f9; padding: 20px; margin: 0; }
-            .header-container { max-width: 1000px; margin: 0 auto 20px auto; text-align: center; }
-            .legend-container { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; background: #1e293b; padding: 15px; border-radius: 8px; color: white; }
-            .legend-item { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 16px; }
-            .legend-box { width: 24px; height: 24px; border-radius: 4px; }
-            .legend-avail { background: #ffffff; border: 1px solid #cbd5e1; }
-            .legend-taken { background: #000000; border: 1px solid #000000; }
-            .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 6px; max-width: 1000px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-            .ticket-box { height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 14px; font-weight: bold; box-sizing: border-box; }
-            .avail { background: #ffffff; color: #000000; border: 1px solid #cbd5e1; }
-            .taken { background: #000000; color: transparent; border: 1px solid #000000; }
+            body { 
+              font-family: Arial, sans-serif; 
+              background: #f1f5f9; 
+              padding: 20px; 
+              margin: 0;
+            }
+            .header-container {
+              max-width: 1200px;
+              margin: 0 auto 20px auto;
+            }
+            .legend-container {
+              display: flex; 
+              justify-content: center; 
+              gap: 30px; 
+              margin-bottom: 20px;
+              background: #1e293b;
+              padding: 15px;
+              border-radius: 12px;
+              color: white;
+            }
+            .legend-item {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              font-weight: bold;
+              font-size: 16px;
+            }
+            .legend-box {
+              width: 24px;
+              height: 24px;
+              border-radius: 4px;
+            }
+            .legend-avail { background: #ffffff; border: 2px solid #0f172a; }
+            .legend-taken { background: #0f172a; border: 2px solid #0f172a; }
+            
+            /* MATRIZ DE 25 COLUMNAS X 40 FILAS */
+            .grid-container {
+              display: grid;
+              grid-template-columns: repeat(25, 1fr);
+              gap: 6px;
+              max-width: 1200px;
+              margin: 0 auto;
+              background: #ffffff;
+              padding: 25px;
+              border-radius: 12px;
+              border: 1px solid #cbd5e1;
+              box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            }
+            
+            /* CUADROS PERFECTAMENTE CUADRADOS */
+            .ticket-box {
+              aspect-ratio: 1 / 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 6px;
+              font-size: 17px;
+              font-weight: 900;
+              box-sizing: border-box;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .avail { 
+              background: #ffffff; 
+              color: #0f172a; 
+              border: 2px solid #94a3b8; 
+            }
+            .taken { 
+              background: #0f172a; 
+              color: transparent; 
+              border: 2px solid #0f172a; 
+            }
           </style>
         </head>
         <body>
           <div class="header-container">
             ${getHeaderHtml()}
             <div class="legend-container">
-              <div class="legend-item"><div class="legend-box legend-avail"></div> Boleto Disponible</div>
-              <div class="legend-item"><div class="legend-box legend-taken"></div> Boleto Ocupado</div>
+              <div class="legend-item">
+                <div class="legend-box legend-avail"></div> Boleto Disponible
+              </div>
+              <div class="legend-item">
+                <div class="legend-box legend-taken"></div> Boleto Ocupado
+              </div>
             </div>
           </div>
-          <div class="grid-container">${boxesHtml}</div>
+          <div class="grid-container">
+            ${boxesHtml}
+          </div>
         </body>
-      </html>`;
+      </html>
+    `;
 
     const win = window.open();
     win.document.write(gridHtml);
@@ -356,7 +378,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       </div>
     `;
 
-    // 5 imágenes de 4 columnas (50 boletos por columna)
     const contents = [
       createPageWrapper("export-img-1", "PARTE 1: NÚMEROS DEL 000 AL 199", [
         createTableBlock(0, 49, ticketMap), createTableBlock(50, 99, ticketMap),
@@ -422,6 +443,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           style={{ flex: 1, minWidth: "150px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
         />
 
+        {/* 🔲 BOTÓN: Cuadrícula HTML Blanca/Negro Cuadrada */}
         <button onClick={handleViewPublicGrid} style={{ padding: "10px 15px", backgroundColor: "#f59e0b", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
           🔲 Generar Cuadrícula
         </button>
