@@ -10,6 +10,9 @@ import "./ticket.css";
 function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   const [rowData, setRowData] = useState([]);
   const [gridApi, setGridApi] = useState(null);
+  
+  // ⚙️ Controlar si vemos la Lista o la Cuadrícula
+  const [viewMode, setViewMode] = useState("list"); // "list" | "grid"
 
   // ⚙️ Leer configuración global (Premio, Fecha, Precio)
   const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
@@ -192,6 +195,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   // --- 📏 FUNCIÓN GENERADORA DE BLOQUES RÍGIDOS (ANTI-DEFORMACIÓN) ---
   const createTableBlock = (start, end, ticketMap) => {
+    // Definimos anchos estrictos: 50px para Número y 200px para el Nombre
     return `<table style="border-collapse: collapse; width: 100%; max-width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
       <colgroup>
         <col style="width: 55px;">
@@ -212,6 +216,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           const rowBg = name ? 'background-color: #f1f5f9;' : 'background-color: #ffffff;';
           const numColor = name ? 'color: #94a3b8; font-weight: bold;' : 'color: #000000; font-weight: 900;';
 
+          // El div interno fuerza a que el texto se corte con (...) si sobrepasa el límite, protegiendo la tabla.
           return `<tr style="${rowBg} height: 26px;">
             <td style="border: 1px solid #cbd5e1; padding: 0; text-align: center; font-size: 15px; ${numColor} overflow: hidden; white-space: nowrap;">${b}</td>
             <td style="border: 1px solid #cbd5e1; padding: 0 6px; vertical-align: middle;">
@@ -245,7 +250,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     </div>
   `;
 
-  // --- 📸 VISTA PÚBLICA DE TABLAS EN NUEVA PESTAÑA ---
+  // --- 📸 VISTA PÚBLICA EN NUEVA PESTAÑA ---
   const handleViewPublicTable = () => {
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -314,130 +319,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
     const win = window.open();
     win.document.write(finalHtml);
-    win.document.close();
-  };
-
-  // --- 🔲 VISTA PÚBLICA DE LA CUADRÍCULA (BLANCO Y NEGRO) EN NUEVA PESTAÑA ---
-  const handleViewPublicGrid = () => {
-    const ticketMap = new Map();
-    rowData.forEach((t) => {
-      const num = t.ticketNumber.toString().padStart(3, "0");
-      ticketMap.set(num, t);
-    });
-
-    let boxesHtml = "";
-
-    for (let i = 0; i < 1000; i++) {
-      const num = i.toString().padStart(3, "0");
-      const t = ticketMap.get(num);
-      
-      const isTaken = t && (t.sold || t.availability === false);
-
-      if (isTaken) {
-        // Boleto ocupado: Todo negro, sin texto
-        boxesHtml += `<div class="ticket-box taken"></div>`;
-      } else {
-        // Boleto disponible: Fondo blanco, texto negro
-        boxesHtml += `<div class="ticket-box avail">${num}</div>`;
-      }
-    }
-
-    const gridHtml = `
-      <html>
-        <head>
-          <title>Cuadrícula de Boletos - Disponibilidad</title>
-          <style>
-            body { 
-              font-family: Arial, sans-serif; 
-              background: #f1f5f9; 
-              padding: 20px; 
-              margin: 0;
-            }
-            .header-container {
-              max-width: 1000px;
-              margin: 0 auto 20px auto;
-              text-align: center;
-            }
-            .legend-container {
-              display: flex; 
-              justify-content: center; 
-              gap: 30px; 
-              margin-bottom: 20px;
-              background: #1e293b;
-              padding: 15px;
-              border-radius: 8px;
-              color: white;
-            }
-            .legend-item {
-              display: flex;
-              align-items: center;
-              gap: 10px;
-              font-weight: bold;
-              font-size: 16px;
-            }
-            .legend-box {
-              width: 24px;
-              height: 24px;
-              border-radius: 4px;
-            }
-            .legend-avail { background: #ffffff; border: 1px solid #cbd5e1; }
-            .legend-taken { background: #000000; border: 1px solid #000000; }
-            
-            .grid-container {
-              display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
-              gap: 6px;
-              max-width: 1000px;
-              margin: 0 auto;
-              background: #ffffff;
-              padding: 20px;
-              border-radius: 12px;
-              border: 1px solid #cbd5e1;
-              box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            }
-            .ticket-box {
-              height: 38px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-radius: 4px;
-              font-size: 14px;
-              font-weight: bold;
-              box-sizing: border-box;
-            }
-            .avail { 
-              background: #ffffff; 
-              color: #000000; 
-              border: 1px solid #cbd5e1; 
-            }
-            .taken { 
-              background: #000000; 
-              color: transparent; 
-              border: 1px solid #000000; 
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header-container">
-            ${getHeaderHtml()}
-            <div class="legend-container">
-              <div class="legend-item">
-                <div class="legend-box legend-avail"></div> Boleto Disponible
-              </div>
-              <div class="legend-item">
-                <div class="legend-box legend-taken"></div> Boleto Ocupado
-              </div>
-            </div>
-          </div>
-          <div class="grid-container">
-            ${boxesHtml}
-          </div>
-        </body>
-      </html>
-    `;
-
-    const win = window.open();
-    win.document.write(gridHtml);
     win.document.close();
   };
 
@@ -516,26 +397,112 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   };
 
+  // --- 🔲 RENDER DE LA CUADRÍCULA VISUAL (BLANCO Y NEGRO) ---
+  const renderGridView = () => {
+    const ticketMap = new Map();
+    rowData.forEach(t => {
+      const num = t.ticketNumber.toString().padStart(3, "0");
+      ticketMap.set(num, t);
+    });
+
+    const boxes = [];
+
+    // Creamos 1000 cuadritos (Del 000 al 999)
+    for (let i = 0; i < 1000; i++) {
+      const num = i.toString().padStart(3, "0");
+      const t = ticketMap.get(num);
+      
+      let bgColor = "#ffffff"; // Blanco (Disponible)
+      let textColor = "#000000"; // Letra negra
+      let displayText = num;     // Muestra el número
+      let borderStyle = "1px solid #cbd5e1";
+
+      // Si el boleto está apartado o pagado (No disponible)
+      if (t && (t.sold || t.availability === false)) {
+        bgColor = "#000000"; // Color Totalmente Negro
+        textColor = "transparent"; // Letra invisible (o vacía)
+        displayText = ""; // Borramos el texto
+        borderStyle = "1px solid #000000";
+      }
+
+      boxes.push(
+        <div 
+          key={num} 
+          style={{
+            backgroundColor: bgColor,
+            color: textColor,
+            height: "32px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "4px",
+            fontSize: "13px",
+            fontWeight: "bold",
+            border: borderStyle,
+            boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
+          }}
+        >
+          {displayText}
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ marginTop: "10px" }}>
+        {/* LEYENDA BLANCO Y NEGRO */}
+        <div style={{ display: "flex", gap: "30px", marginBottom: "15px", justifyContent: "center", backgroundColor: "#1e293b", padding: "12px", borderRadius: "8px" }}>
+           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
+             <span style={{ width: 20, height: 20, background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: 4 }}></span> 
+             Boleto Disponible
+           </div>
+           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white", fontWeight: "bold", fontSize: "14px" }}>
+             <span style={{ width: 20, height: 20, background: "#000000", borderRadius: 4 }}></span> 
+             Boleto Ocupado
+           </div>
+        </div>
+
+        {/* CONTENEDOR DE LA CUADRÍCULA */}
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fill, minmax(40px, 1fr))", 
+          gap: "5px", 
+          maxHeight: "550px", 
+          overflowY: "auto", 
+          padding: "15px", 
+          backgroundColor: "#f8fafc", 
+          borderRadius: "8px", 
+          border: "1px solid #cbd5e1" 
+        }}>
+          {boxes}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ width: "100%", marginTop: 20 }}>
       
       <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", alignItems: "center" }}>
-        
-        <input 
-          type="text" 
-          id="quickFilter" 
-          placeholder="🔍 Buscar participante o número..." 
-          onChange={onQuickFilterChanged} 
-          style={{ flex: 1, minWidth: "150px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
-        />
-
-        {/* 🔲 NUEVO BOTÓN: Cuadrícula Blanco/Negro en nueva pestaña */}
-        <button onClick={handleViewPublicGrid} style={{ padding: "10px 15px", backgroundColor: "#f59e0b", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          🔲 Generar Cuadrícula
+        {/* BOTÓN PARA CAMBIAR VISTA */}
+        <button 
+          onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")} 
+          style={{ padding: "10px 15px", backgroundColor: "#f59e0b", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold", fontSize: "14px", transition: "0.2s" }}
+        >
+          {viewMode === "list" ? "🔲 Ver Cuadrícula" : "📋 Ver Lista de Registros"}
         </button>
 
+        {viewMode === "list" && (
+          <input 
+            type="text" 
+            id="quickFilter" 
+            placeholder="🔍 Buscar participante o número..." 
+            onChange={onQuickFilterChanged} 
+            style={{ flex: 1, minWidth: "200px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
+          />
+        )}
+
         <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          📸 Generar HTML (Nombres)
+          📸 Generar HTML (4 Partes)
         </button>
 
         <button onClick={handleDownloadImages} style={{ padding: "10px 15px", backgroundColor: "#0284c7", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
@@ -543,16 +510,21 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         </button>
       </div>
 
-      <div className="ag-theme-alpine-dark" style={{ width: "100%", height: "600px" }}>
-        <AgGridReact
-          rowData={rowData}
-          columnDefs={columnDefs}
-          onGridReady={onGridReady}
-          pagination={true}
-          paginationPageSize={100}
-          animateRows={true}
-        />
-      </div>
+      {/* RENDERIZADO CONDICIONAL: Muestra la Lista o la Cuadrícula */}
+      {viewMode === "list" ? (
+        <div className="ag-theme-alpine-dark" style={{ width: "100%", height: "600px" }}>
+          <AgGridReact
+            rowData={rowData}
+            columnDefs={columnDefs}
+            onGridReady={onGridReady}
+            pagination={true}
+            paginationPageSize={100}
+            animateRows={true}
+          />
+        </div>
+      ) : (
+        renderGridView()
+      )}
     </div>
   );
 }
