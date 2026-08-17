@@ -190,31 +190,31 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     }
   ];
 
-  // --- FUNCIÓN GENERADORA DE BLOQUES DE 1 SOLA OPORTUNIDAD (000 al 999) ---
+  // --- FUNCIÓN GENERADORA DE BLOQUES DE 1 SOLA OPORTUNIDAD ---
   const createTableBlock = (start, end, ticketMap) => {
     return `<table style="border-collapse: collapse; width: 100%; table-layout: fixed; font-family: 'Arial Narrow', Arial, sans-serif;">
       <colgroup>
-        <col style="width: 55px;">
+        <col style="width: 50px;">
         <col style="width: auto;">
       </colgroup>
       <thead>
         <tr>
-          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 8px 4px; font-size: 13px; font-weight: bold; text-align: center;">NÚM</th>
-          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 8px 8px; font-size: 13px; font-weight: bold; text-align: left;">NOMBRE</th>
+          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 6px 2px; font-size: 13px; font-weight: bold; text-align: center;">NÚM</th>
+          <th style="border: 1px solid #cbd5e1; background: #0f172a; color: #ffffff; padding: 6px 6px; font-size: 13px; font-weight: bold; text-align: left;">NOMBRE</th>
         </tr>
       </thead>
       <tbody>
         ${Array.from({ length: end - start + 1 }, (_, index) => {
           const i = start + index;
-          const b = i.toString().padStart(3, "0"); // Genera 000, 001, ..., 999
+          const b = i.toString().padStart(3, "0"); 
           const name = ticketMap.get(b) || "";
           
           const rowBg = name ? 'background-color: #f1f5f9;' : 'background-color: #ffffff;';
           const numColor = name ? 'color: #94a3b8; font-weight: bold;' : 'color: #000000; font-weight: 900;';
-          const nameStyle = 'font-size: 14px; font-weight: bold; text-align: left; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #334155;';
+          const nameStyle = 'font-size: 13px; font-weight: bold; text-align: left; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #334155;';
 
           return `<tr style="${rowBg}">
-            <td style="border: 1px solid #cbd5e1; padding: 4px 2px; text-align: center; font-size: 16px; ${numColor}">${b}</td>
+            <td style="border: 1px solid #cbd5e1; padding: 4px 2px; text-align: center; font-size: 15px; ${numColor}">${b}</td>
             <td style="border: 1px solid #cbd5e1; padding: 4px 2px; ${nameStyle}">${name}</td>
           </tr>`;
         }).join('')}
@@ -223,7 +223,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
   };
 
   const getHeaderHtml = () => `
-    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: 1px solid #334155; text-align: center; font-family: Arial, sans-serif;">
+    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: 1px solid #334155; text-align: center; font-family: Arial, sans-serif;">
       <h2 style="color: #f8fafc; font-size: 22px; font-weight: 900; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px;">🎉 Gran Sorteo Efectivo 🎉</h2>
       <div style="display: flex; justify-content: space-around; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px;">
         <div style="display: flex; flex-direction: column; gap: 2px; text-align: center;">
@@ -254,32 +254,56 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     const finalHtml = `
       <html>
         <head>
-          <title>Tablas de Control (000-999)</title>
+          <title>Tablas de Control (4 Partes)</title>
           <style>
             body { font-family: 'Arial Narrow', Arial, sans-serif; background: #f1f5f9; padding: 20px; }
-            .page { background: white; border: 1px solid #cbd5e1; padding: 20px; margin-bottom: 30px; border-radius: 8px; max-width: 1200px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
-            .grid-4-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+            .page { background: white; border: 1px solid #cbd5e1; padding: 20px; margin-bottom: 30px; border-radius: 8px; max-width: 1400px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+            .grid-5-cols { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
           </style>
         </head>
         <body>
           <div class="page">
             ${getHeaderHtml()}
-            <h3 style="text-align:center; color:#334155;">BLOQUE 1: 000 al 499</h3>
-            <div class="grid-4-cols">
-              <div>${createTableBlock(0, 124, ticketMap)}</div>
-              <div>${createTableBlock(125, 249, ticketMap)}</div>
-              <div>${createTableBlock(250, 374, ticketMap)}</div>
-              <div>${createTableBlock(375, 499, ticketMap)}</div>
+            <h3 style="text-align:center; color:#334155; margin-bottom: 10px;">PARTE 1: NÚMEROS DEL 000 AL 249</h3>
+            <div class="grid-5-cols">
+              <div>${createTableBlock(0, 49, ticketMap)}</div>
+              <div>${createTableBlock(50, 99, ticketMap)}</div>
+              <div>${createTableBlock(100, 149, ticketMap)}</div>
+              <div>${createTableBlock(150, 199, ticketMap)}</div>
+              <div>${createTableBlock(200, 249, ticketMap)}</div>
             </div>
           </div>
           <div class="page">
             ${getHeaderHtml()}
-            <h3 style="text-align:center; color:#334155;">BLOQUE 2: 500 al 999</h3>
-            <div class="grid-4-cols">
-              <div>${createTableBlock(500, 624, ticketMap)}</div>
-              <div>${createTableBlock(625, 749, ticketMap)}</div>
-              <div>${createTableBlock(750, 874, ticketMap)}</div>
-              <div>${createTableBlock(875, 999, ticketMap)}</div>
+            <h3 style="text-align:center; color:#334155; margin-bottom: 10px;">PARTE 2: NÚMEROS DEL 250 AL 499</h3>
+            <div class="grid-5-cols">
+              <div>${createTableBlock(250, 299, ticketMap)}</div>
+              <div>${createTableBlock(300, 349, ticketMap)}</div>
+              <div>${createTableBlock(350, 399, ticketMap)}</div>
+              <div>${createTableBlock(400, 449, ticketMap)}</div>
+              <div>${createTableBlock(450, 499, ticketMap)}</div>
+            </div>
+          </div>
+          <div class="page">
+            ${getHeaderHtml()}
+            <h3 style="text-align:center; color:#334155; margin-bottom: 10px;">PARTE 3: NÚMEROS DEL 500 AL 749</h3>
+            <div class="grid-5-cols">
+              <div>${createTableBlock(500, 549, ticketMap)}</div>
+              <div>${createTableBlock(550, 599, ticketMap)}</div>
+              <div>${createTableBlock(600, 649, ticketMap)}</div>
+              <div>${createTableBlock(650, 699, ticketMap)}</div>
+              <div>${createTableBlock(700, 749, ticketMap)}</div>
+            </div>
+          </div>
+          <div class="page">
+            ${getHeaderHtml()}
+            <h3 style="text-align:center; color:#334155; margin-bottom: 10px;">PARTE 4: NÚMEROS DEL 750 AL 999</h3>
+            <div class="grid-5-cols">
+              <div>${createTableBlock(750, 799, ticketMap)}</div>
+              <div>${createTableBlock(800, 849, ticketMap)}</div>
+              <div>${createTableBlock(850, 899, ticketMap)}</div>
+              <div>${createTableBlock(900, 949, ticketMap)}</div>
+              <div>${createTableBlock(950, 999, ticketMap)}</div>
             </div>
           </div>
         </body>
@@ -290,9 +314,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     win.document.close();
   };
 
-  // --- ⬇️ DESCARGAR IMÁGENES AUTOMÁTICAMENTE ---
+  // --- ⬇️ DESCARGAR IMÁGENES AUTOMÁTICAMENTE (4 IMÁGENES) ---
   const handleDownloadImages = async () => {
-    const toastId = toast.loading("⏳ Generando imágenes de 1000 boletos...");
+    const toastId = toast.loading("⏳ Generando 4 imágenes horizontales...");
 
     const ticketMap = new Map();
     rowData.forEach((t) => {
@@ -301,45 +325,52 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       ticketMap.set(num, name);
     });
 
-    const createPageWrapper = (id, title, c1, c2, c3, c4) => `
-      <div id="${id}" style="background: #ffffff; padding: 20px; width: 1200px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 20px;">
+    const createPageWrapper = (id, title, colsArray) => `
+      <div id="${id}" style="background: #ffffff; padding: 25px; width: 1500px; font-family: 'Arial Narrow', Arial, sans-serif; box-sizing: border-box; margin-bottom: 20px;">
         ${getHeaderHtml()}
-        <h3 style="text-align:center; color:#334155; font-size: 20px; margin-bottom: 15px;">${title}</h3>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
-          <div>${c1}</div>
-          <div>${c2}</div>
-          <div>${c3}</div>
-          <div>${c4}</div>
+        <h3 style="text-align:center; color:#334155; font-size: 22px; margin-bottom: 15px;">${title}</h3>
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;">
+          ${colsArray.map(c => `<div>${c}</div>`).join('')}
         </div>
       </div>
     `;
 
-    const content1 = createPageWrapper("export-img-1", "NÚMEROS DEL 000 AL 499", 
-      createTableBlock(0, 124, ticketMap), 
-      createTableBlock(125, 249, ticketMap), 
-      createTableBlock(250, 374, ticketMap), 
-      createTableBlock(375, 499, ticketMap)
-    );
+    const content1 = createPageWrapper("export-img-1", "PARTE 1: NÚMEROS DEL 000 AL 249", [
+      createTableBlock(0, 49, ticketMap), createTableBlock(50, 99, ticketMap),
+      createTableBlock(100, 149, ticketMap), createTableBlock(150, 199, ticketMap),
+      createTableBlock(200, 249, ticketMap)
+    ]);
 
-    const content2 = createPageWrapper("export-img-2", "NÚMEROS DEL 500 AL 999", 
-      createTableBlock(500, 624, ticketMap), 
-      createTableBlock(625, 749, ticketMap), 
-      createTableBlock(750, 874, ticketMap), 
-      createTableBlock(875, 999, ticketMap)
-    );
+    const content2 = createPageWrapper("export-img-2", "PARTE 2: NÚMEROS DEL 250 AL 499", [
+      createTableBlock(250, 299, ticketMap), createTableBlock(300, 349, ticketMap),
+      createTableBlock(350, 399, ticketMap), createTableBlock(400, 449, ticketMap),
+      createTableBlock(450, 499, ticketMap)
+    ]);
+
+    const content3 = createPageWrapper("export-img-3", "PARTE 3: NÚMEROS DEL 500 AL 749", [
+      createTableBlock(500, 549, ticketMap), createTableBlock(550, 599, ticketMap),
+      createTableBlock(600, 649, ticketMap), createTableBlock(650, 699, ticketMap),
+      createTableBlock(700, 749, ticketMap)
+    ]);
+
+    const content4 = createPageWrapper("export-img-4", "PARTE 4: NÚMEROS DEL 750 AL 999", [
+      createTableBlock(750, 799, ticketMap), createTableBlock(800, 849, ticketMap),
+      createTableBlock(850, 899, ticketMap), createTableBlock(900, 949, ticketMap),
+      createTableBlock(950, 999, ticketMap)
+    ]);
 
     const tempContainer = document.createElement("div");
     tempContainer.style.position = "absolute";
     tempContainer.style.left = "-9999px";
     tempContainer.style.top = "0";
-    tempContainer.innerHTML = content1 + content2;
+    tempContainer.innerHTML = content1 + content2 + content3 + content4;
     document.body.appendChild(tempContainer);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 500)); // Dar tiempo al DOM para renderizar
 
-      // Descargar las 2 imágenes grandes
-      for (let i = 1; i <= 2; i++) {
+      // Descargar las 4 imágenes
+      for (let i = 1; i <= 4; i++) {
         const element = document.getElementById(`export-img-${i}`);
         const canvas = await html2canvas(element, { scale: 1.5, useCORS: true, backgroundColor: "#ffffff" });
 
@@ -350,7 +381,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         link.click();
       }
 
-      toast.update(toastId, { render: "✅ ¡Imágenes de 1000 boletos descargadas!", type: "success", isLoading: false, autoClose: 4000 });
+      toast.update(toastId, { render: "✅ ¡Las 4 imágenes se descargaron con éxito!", type: "success", isLoading: false, autoClose: 4000 });
     } catch (error) {
       console.error("Error al generar imágenes:", error);
       toast.update(toastId, { render: "❌ Error al procesar las imágenes.", type: "error", isLoading: false, autoClose: 4000 });
@@ -371,11 +402,11 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         />
 
         <button onClick={handleViewPublicTable} style={{ padding: "10px 15px", backgroundColor: "#be123c", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          📸 Generar HTML (000-999)
+          📸 Generar HTML (4 Partes)
         </button>
 
         <button onClick={handleDownloadImages} style={{ padding: "10px 15px", backgroundColor: "#0284c7", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
-          ⬇️ Descargar Imágenes (2 Partes)
+          ⬇️ Descargar 4 Imágenes
         </button>
       </div>
 
