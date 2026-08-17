@@ -177,23 +177,38 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     </table>`;
   };
 
-  // 🔠 BANNER GIGANTE PARA MAYOR LEGIBILIDAD
+  // 🔠 SÚPER BANNER GIGANTE Y LLAMATIVO
   const getHeaderHtml = () => `
-    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 16px; padding: 25px; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: 1px solid #334155; text-align: center; font-family: Arial, sans-serif;">
-      <h2 style="color: #f8fafc; font-size: 34px; font-weight: 900; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 1px;">💰 LLEVATE $18,000 PESOS 💰</h2>
-      <div style="display: flex; justify-content: space-around; background: rgba(255, 255, 255, 0.05); padding: 18px; border-radius: 12px;">
-        <div style="display: flex; flex-direction: column; gap: 5px; text-align: center;">
-          <span style="font-size: 16px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎁 Premio Principal</span>
-          <span style="font-size: 26px; font-weight: 900; color: #fbbf24;">${lotteryPrize}</span>
+    <div style="position: relative; overflow: hidden; background: linear-gradient(145deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); color: white; border-radius: 16px; padding: 35px 20px; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border-bottom: 6px solid #be123c; text-align: center; font-family: Arial, sans-serif;">
+      
+      <!-- Efecto de brillo de fondo -->
+      <div style="position: absolute; top: -50%; left: -10%; width: 120%; height: 200%; background: radial-gradient(circle, rgba(190,18,60,0.15) 0%, transparent 60%); pointer-events: none;"></div>
+
+      <h2 style="position: relative; color: #ffffff; font-size: 52px; font-weight: 900; margin: 0 0 25px 0; text-transform: uppercase; letter-spacing: 3px; text-shadow: 3px 5px 10px rgba(0,0,0,0.5);">
+        🎉 GRAN SORTEO EFECTIVO 🎉
+      </h2>
+      
+      <div style="position: relative; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.25); padding: 25px 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);">
+        
+        <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
+          <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">🎁 Premio Principal</span>
+          <span style="font-size: 42px; font-weight: 900; color: #fbbf24; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">${lotteryPrize}</span>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 5px; text-align: center;">
-          <span style="font-size: 16px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">📅 Fecha del Sorteo</span>
-          <span style="font-size: 26px; font-weight: bold; color: #e2e8f0;">${lotteryDate}</span>
+        
+        <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
+          <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">📅 Fecha del Sorteo</span>
+          <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">${lotteryDate}</span>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 5px; text-align: center;">
-          <span style="font-size: 16px; color: #94a3b8; text-transform: uppercase; font-weight: bold;">🎟️ Precio por Boleto</span>
-          <span style="font-size: 26px; font-weight: 900; color: #22c55e;">$${ticketPrice} Pesos</span>
+        
+        <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
+          <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">🎟️ Precio por Boleto</span>
+          <span style="font-size: 42px; font-weight: 900; color: #4ade80; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);">$${ticketPrice} Pesos</span>
         </div>
+        
       </div>
     </div>
   `;
@@ -247,10 +262,8 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
       const isTaken = t && (t.sold || t.availability === false);
 
       if (isTaken) {
-        // Cuadro ocupado: Fondo oscuro, letra invisible
         boxesHtml += `<div class="ticket-box taken"></div>`;
       } else {
-        // Cuadro disponible: Fondo blanco, letra súper gruesa oscura
         boxesHtml += `<div class="ticket-box avail">${num}</div>`;
       }
     }
@@ -295,7 +308,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
             .legend-avail { background: #ffffff; border: 2px solid #0f172a; }
             .legend-taken { background: #0f172a; border: 2px solid #0f172a; }
             
-            /* MATRIZ DE 25 COLUMNAS X 40 FILAS */
             .grid-container {
               display: grid;
               grid-template-columns: repeat(25, 1fr);
@@ -308,8 +320,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               border: 1px solid #cbd5e1;
               box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             }
-            
-            /* CUADROS PERFECTAMENTE CUADRADOS */
             .ticket-box {
               aspect-ratio: 1 / 1;
               display: flex;
@@ -321,16 +331,8 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
               box-sizing: border-box;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
-            .avail { 
-              background: #ffffff; 
-              color: #0f172a; 
-              border: 2px solid #94a3b8; 
-            }
-            .taken { 
-              background: #0f172a; 
-              color: transparent; 
-              border: 2px solid #0f172a; 
-            }
+            .avail { background: #ffffff; color: #0f172a; border: 2px solid #94a3b8; }
+            .taken { background: #0f172a; color: transparent; border: 2px solid #0f172a; }
           </style>
         </head>
         <body>
@@ -443,7 +445,6 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
           style={{ flex: 1, minWidth: "150px", padding: "10px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#1e1e1e", color: "white" }}
         />
 
-        {/* 🔲 BOTÓN: Cuadrícula HTML Blanca/Negro Cuadrada */}
         <button onClick={handleViewPublicGrid} style={{ padding: "10px 15px", backgroundColor: "#f59e0b", color: "white", border: "none", borderRadius: 5, cursor: "pointer", fontWeight: "bold" }}>
           🔲 Generar Cuadrícula
         </button>
