@@ -17,9 +17,9 @@ function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
 
   // ⚙️ Leer configuraciones dinámicas desde localStorage
   const opportunitiesCount = Number(localStorage.getItem("lottery_opportunities")) || 4;
-  const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
-  const lotteryDate = localStorage.getItem("lottery_date") || "Dom 09 Agosto 2026";
-  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 100;
+  const lotteryPrize = localStorage.getItem("lottery_prize") || "$18,000 en Efectivo";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Sabado 29 Agosto 2026";
+  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 35;
 
   // --- Mantenido estrictamente por funcionalidad del usuario ---
   const [randomNumber, setRandomNumber] = useState(() => Math.floor(Math.random() * 1000000000));
