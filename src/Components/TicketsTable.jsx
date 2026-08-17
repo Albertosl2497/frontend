@@ -182,7 +182,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
     <div style="position: relative; overflow: hidden; background: linear-gradient(145deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); color: white; border-radius: 16px; padding: 35px 20px; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border-bottom: 6px solid #be123c; text-align: center; font-family: Arial, sans-serif;">
       <div style="position: absolute; top: -50%; left: -10%; width: 120%; height: 200%; background: radial-gradient(circle, rgba(190,18,60,0.15) 0%, transparent 60%); pointer-events: none;"></div>
       <h2 style="position: relative; color: #ffffff; font-size: 52px; font-weight: 900; margin: 0 0 25px 0; text-transform: uppercase; letter-spacing: 3px; text-shadow: 3px 5px 10px rgba(0,0,0,0.5);">
-        🎉 GRAN SORTEO EFECTIVO 🎉
+        💰 LLEVATE $18,000 PESOS 💰
       </h2>
       <div style="position: relative; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.25); padding: 25px 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);">
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
