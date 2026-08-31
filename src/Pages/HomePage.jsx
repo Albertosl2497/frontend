@@ -7,7 +7,7 @@ import "./styles.css";
 function MainPageContent() {
   // ⚙️ Leer configuración global del sorteo desde localStorage
   const lotteryPrize = localStorage.getItem("lottery_prize") || "$18,000 en Efectivo";
-  const lotteryDate = localStorage.getItem("lottery_date") || "Sabado 29 Agosto 2026";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Sabado 12 Septiembre 2026";
   const ticketPrice = Number(localStorage.getItem("lottery_price")) || 35;
 
   return (
