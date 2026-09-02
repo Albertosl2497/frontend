@@ -16,7 +16,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   // ⚙️ Leer configuración global (Premio, Fecha, Precio)
   const lotteryPrize = localStorage.getItem("lottery_prize") || "$18,000 en Efectivo";
-  const lotteryDate = localStorage.getItem("lottery_date") || "Sabado 12 Septiembre 2026";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Domingo 13 Septiembre 2026";
   const ticketPrice = Number(localStorage.getItem("lottery_price")) || 35;
 
   useEffect(() => {
@@ -192,7 +192,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">📅 Fecha del Sorteo</span>
-          <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);"> Sabado 12 de Septiembre </span>
+          <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);"> Domingo 13 de Septiembre </span>
         </div>
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
