@@ -16,7 +16,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   // ⚙️ Leer configuración global (Premio, Fecha, Precio)
   const lotteryPrize = localStorage.getItem("lottery_prize") || "$18,000 en Efectivo";
-  const lotteryDate = localStorage.getItem("lottery_date") || "Domingo 13 Septiembre 2026";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Domingo 27 Septiembre 2026";
   const ticketPrice = Number(localStorage.getItem("lottery_price")) || 35;
 
   useEffect(() => {
