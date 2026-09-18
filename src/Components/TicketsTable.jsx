@@ -192,7 +192,7 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
           <span style="font-size: 18px; color: #94a3b8; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">📅 Fecha del Sorteo</span>
-          <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);"> Domingo 13 de Septiembre </span>
+          <span style="font-size: 38px; font-weight: 900; color: #e2e8f0; text-shadow: 2px 3px 5px rgba(0,0,0,0.4);"> Domingo 27 de Septiembre </span>
         </div>
         <div style="width: 2px; height: 80px; background: rgba(255,255,255,0.1);"></div>
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: center; flex: 1;">
