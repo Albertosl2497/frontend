@@ -9,7 +9,7 @@ import "./ticket.css";
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   // 💳 MÉTODOS DE PAGO REALES DEL CLIENTE (INTEGRADOS INTEGRALMENTE)
   const paymentMethods = [
-    { bank: "DEPÓSITO EN OXXO", number: "2242 1707 6033 2708", holder: "Cualquier Caja de Tienda OXXO", type: "Depósito en Efectivo" },
+    { bank: "DEPÓSITO EN OXXO", number: "2242 1707 6033 2708", holder: "Cualquier Caja de Tienda OXXO", type: "Deposito en Efectivo" },
     { bank: "SPIN BY OXXO", number: "7289 6900 0066 5538 33", holder: "MARTIN ALBERTO SANCHEZ", type: "Transferencia CLABE" },
     { bank: "SPIN BY OXXO", number: "7289 6900 0083 2973 89", holder: "MARIA RUIZ BORQUEZ", type: "Transferencia CLABE" },
     { bank: "SPIN BY OXXO", number: "7289 6900 0107 5676 78", holder: "ALVARO RUIZ MURRIETA", type: "Transferencia CLABE" }
