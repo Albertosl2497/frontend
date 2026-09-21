@@ -4,7 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { PropagateLoader, ClipLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./ticket.css";
+import "./ticket.css"; 
 
 function TicketForm({ tickets, loading, lotteryNo, setTickets }) {
   // 💳 MÉTODOS DE PAGO REALES DEL CLIENTE (INTEGRADOS INTEGRALMENTE)
