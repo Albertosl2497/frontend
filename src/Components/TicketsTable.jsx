@@ -13,9 +13,9 @@ function TicketTable({ tickets, lotteryNo, setStats, stats }) {
 
   // ⚙️ Configuración global
   const opportunitiesCount = Number(localStorage.getItem("lottery_opportunities")) || 4;
-  const lotteryPrize = localStorage.getItem("lottery_prize") || "$18,000 en Efectivo";
-  const lotteryDate = localStorage.getItem("lottery_date") || "Domingo 27 Septiembre 2026";
-  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 35;
+  const lotteryPrize = localStorage.getItem("lottery_prize") || "$15,000 en Efectivo";
+  const lotteryDate = localStorage.getItem("lottery_date") || "Domingo 11 Octubre 2026";
+  const ticketPrice = Number(localStorage.getItem("lottery_price")) || 100;
 
   useEffect(() => {
     setRowData(tickets || []);
